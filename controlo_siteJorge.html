@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel Gestão | JD Auto</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        body { font-family: 'Inter', sans-serif; background: #111; color: #fff; margin: 0; padding: 20px; }
+        .login-container, .admin-container { max-width: 500px; margin: 50px auto; background: #222; padding: 30px; border-radius: 12px; border-top: 4px solid #e63946; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        .admin-container { max-width: 800px; display: none; }
+        input, button { width: 100%; padding: 12px; margin: 10px 0; border-radius: 6px; border: 1px solid #333; box-sizing: border-box; }
+        input { background: #111; color: #fff; }
+        button { background: #e63946; color: #fff; font-weight: bold; cursor: pointer; border: none; transition: 0.3s; }
+        button:hover { background: #d62828; }
+        .car-item { background: #1a1a1a; padding: 15px; margin-top: 10px; display: flex; justify-content: space-between; align-items: center; border-radius: 8px; border: 1px solid #333; }
+        .btn-vender { background: #555; width: auto; font-size: 12px; padding: 8px 15px; }
+    </style>
+</head>
+<body>
+
+    <div id="login-box" class="login-container">
+        <h2 style="text-align:center;">Acesso Restrito</h2>
+        <p style="text-align:center; color: #888;">Introduza o PIN de Gestão</p>
+        <input type="password" id="pin-input" placeholder="PIN de Acesso">
+        <button onclick="verificarLogin()">Entrar no Painel</button>
+    </div>
+
+    <div id="admin-box" class="admin-container">
+        <h1>Gestão de Stock 🚗</h1>
+        <hr style="border: 0; border-top: 1px solid #333; margin: 20px 0;">
+        
+        <div style="background: #2a2a2a; padding: 20px; border-radius: 8px;">
+            <h3>+ Adicionar Novo Carro</h3>
+            <input type="text" id="novo-titulo" placeholder="Marca e Modelo (Ex: Peugeot 208)">
+            <input type="number" id="novo-preco" placeholder="Preço (€)">
+            <input type="text" id="novo-desc" placeholder="Detalhes (Ex: 2018 | Diesel | 120cv)">
+            <input type="text" id="novo-img" placeholder="Link da Foto (URL)">
+            <button onclick="inserirCarro()" style="background: #25d366;">Publicar no Site</button>
+        </div>
+
+        <h3 style="margin-top: 40px;">Stock Ativo no Site</h3>
+        <div id="lista-admin">A carregar viaturas...</div>
+    </div>
+
+    <script>
+        // Usei nomes de variáveis diferentes para evitar o erro "already declared"
+        const adminUrl = 'https://nhmhlcipomnshywkxwpl.supabase.co';
+        const adminKey = 'sb_publishable_r98j53EhXUKlSOrpeuxxCg_uTvz-5qM';
+        const conexaoAdmin = window.supabase.createClient(adminUrl, adminKey);
+
+        const PIN_CORRETO = "jdauto2024"; 
+
+        function verificarLogin() {
+            const input = document.getElementById("pin-input").value;
+            console.log("A tentar login...");
+            if(input === PIN_CORRETO) {
+                document.getElementById("login-box").style.display = "none";
+                document.getElementById("admin-box").style.display = "block";
+                listarCarrosAdmin();
+            } else {
+                alert("PIN Incorreto!");
+            }
+        }
+
+        async function listarCarrosAdmin() {
+            try {
+                const { data, error } = await conexaoAdmin.from('carros').select('*').eq('vendido', false);
+                const container = document.getElementById("lista-admin");
+                
+                if (error) throw error;
+                
+                container.innerHTML = "";
+                data.forEach(c => {
+                    container.innerHTML += `
+                        <div class="car-item">
+                            <div>
+                                <strong>${c.titulo}</strong><br>
+                                <span style="color:#e63946">${c.preco} €</span>
+                            </div>
+                            <button class="btn-vender" onclick="marcarVendido(${c.id})">Marcar como Vendido</button>
+                        </div>`;
+                });
+            } catch (err) {
+                console.error("Erro ao listar:", err);
+            }
+        }
+
+        async function inserirCarro() {
+            const t = document.getElementById("novo-titulo").value;
+            const p = document.getElementById("novo-preco").value;
+            const d = document.getElementById("novo-desc").value;
+            const i = document.getElementById("novo-img").value;
+
+            if(!t || !p || !i) return alert("Preenche os campos obrigatórios!");
+
+            const { error } = await conexaoAdmin.from('carros').insert([
+                { titulo: t, preco: p, descricao: d, imagem_url: i, vendido: false }
+            ]);
+
+            if(!error) {
+                alert("Carro adicionado com sucesso!");
+                document.getElementById("novo-titulo").value = "";
+                document.getElementById("novo-preco").value = "";
+                document.getElementById("novo-desc").value = "";
+                document.getElementById("novo-img").value = "";
+                listarCarrosAdmin();
+            } else {
+                alert("Erro: " + error.message);
+            }
+        }
+
+        async function marcarVendido(id) {
+            if(confirm("Confirmar venda?")) {
+                await conexaoAdmin.from('carros').update({ vendido: true }).eq('id', id);
+                listarCarrosAdmin();
+            }
+        }
+    </script>
+</body>
+</html>
