@@ -21,7 +21,15 @@
             color: white; padding: 0 20px; margin-top: 60px;
         }
 
-        .search-container { max-width: 600px; margin: -30px auto 40px; background: white; padding: 10px; border-radius: 50px; display: flex; box-shadow: 0 10px 30px rgba(0,0,0,0.1); position: relative; z-index: 10; border: 1px solid #eee; }
+        /* SECÇÃO DE SERVIÇOS */
+        .servicos-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; max-width: 1100px; margin: -50px auto 50px; padding: 0 20px; position: relative; z-index: 20; }
+        .servico-card { background: white; padding: 30px; border-radius: 15px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.05); border: 1px solid #eee; transition: 0.3s; }
+        .servico-card:hover { transform: translateY(-5px); border-color: var(--red); }
+        .servico-card i { font-size: 30px; display: block; margin-bottom: 15px; }
+        .servico-card h4 { margin: 0 0 10px; font-weight: 900; text-transform: uppercase; font-size: 14px; }
+        .servico-card p { margin: 0; font-size: 12px; color: var(--gray); line-height: 1.4; }
+
+        .search-container { max-width: 600px; margin: 0 auto 40px; background: white; padding: 10px; border-radius: 50px; display: flex; box-shadow: 0 10px 30px rgba(0,0,0,0.1); position: relative; z-index: 10; border: 1px solid #eee; }
         .search-container input { border: none; padding: 15px 25px; width: 100%; border-radius: 50px; outline: none; font-size: 16px; }
 
         .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px; padding: 0 20px; max-width: 1200px; margin: 0 auto; }
@@ -29,7 +37,6 @@
         .card:hover { transform: translateY(-5px); border-color: var(--red); }
         .card img { width: 100%; height: 210px; object-fit: cover; }
         .card-body { padding: 20px; }
-
         .selos { display: flex; gap: 8px; margin-top: 10px; }
         .selo { font-size: 10px; background: #f1f3f5; padding: 4px 8px; border-radius: 4px; color: var(--gray); font-weight: bold; text-transform: uppercase; }
 
@@ -73,6 +80,29 @@
     <p>Os melhores usados e serviços mecânicos de confiança.</p>
 </section>
 
+<section class="servicos-grid">
+    <div class="servico-card">
+        <i>🚗</i>
+        <h4>Venda de Usados</h4>
+        <p>Viaturas selecionadas com garantia total JD Auto.</p>
+    </div>
+    <div class="servico-card">
+        <i>🔧</i>
+        <h4>Oficina Própria</h4>
+        <p>Manutenção especializada para o seu veículo.</p>
+    </div>
+    <div class="servico-card">
+        <i>💰</i>
+        <h4>Financiamento</h4>
+        <p>Crédito automóvel com as melhores taxas de mercado.</p>
+    </div>
+    <div class="servico-card">
+        <i>🛡️</i>
+        <h4>Garantia</h4>
+        <p>Apoio pós-venda completo para sua tranquilidade.</p>
+    </div>
+</section>
+
 <div class="search-container">
     <input type="text" id="filtro-texto" placeholder="Pesquise por marca ou modelo..." onkeyup="Portal.filtrar()">
 </div>
@@ -83,11 +113,7 @@
 
 <section class="map-section">
     <h2 style="margin-bottom: 30px; font-weight: 900;">Visite-nos em Estarreja</h2>
-    <iframe 
-        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3023.325514102283!2d-8.571436123447385!3d40.73282213632906!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd239ea66e747eed%3A0x7dc9898d22f72837!2sJD%20Auto%20(Oficina)!5e0!3m2!1spt-PT!2spt!4v1710100000000!5m2!1spt-PT!2spt" 
-        allowfullscreen="" 
-        loading="lazy">
-    </iframe>
+    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3023.771963494799!2d-8.5661642!3d40.7229712!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd239ea66e74feed%3A0x7dc9b68d22f72837!2sJD%20Auto%20(Oficina)!5e0!3m2!1spt-PT!2spt!4v1710100000000!5m2!1spt-PT!2spt" allowfullscreen="" loading="lazy"></iframe>
 </section>
 
 <div id="login-overlay">
@@ -113,7 +139,7 @@
                 <option value="0.8">Razoável</option>
                 <option value="0.6">Mau estado</option>
             </select>
-            <textarea id="venda-notas" placeholder="Detalhes adicionais..." rows="3" style="resize:none;"></textarea>
+            <textarea id="venda-notas" style="resize:none;" placeholder="Detalhes adicionais..." rows="3"></textarea>
             <div id="box-estimativa">
                 <span>Estimativa de Retoma:</span>
                 <b id="valor-estimado">0 €</b>
@@ -133,7 +159,7 @@
                 <option>Revisão Geral</option><option>Travões</option><option>Pneus</option>
             </select>
             <div style="display:flex; gap:10px;"><input type="date" id="srv-data" required><input type="time" id="srv-hora" required></div>
-            <textarea id="srv-notas" placeholder="Notas..." rows="3" style="resize:none;"></textarea>
+            <textarea id="srv-notas" style="resize:none;" placeholder="Notas..." rows="3"></textarea>
             <button type="submit" class="btn-red">MARCAR AGORA</button>
         </form>
     </div>
@@ -249,7 +275,7 @@
 
         enviarVenda: function(e) {
             e.preventDefault();
-            const msg = `*AVALIAÇÃO*%0A🚗 *Viatura:* ${document.getElementById('venda-carro').value}%0A\n*KM:* ${document.getElementById('venda-km').value}%0A💰 *Estimativa:* ${document.getElementById('valor-estimado').innerText}`;
+            const msg = `*AVALIAÇÃO*%0A🚗 *Viatura:* ${document.getElementById('venda-carro').value}%0A🛣 *KM:* ${document.getElementById('venda-km').value}%0A💰 *Estimativa:* ${document.getElementById('valor-estimado').innerText}`;
             window.open(`https://wa.me/351912345678?text=${msg}`, '_blank');
         },
 
