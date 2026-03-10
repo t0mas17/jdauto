@@ -83,7 +83,7 @@
 
 <section class="map-section">
     <h2 style="margin-bottom: 30px; font-weight: 900;">Visite-nos em Estarreja</h2>
-    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3025.4332467008693!2d-8.572115623438466!3d40.708534737704175!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd239ea66e747eed%3A0xd1c9a68d22fb2837!2sJD%20Auto%20(Oficina)!5e0!3m2!1spt-PT!2spt!4v1710086000000!5m2!1spt-PT!2spt" allowfullscreen="" loading="lazy"></iframe>
+    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3023.238466649856!2d-8.572455923422073!3d40.73477193621437!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd239ca66e74fee7%3A0xcdcb998d22f72837!2sJD%20Auto!5e0!3m2!1spt-PT!2spt!4v1710000000000!5m2!1spt-PT!2spt" allowfullscreen="" loading="lazy"></iframe>
 </section>
 
 <div id="login-overlay">
@@ -109,7 +109,7 @@
                 <option value="0.8">Razoável</option>
                 <option value="0.6">Mau estado</option>
             </select>
-            <textarea id="venda-notas" placeholder="Detalhes adicionais..." rows="3"></textarea>
+            <textarea id="venda-notas" placeholder="Detalhes adicionais..." rows="3" style="resize:none;"></textarea>
             <div id="box-estimativa">
                 <span>Estimativa de Retoma:</span>
                 <b id="valor-estimado">0 €</b>
@@ -129,7 +129,7 @@
                 <option>Revisão Geral</option><option>Travões</option><option>Pneus</option>
             </select>
             <div style="display:flex; gap:10px;"><input type="date" id="srv-data" required><input type="time" id="srv-hora" required></div>
-            <textarea id="srv-notas" placeholder="Notas..." rows="3"></textarea>
+            <textarea id="srv-notas" placeholder="Notas..." rows="3" style="resize:none;"></textarea>
             <button type="submit" class="btn-red">MARCAR AGORA</button>
         </form>
     </div>
@@ -245,7 +245,7 @@
 
         enviarVenda: function(e) {
             e.preventDefault();
-            const msg = `*AVALIAÇÃO*%0A🚗 *Viatura:* ${document.getElementById('venda-carro').value}%0A🛣 *KM:* ${document.getElementById('venda-km').value}%0A💰 *Estimativa:* ${document.getElementById('valor-estimado').innerText}`;
+            const msg = `*AVALIAÇÃO*%0A🚗 *Viatura:* ${document.getElementById('venda-carro').value}%0A\n*KM:* ${document.getElementById('venda-km').value}%0A💰 *Estimativa:* ${document.getElementById('valor-estimado').innerText}`;
             window.open(`https://wa.me/351912345678?text=${msg}`, '_blank');
         },
 
