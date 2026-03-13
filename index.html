@@ -58,7 +58,8 @@
         }
         .hero-premium h1 { color: var(--white); font-size: clamp(40px, 8vw, 70px); font-weight: 800; line-height: 1.1; letter-spacing: -2px; margin-bottom: 20px; }
         .hero-premium h1 span { color: var(--red); }
-        .hero-premium p { color: var(--grey); font-size: 18px; max-width: 600px; margin-bottom: 40px; font-weight: 400; line-height: 1.6; }
+        /* ALTERAÇÃO AQUI: font-size de 18px para 15px */
+        .hero-premium p { color: var(--grey); font-size: 15px; max-width: 600px; margin-bottom: 40px; font-weight: 400; line-height: 1.6; }
         
         .btn-main { background: var(--red); color: var(--white); padding: 18px 40px; border-radius: 100px; border: none; font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; transition: 0.3s; box-shadow: 0 10px 25px rgba(217, 4, 41, 0.3); font-family: inherit; }
         .btn-main:hover { background: var(--red-dark); transform: translateY(-3px); box-shadow: 0 15px 35px rgba(217, 4, 41, 0.4); }
@@ -238,7 +239,7 @@
             <a onclick="showPage('financiamento')">Financiamento</a>
             <a onclick="showPage('seguros')">Seguros</a>
             <a onclick="showPage('sobre')">Sobre Nós</a>
-            <button class="btn-login" onclick="Drawer.open('login')">Área Gestão</button>
+            <button class="btn-login" onclick="Drawer.open('login')">Acesso Gestão</button>
         </nav>
     </header>
 
@@ -294,7 +295,7 @@
         <section id="page-financiamento" class="page-content-lux">
             <h2 class="section-title-big">Financiamento Automóvel</h2>
             <div class="text-block-lux" style="max-width: 100%;">
-                <p style="font-size: 20px; margin-bottom: 40px; color: var(--black);">Não adie o seu sonho. Na JD Auto, tornamos a compra do seu novo veículo simples, rápida e 100% transparente. Tratamos de toda a burocracia por si, para que só tenha de se preocupar em conduzir.</p>
+                <p style="font-size: 20px; margin-bottom: 40px; color: var(--black);">Tornamos a compra do seu novo veículo simples, rápida e 100% transparente. Tratamos de toda a burocracia por si.</p>
                 
                 <div class="brand-pillars" style="margin: 0 0 50px 0; padding: 0; max-width: 100%;">
                     <div class="pillar" style="background: var(--white); padding: 30px; border-radius: 20px; border: 1px solid #eee; box-shadow: 0 10px 30px rgba(0,0,0,0.02);">
@@ -316,40 +317,34 @@
 
                 <div style="background: var(--white); padding: 40px; border-radius: 20px; border: 1px solid #eee; margin-bottom: 50px; box-shadow: 0 10px 30px rgba(0,0,0,0.02);">
                     <h3 style="font-size: 24px; font-weight: 800; margin-bottom: 10px; color: var(--black);">O que precisa para avançar?</h3>
-                    <p style="color: var(--grey); margin-bottom: 30px;">Para garantirmos a aprovação mais rápida possível, reúna a seguinte documentação antes do pedido:</p>
+                    <p style="color: var(--grey); margin-bottom: 30px;">Para garantirmos uma aprovação rápida, reúna os seguintes documentos:</p>
                     
                     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px;">
                         <div style="display:flex; align-items:center; gap:15px; font-weight:700; color: var(--black); background: var(--light); padding: 15px 20px; border-radius: 12px;">
-                            <span style="color:var(--white); background: var(--red); width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px;">✓</span> 
-                            Cartão de Cidadão
+                            <span style="color:var(--white); background: var(--red); width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px;">✓</span> Cartão de Cidadão
                         </div>
                         <div style="display:flex; align-items:center; gap:15px; font-weight:700; color: var(--black); background: var(--light); padding: 15px 20px; border-radius: 12px;">
-                            <span style="color:var(--white); background: var(--red); width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px;">✓</span> 
-                            3 Últimos Recibos Vencimento
+                            <span style="color:var(--white); background: var(--red); width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px;">✓</span> 3 Últimos Recibos Vencimento
                         </div>
                         <div style="display:flex; align-items:center; gap:15px; font-weight:700; color: var(--black); background: var(--light); padding: 15px 20px; border-radius: 12px;">
-                            <span style="color:var(--white); background: var(--red); width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px;">✓</span> 
-                            Comprovativo de IBAN
+                            <span style="color:var(--white); background: var(--red); width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px;">✓</span> Comprovativo de IBAN
                         </div>
                         <div style="display:flex; align-items:center; gap:15px; font-weight:700; color: var(--black); background: var(--light); padding: 15px 20px; border-radius: 12px;">
-                            <span style="color:var(--white); background: var(--red); width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px;">✓</span> 
-                            Comprovativo de Morada
+                            <span style="color:var(--white); background: var(--red); width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px;">✓</span> Comprovativo de Morada
                         </div>
                         <div style="display:flex; align-items:center; gap:15px; font-weight:700; color: var(--black); background: var(--light); padding: 15px 20px; border-radius: 12px;">
-                            <span style="color:var(--white); background: var(--red); width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px;">✓</span> 
-                            Última Declaração IRS
+                            <span style="color:var(--white); background: var(--red); width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px;">✓</span> Última Declaração IRS
                         </div>
                         <div style="display:flex; align-items:center; gap:15px; font-weight:700; color: var(--black); background: var(--light); padding: 15px 20px; border-radius: 12px;">
-                            <span style="color:var(--white); background: var(--red); width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px;">✓</span> 
-                            Contactos (Tel e Email)
+                            <span style="color:var(--white); background: var(--red); width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px;">✓</span> Contactos (Tel e Email)
                         </div>
                     </div>
                 </div>
 
                 <div style="text-align: center; background: var(--black); border-radius: 24px; padding: 50px 20px; color: var(--white);">
                     <h3 style="font-size: 32px; font-weight: 800; margin-bottom: 15px;">Pronto para dar o próximo passo?</h3>
-                    <p style="color: var(--grey); margin-bottom: 30px; font-size: 18px;">Fale com a nossa equipa e receba uma simulação gratuita e sem compromisso.</p>
-                    <button class="btn-main" style="width: auto; padding: 20px 40px; font-size: 16px; border-radius: 100px; box-shadow: 0 10px 25px rgba(217,4,41,0.3);" onclick="window.open('https://wa.me/351912345678?text=Olá JD Auto! Gostaria de fazer uma simulação de financiamento gratuita e sem compromisso.')">Fazer Simulação Gratuita pelo WhatsApp</button>
+                    <p style="color: var(--grey); margin-bottom: 30px; font-size: 18px;">Fale com a nossa equipa e receba uma simulação sem compromisso.</p>
+                    <button class="btn-main" style="width: auto; padding: 20px 40px; font-size: 16px; border-radius: 100px; box-shadow: 0 10px 25px rgba(217,4,41,0.3);" onclick="window.open('https://wa.me/351912345678?text=Olá JD Auto! Gostaria de fazer uma simulação de financiamento gratuita e sem compromisso.')">Fazer Simulação pelo WhatsApp</button>
                 </div>
             </div>
         </section>
@@ -357,54 +352,42 @@
         <section id="page-seguros" class="page-content-lux">
             <h2 class="section-title-big">Seguros Automóvel</h2>
             <div class="text-block-lux" style="max-width: 100%;">
-                <p style="font-size: 20px; margin-bottom: 40px; color: var(--black);">Proteja o seu novo investimento desde o primeiro quilómetro. Trabalhamos em parceria com as melhores seguradoras do mercado para lhe oferecer a proteção ideal ao melhor preço.</p>
+                <p style="font-size: 20px; margin-bottom: 40px; color: var(--black);">Proteja o seu investimento desde o primeiro dia. Trabalhamos com as melhores seguradoras para garantir a sua proteção ao melhor preço.</p>
                 
                 <div class="brand-pillars" style="margin: 0 0 50px 0; padding: 0; max-width: 100%;">
                     <div class="pillar" style="background: var(--white); padding: 30px; border-radius: 20px; border: 1px solid #eee; box-shadow: 0 10px 30px rgba(0,0,0,0.02);">
                         <div class="pillar-icon">🛡️</div>
                         <h4>Múltiplas Opções</h4>
-                        <p>Comparamos propostas em várias seguradoras para garantir que obtém o prémio mais baixo e a melhor cobertura.</p>
+                        <p>Comparamos propostas para garantir que obtém o prémio mais baixo e a melhor cobertura.</p>
                     </div>
                     <div class="pillar" style="background: var(--white); padding: 30px; border-radius: 20px; border: 1px solid #eee; box-shadow: 0 10px 30px rgba(0,0,0,0.02);">
                         <div class="pillar-icon">🤝</div>
-                        <h4>Apoio Personalizado</h4>
-                        <p>Ajudamos a escolher entre Seguro Contra Terceiros ou Danos Próprios (Contra Todos), consoante o seu perfil e as suas necessidades.</p>
+                        <h4>Cobertura à Medida</h4>
+                        <p>Avaliamos o seu perfil e ajudamos a escolher a cobertura ideal, sem letras pequeninas ou complicações.</p>
                     </div>
                     <div class="pillar" style="background: var(--white); padding: 30px; border-radius: 20px; border: 1px solid #eee; box-shadow: 0 10px 30px rgba(0,0,0,0.02);">
                         <div class="pillar-icon">⚡</div>
                         <h4>Saia a Conduzir</h4>
-                        <p>Tratamos de toda a burocracia na hora. Compre o seu carro e saia do nosso stand com o seguro ativo e totalmente válido.</p>
+                        <p>Tratamos de toda a burocracia na hora para que saia do nosso stand com o seguro ativo e válido.</p>
                     </div>
                 </div>
 
                 <div style="background: var(--white); padding: 40px; border-radius: 20px; border: 1px solid #eee; margin-bottom: 50px; box-shadow: 0 10px 30px rgba(0,0,0,0.02);">
                     <h3 style="font-size: 24px; font-weight: 800; margin-bottom: 10px; color: var(--black);">Documentação para a Simulação</h3>
-                    <p style="color: var(--grey); margin-bottom: 30px;">Para efetuarmos uma simulação exata e aplicarmos os seus bónus, apenas precisamos da seguinte documentação:</p>
+                    <p style="color: var(--grey); margin-bottom: 30px;">Apenas precisamos da seguinte documentação para lhe dar o valor exato:</p>
                     
                     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px;">
-                        <div style="display:flex; align-items:center; gap:15px; font-weight:700; color: var(--black); background: var(--light); padding: 15px 20px; border-radius: 12px;">
-                            <span style="color:var(--white); background: var(--red); width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px;">✓</span> 
-                            Cartão de Cidadão
-                        </div>
-                        <div style="display:flex; align-items:center; gap:15px; font-weight:700; color: var(--black); background: var(--light); padding: 15px 20px; border-radius: 12px;">
-                            <span style="color:var(--white); background: var(--red); width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px;">✓</span> 
-                            Carta de Condução
-                        </div>
-                        <div style="display:flex; align-items:center; gap:15px; font-weight:700; color: var(--black); background: var(--light); padding: 15px 20px; border-radius: 12px;">
-                            <span style="color:var(--white); background: var(--red); width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px;">✓</span> 
-                            Histórico de Seguro (Opcional)
-                        </div>
-                        <div style="display:flex; align-items:center; gap:15px; font-weight:700; color: var(--black); background: var(--light); padding: 15px 20px; border-radius: 12px;">
-                            <span style="color:var(--white); background: var(--red); width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px;">✓</span> 
-                            Matrícula da Viatura a Segurar
-                        </div>
+                        <div style="display:flex; align-items:center; gap:15px; font-weight:700; color: var(--black); background: var(--light); padding: 15px 20px; border-radius: 12px;"><span style="color:var(--white); background: var(--red); width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px;">✓</span> Cartão de Cidadão</div>
+                        <div style="display:flex; align-items:center; gap:15px; font-weight:700; color: var(--black); background: var(--light); padding: 15px 20px; border-radius: 12px;"><span style="color:var(--white); background: var(--red); width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px;">✓</span> Carta de Condução</div>
+                        <div style="display:flex; align-items:center; gap:15px; font-weight:700; color: var(--black); background: var(--light); padding: 15px 20px; border-radius: 12px;"><span style="color:var(--white); background: var(--red); width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px;">✓</span> Histórico de Seguro (Opcional)</div>
+                        <div style="display:flex; align-items:center; gap:15px; font-weight:700; color: var(--black); background: var(--light); padding: 15px 20px; border-radius: 12px;"><span style="color:var(--white); background: var(--red); width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px;">✓</span> Matrícula da Viatura</div>
                     </div>
                 </div>
 
                 <div style="text-align: center; background: var(--black); border-radius: 24px; padding: 50px 20px; color: var(--white);">
                     <h3 style="font-size: 32px; font-weight: 800; margin-bottom: 15px;">Quer saber quanto fica o seu seguro?</h3>
                     <p style="color: var(--grey); margin-bottom: 30px; font-size: 18px;">Fale connosco e receba as melhores propostas para proteger a sua viatura.</p>
-                    <button class="btn-main" style="width: auto; padding: 20px 40px; font-size: 16px; border-radius: 100px; box-shadow: 0 10px 25px rgba(217,4,41,0.3);" onclick="window.open('https://wa.me/351912345678?text=Olá JD Auto! Gostaria de pedir uma simulação para o meu seguro automóvel.')">Pedir Cotação de Seguro no WhatsApp</button>
+                    <button class="btn-main" style="width: auto; padding: 20px 40px; font-size: 16px; border-radius: 100px; box-shadow: 0 10px 25px rgba(217,4,41,0.3);" onclick="window.open('https://wa.me/351912345678?text=Olá JD Auto! Gostaria de pedir uma simulação para o meu seguro automóvel.')">Pedir Cotação no WhatsApp</button>
                 </div>
             </div>
         </section>
@@ -412,16 +395,16 @@
         <section id="page-sobre" class="page-content-lux">
             <h2 class="section-title-big">A Nossa História</h2>
             <div class="text-block-lux" style="max-width: 100%;">
-                <p style="font-size: 20px; margin-bottom: 40px; color: var(--black);">Movidos pela paixão automóvel e guiados pela máxima transparência. A JD Auto não é apenas um stand, é o seu parceiro de confiança em Estarreja para todas as suas necessidades automóveis.</p>
+                <p style="font-size: 20px; margin-bottom: 40px; color: var(--black);">Somos apaixonados pelo mundo automóvel. Criámos a JD Auto com um único foco: ser o seu parceiro de confiança em Estarreja.</p>
                 
                 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 40px; margin-bottom: 50px;">
                     <div style="background: var(--light); padding: 30px; border-radius: 20px;">
                         <h3 style="font-size: 22px; font-weight: 800; margin-bottom: 15px; color: var(--black);">A Nossa Missão</h3>
-                        <p style="color: var(--grey); line-height: 1.8;">Mudar a forma como compra e cuida do seu carro. Acreditamos que a aquisição de um automóvel deve ser um momento de entusiasmo e sem preocupações. Por isso, selecionamos cada viatura com o máximo rigor, garantindo que leva para casa qualidade e segurança.</p>
+                        <p style="color: var(--grey); line-height: 1.8;">Acreditamos que comprar carro deve ser um momento de alegria e sem dores de cabeça. Por isso, selecionamos e testamos cada viatura com o máximo rigor antes de a entregar.</p>
                     </div>
                     <div style="background: var(--light); padding: 30px; border-radius: 20px;">
                         <h3 style="font-size: 22px; font-weight: 800; margin-bottom: 15px; color: var(--black);">O Nosso Compromisso</h3>
-                        <p style="color: var(--grey); line-height: 1.8;">A transparência é a nossa assinatura. Desde o histórico da viatura até às condições de financiamento, explicamos cada detalhe com clareza. Não queremos fazer apenas uma venda, queremos construir uma relação duradoura consigo e com o seu veículo.</p>
+                        <p style="color: var(--grey); line-height: 1.8;">Trabalhamos com total transparência. Explicamos cada detalhe com clareza, desde o histórico ao financiamento, para construir consigo uma relação de confiança para a vida.</p>
                     </div>
                 </div>
 
@@ -431,17 +414,17 @@
                     <div class="pillar" style="background: var(--white); padding: 30px; border-radius: 20px; border: 1px solid #eee; box-shadow: 0 10px 30px rgba(0,0,0,0.02);">
                         <div class="pillar-icon">🔍</div>
                         <h4>Rigor na Seleção</h4>
-                        <p>Apenas comercializamos viaturas com histórico comprovado e que passem nos nossos exigentes testes de qualidade.</p>
+                        <p>Apenas comercializamos viaturas com histórico comprovado e inspeção exigente.</p>
                     </div>
                     <div class="pillar" style="background: var(--white); padding: 30px; border-radius: 20px; border: 1px solid #eee; box-shadow: 0 10px 30px rgba(0,0,0,0.02);">
                         <div class="pillar-icon">🔧</div>
                         <h4>Oficina Própria</h4>
-                        <p>O nosso serviço não termina na venda. Temos uma equipa técnica especializada pronta para cuidar da manutenção do seu carro.</p>
+                        <p>Temos uma equipa técnica especializada pronta para cuidar da manutenção do seu carro.</p>
                     </div>
                     <div class="pillar" style="background: var(--white); padding: 30px; border-radius: 20px; border: 1px solid #eee; box-shadow: 0 10px 30px rgba(0,0,0,0.02);">
                         <div class="pillar-icon">🤝</div>
                         <h4>Acompanhamento</h4>
-                        <p>Terá um consultor dedicado para o ajudar desde a escolha do modelo até à aprovação do crédito e emissão do seguro.</p>
+                        <p>Acompanhamo-lo desde a escolha do modelo até à aprovação do crédito e seguro.</p>
                     </div>
                 </div>
 
@@ -456,43 +439,35 @@
         <section id="page-garantia" class="page-content-lux">
             <h2 class="section-title-big">Garantia JD Auto</h2>
             <div class="text-block-lux" style="max-width: 100%;">
-                <p style="font-size: 20px; margin-bottom: 40px; color: var(--black);">Conduza com total paz de espírito. Na JD Auto, a qualidade não é apenas uma promessa, é um compromisso. Todas as nossas viaturas são rigorosamente inspecionadas antes da entrega e contam com uma cobertura sólida e transparente.</p>
+                <p style="font-size: 20px; margin-bottom: 40px; color: var(--black);">Conduza com total paz de espírito. As nossas viaturas são inspecionadas rigorosamente e contam com uma cobertura sólida.</p>
                 
                 <div class="brand-pillars" style="margin: 0 0 50px 0; padding: 0; max-width: 100%;">
                     <div class="pillar" style="background: var(--white); padding: 30px; border-radius: 20px; border: 1px solid #eee; box-shadow: 0 10px 30px rgba(0,0,0,0.02);">
                         <div class="pillar-icon">🛡️</div>
                         <h4>18 Meses de Cobertura</h4>
-                        <p>Garantia por mútuo acordo com cobertura prolongada para que faça a sua compra sem qualquer preocupação.</p>
+                        <p>Garantia por mútuo acordo com cobertura prolongada para que compre sem preocupações.</p>
                     </div>
                     <div class="pillar" style="background: var(--white); padding: 30px; border-radius: 20px; border: 1px solid #eee; box-shadow: 0 10px 30px rgba(0,0,0,0.02);">
                         <div class="pillar-icon">⚙️</div>
                         <h4>Motor & Caixa</h4>
-                        <p>Proteção dos componentes mais vitais do seu automóvel, incluindo motor, caixa de velocidades e eletrónica principal.</p>
+                        <p>Proteção dos componentes vitais do seu automóvel: motor, caixa e eletrónica.</p>
                     </div>
                     <div class="pillar" style="background: var(--white); padding: 30px; border-radius: 20px; border: 1px solid #eee; box-shadow: 0 10px 30px rgba(0,0,0,0.02);">
                         <div class="pillar-icon">🛠️</div>
                         <h4>Assistência Rápida</h4>
-                        <p>Em caso de imprevisto, o nosso serviço pós-venda e oficina própria garantem um diagnóstico e resolução eficazes.</p>
+                        <p>A nossa oficina própria garante um diagnóstico e resolução rápida em caso de imprevisto.</p>
                     </div>
                 </div>
 
                 <div style="background: var(--white); padding: 40px; border-radius: 20px; border: 1px solid #eee; margin-bottom: 50px; box-shadow: 0 10px 30px rgba(0,0,0,0.02);">
                     <h3 style="font-size: 24px; font-weight: 800; margin-bottom: 10px; color: var(--black);">Compromisso de Entrega</h3>
-                    <p style="color: var(--grey); margin-bottom: 30px;">Antes de chegar às suas mãos, cada viatura JD Auto passa por um processo rigoroso de preparação:</p>
+                    <p style="color: var(--grey); margin-bottom: 30px;">Antes de chegar às suas mãos, cada viatura passa por:</p>
                     
                     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px;">
-                        <div style="display:flex; align-items:center; gap:15px; font-weight:700; color: var(--black); background: var(--light); padding: 15px 20px; border-radius: 12px;">
-                            <span style="color:var(--white); background: var(--red); width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px;">✓</span> Revisão Mecânica Completa
-                        </div>
-                        <div style="display:flex; align-items:center; gap:15px; font-weight:700; color: var(--black); background: var(--light); padding: 15px 20px; border-radius: 12px;">
-                            <span style="color:var(--white); background: var(--red); width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px;">✓</span> Check-up de 50 Pontos Vitais
-                        </div>
-                        <div style="display:flex; align-items:center; gap:15px; font-weight:700; color: var(--black); background: var(--light); padding: 15px 20px; border-radius: 12px;">
-                            <span style="color:var(--white); background: var(--red); width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px;">✓</span> Limpeza e Higienização Profunda
-                        </div>
-                        <div style="display:flex; align-items:center; gap:15px; font-weight:700; color: var(--black); background: var(--light); padding: 15px 20px; border-radius: 12px;">
-                            <span style="color:var(--white); background: var(--red); width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px;">✓</span> Tratamento de Pintura
-                        </div>
+                        <div style="display:flex; align-items:center; gap:15px; font-weight:700; color: var(--black); background: var(--light); padding: 15px 20px; border-radius: 12px;"><span style="color:var(--white); background: var(--red); width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px;">✓</span> Revisão Mecânica Completa</div>
+                        <div style="display:flex; align-items:center; gap:15px; font-weight:700; color: var(--black); background: var(--light); padding: 15px 20px; border-radius: 12px;"><span style="color:var(--white); background: var(--red); width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px;">✓</span> Check-up de 50 Pontos Vitais</div>
+                        <div style="display:flex; align-items:center; gap:15px; font-weight:700; color: var(--black); background: var(--light); padding: 15px 20px; border-radius: 12px;"><span style="color:var(--white); background: var(--red); width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px;">✓</span> Limpeza e Higienização Profunda</div>
+                        <div style="display:flex; align-items:center; gap:15px; font-weight:700; color: var(--black); background: var(--light); padding: 15px 20px; border-radius: 12px;"><span style="color:var(--white); background: var(--red); width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px;">✓</span> Tratamento de Pintura</div>
                     </div>
                 </div>
 
@@ -653,7 +628,7 @@
 <div id="app-admin">
     <div class="admin-wrapper">
         <aside class="admin-sidebar">
-            <div class="logo">JD<span>AUTO</span></div>
+            <div class="logo" style="color:white;">JD<span style="color:var(--red);">AUTO</span></div>
             <ul class="admin-menu">
                 <li class="active">Gestão de Stock</li>
                 <li onclick="location.reload()" style="color:#ff4d4d; margin-top:50px;">Sair / Terminar Sessão</li>
@@ -711,8 +686,8 @@
     }
 
     function toggleTalk() {
-        const opt = document.getElementById('talkOptions');
-        opt.style.display = (opt.style.display === 'flex') ? 'none' : 'flex';
+        const opt = document.getElementById('floatingWidget');
+        opt.classList.toggle('open');
     }
 
     const Drawer = {
@@ -938,4 +913,3 @@
 </script>
 </body>
 </html>
-
