@@ -58,8 +58,7 @@
         }
         .hero-premium h1 { color: var(--white); font-size: clamp(40px, 8vw, 70px); font-weight: 800; line-height: 1.1; letter-spacing: -2px; margin-bottom: 20px; }
         .hero-premium h1 span { color: var(--red); }
-        /* ALTERAÇÃO AQUI: font-size de 18px para 15px */
-        .hero-premium p { color: var(--grey); font-size: 15px; max-width: 600px; margin-bottom: 40px; font-weight: 400; line-height: 1.6; }
+        .hero-premium p { color: var(--grey); font-size: 12px; max-width: 600px; margin-bottom: 40px; font-weight: 400; line-height: 1.6; }
         
         .btn-main { background: var(--red); color: var(--white); padding: 18px 40px; border-radius: 100px; border: none; font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; transition: 0.3s; box-shadow: 0 10px 25px rgba(217, 4, 41, 0.3); font-family: inherit; }
         .btn-main:hover { background: var(--red-dark); transform: translateY(-3px); box-shadow: 0 15px 35px rgba(217, 4, 41, 0.4); }
@@ -239,22 +238,21 @@
             <a onclick="showPage('financiamento')">Financiamento</a>
             <a onclick="showPage('seguros')">Seguros</a>
             <a onclick="showPage('sobre')">Sobre Nós</a>
-            <button class="btn-login" onclick="Drawer.open('login')">Acesso Gestão</button>
-        </nav>
+            </nav>
     </header>
 
     <main>
         <section id="page-home" class="page-content-lux active" style="padding:0; max-width:100%;">
             <section class="hero-premium">
                 <h1>Excelência <br>em cada <span>Detalhe.</span></h1>
-                <p>O seu parceiro de confiança no comércio automóvel e manutenção mecânica premium em Estarreja.</p>
+                <p>Onde a performance encontra a transparência. Comércio e manutenção de viaturas de alta gama em Estarreja.</p>
             </section>
 
             <section class="brand-pillars">
                 <div class="pillar">
                     <div class="pillar-icon">🛡️</div>
                     <h4>Stock Premium</h4>
-                    <p>Viaturas rigorosamente selecionadas, com histórico limpo e garantia de excelência.</p>
+                    <p>Curadoria Exclusiva </p>
                 </div>
                 <div class="pillar">
                     <div class="pillar-icon">⚙️</div>
@@ -277,7 +275,7 @@
                 <div class="section-header">
                     <div>
                         <h2>O Nosso <span>Stock</span></h2>
-                        <p style="color:var(--grey); margin-top:5px; font-size:16px;">Veículos verificados, prontos a entregar.</p>
+                        <p style="color:var(--grey); margin-top:5px; font-size:16px;">A sua próxima conquista está aqui. Viaturas com histórico comprovado e certificação JD Auto.</p>
                     </div>
                     <input type="text" id="filtro-texto" class="search-input" placeholder="Procure por marca, modelo..." onkeyup="Portal.filtrar()">
                 </div>
@@ -492,7 +490,8 @@
                     <li><a onclick="showPage('home')">Showroom Digital</a></li>
                     <li><a onclick="Drawer.open('venda')">Avaliação de Retoma</a></li>
                     <li><a onclick="Drawer.open('oficina')">Agendamento Oficina</a></li>
-                    <li><a onclick="Drawer.open('login')">Acesso a Colaboradores</a></li>
+                    <li><a onclick="Drawer.open('login')" style="cursor:pointer; opacity: 0.7; font-size: 11px; letter-spacing: 1px;">ACESSO RESTRITO</a></li>
+                    
                 </ul>
             </div>
             <div class="footer-col">
@@ -686,8 +685,8 @@
     }
 
     function toggleTalk() {
-        const opt = document.getElementById('floatingWidget');
-        opt.classList.toggle('open');
+        const opt = document.getElementById('talkOptions');
+        opt.style.display = opt.style.display === 'flex' ? 'none' : 'flex';
     }
 
     const Drawer = {
