@@ -3,673 +3,867 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JD Auto | Excelência e Confiança Automóvel</title>
+    <title>JD Auto | Viaturas Premium</title>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --primary:#D90429;
-            --primary-hover: #b00321;
-            --bg-body: #F8FAFC;
-            --bg-card: #FFFFFF;
-            --text-main: #0F172A;
-            --text-muted: #64748B;
-            --border: #E2E8F0;
-            --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-            --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.08);
-            --radius: 12px;
+        /* === VARIÁVEIS DE ALTA GAMA === */
+        :root { 
+            --red: #E63946; --red-dark: #C1121F;
+            --black: #111827; --text-main: #374151; --text-muted: #6B7280;
+            --bg-page: #F3F4F6; --bg-card: #FFFFFF;
+            --border: #E5E7EB;
+            --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 10px 25px rgba(0, 0, 0, 0.08);
+            --shadow-lg: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
         }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
+        body { background-color: var(--bg-page); color: var(--text-main); overflow-x: hidden; scroll-behavior: smooth; }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
-        body { background-color: var(--bg-body); color: var(--text-main); line-height: 1.6; overflow-x: hidden; scroll-behavior: smooth; }
+        /* === SISTEMA DE NOTIFICAÇÕES === */
+        #toast-box { position: fixed; bottom: 100px; left: 50%; transform: translateX(-50%); z-index: 10000; display: flex; flex-direction: column; gap: 10px; }
+        .toast { background: var(--black); color: white; padding: 16px 32px; border-radius: 8px; font-size: 14px; font-weight: 600; box-shadow: var(--shadow-lg); animation: slideUp 0.4s ease forwards; display: flex; align-items: center; gap: 10px; }
 
-        
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes zoomIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
-        @keyframes heroPan { 0% { transform: scale(1); } 100% { transform: scale(1.1); } }
-        @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
-        .reveal { opacity: 0; transform: translateY(40px); transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
-        .reveal.active { opacity: 1; transform: translateY(0); }
+        /* === HEADER === */
+        header { position: fixed; top: 0; width: 100%; height: 75px; z-index: 1000; padding: 0 5%; display: flex; justify-content: space-between; align-items: center; background: rgba(255, 255, 255, 0.98); backdrop-filter: blur(10px); box-shadow: var(--shadow-sm); border-bottom: 1px solid var(--border); transition: 0.3s; }
+        .logo { font-size: 24px; font-weight: 800; color: var(--black); text-transform: uppercase; cursor: pointer; letter-spacing: -1px; display: flex;}
+        .logo span { color: var(--red); }
+        nav { display: flex; gap: 32px; height: 100%; align-items: center; }
+        nav > a { color: var(--text-main); text-decoration: none; font-weight: 600; font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px; height: 100%; display: flex; align-items: center; cursor: pointer; border-bottom: 3px solid transparent; transition: 0.2s; }
+        nav > a:hover, nav > a.active { color: var(--red); border-bottom-color: var(--red); }
 
-        header {
-            position: fixed; top: 0; width: 100%; z-index: 2000;
-            background: rgba(255, 255, 255, 0.98); backdrop-filter: blur(10px);
-            border-bottom: 1px solid var(--border); padding: 15px 5%;
-            display: flex; justify-content: space-between; align-items: center;
-            box-shadow: var(--shadow-sm);
-        }
-        .logo { font-size: 24px; font-weight: 900; color: var(--text-main); cursor: pointer; letter-spacing: -1px; text-transform: uppercase; }
-        .logo span { color: var(--primary); }
-        
-        nav { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
-        
-        .nav-link { 
-            color: var(--text-muted); text-decoration: none; font-size: 13px; font-weight: 700; 
-            padding: 10px 18px; border-radius: 6px; transition: 0.2s; cursor: pointer; 
-            text-transform: uppercase; letter-spacing: 0.5px; border: none; background: transparent;
-        }
-        .nav-link:hover { color: var(--text-main); }
-        .nav-link.active { color: var(--text-main); background: #F1F5F9; }
-        
-        .dropdown { position: relative; display: inline-block; }
-        .dropdown-content {
-            visibility: hidden; opacity: 0; position: absolute; top: calc(100% + 5px); left: 0;
-            background-color: #ffffff; min-width: 240px; box-shadow: 0 10px 30px rgba(0,0,0,0.08);
-            border-radius: 8px; border: 1px solid var(--border); z-index: 2001;
-            transform: translateY(10px); transition: all 0.3s ease; display: flex; flex-direction: column; padding: 8px 0;
-        }
-        .dropdown:hover .dropdown-content { visibility: visible; opacity: 1; transform: translateY(0); }
-        .dropdown-content a { 
-            color: var(--text-main); padding: 12px 24px; text-decoration: none; font-size: 15px; 
-            font-weight: 600; transition: 0.2s; border-bottom: 1px solid #f8fafc;
-        }
-        .dropdown-content a:last-child { border-bottom: none; }
-        .dropdown-content a:hover { background-color: #F8FAFC; color: var(--primary); padding-left: 28px; }
-        
-        .btn-admin { 
-            border: 1px solid #CBD5E1; color: var(--text-main); padding: 10px 18px; 
-            border-radius: 6px; font-size: 13px; font-weight: 700; cursor: pointer; 
-            transition: 0.2s; margin-left: 15px; background: transparent; 
-            text-transform: uppercase; letter-spacing: 0.5px;
-        }
-        .btn-admin:hover { background: #F8FAFC; border-color: var(--text-muted); }
+        .dropdown { position: relative; height: 100%; display: flex; align-items: center; cursor: pointer; }
+        .dropdown > a { color: var(--text-main); font-weight: 600; font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px; transition: 0.3s; height: 100%; display: flex; align-items: center; border-bottom: 3px solid transparent; }
+        .dropdown:hover > a { color: var(--red); border-bottom-color: var(--red); }
+        .dropdown-content { display: none; position: absolute; top: 100%; left: 0; background: var(--bg-card); min-width: 240px; border-radius: 0 0 8px 8px; box-shadow: var(--shadow-md); border: 1px solid var(--border); border-top: none; overflow: hidden; z-index: 1001; }
+        .dropdown:hover .dropdown-content { display: flex; flex-direction: column; }
+        .dropdown-content a { padding: 16px 20px; color: var(--text-main); font-size: 14px; font-weight: 500; text-decoration: none; transition: 0.2s; border-bottom: 1px solid var(--bg-page); }
+        .dropdown-content a:hover { background: var(--bg-page); color: var(--red); padding-left: 25px; }
 
-        .floating-contact { position: fixed; bottom: 30px; right: 30px; z-index: 9999; }
-        .contact-box { position: absolute; bottom: 75px; right: 0; background: #ffffff; border: 1px solid var(--border); border-radius: var(--radius); box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25); width: 300px; opacity: 0; visibility: hidden; transform: translateY(20px) scale(0.95); transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); transform-origin: bottom right; pointer-events: none; }
-        .contact-box::after { content: ''; position: absolute; bottom: -20px; right: 0; width: 60px; height: 20px; }
-        .floating-contact:hover .contact-box { opacity: 1; visibility: visible; transform: translateY(0) scale(1); pointer-events: auto; }
-        .contact-header { padding: 15px 20px; font-size: 11px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; background: #f8fafc; border-bottom: 1px solid var(--border); border-radius: 12px 12px 0 0; }
-        .contact-item { display: flex; align-items: center; gap: 15px; padding: 15px 20px; text-decoration: none; color: var(--text-main); border-bottom: 1px solid #f1f5f9; transition: 0.2s; }
-        .contact-item:last-child { border-bottom: none; }
-        .contact-item:hover { background: #fef2f2; padding-left: 25px; }
-        .contact-item .icon { font-size: 24px; }
-        .contact-item div { display: flex; flex-direction: column; }
-        .contact-item div strong { font-size: 14px; font-weight: 700; color: var(--text-main); }
-        .contact-item div span { font-size: 12px; color: var(--text-muted); }
-        .contact-btn-trigger { width: 65px; height: 65px; border-radius: 50%; background: var(--primary); color: white; display: flex; align-items: center; justify-content: center; font-size: 28px; border: none; cursor: pointer; box-shadow: 0 10px 25px rgba(217, 4, 41, 0.4); transition: 0.3s; position: relative; z-index: 2; }
-        .floating-contact:hover .contact-btn-trigger { transform: scale(1.05); }
+        /* === BARRA DE CONTACTO DINÂMICA === */
+        .contact-widget-container { position: fixed; bottom: 30px; right: 30px; z-index: 9999; display: flex; align-items: center; gap: 15px; }
+        .contact-info-bar { display: flex; align-items: center; gap: 20px; background: var(--bg-card); padding: 15px 25px; border-radius: 50px; box-shadow: var(--shadow-md); border: 1px solid var(--border); opacity: 0; visibility: hidden; transform: translateX(20px); transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
+        .contact-info-bar.show { opacity: 1; visibility: visible; transform: translateX(0); }
+        .contact-info-bar span { font-size: 14px; font-weight: 700; color: var(--black); display: flex; align-items: center; gap: 8px; }
+        .contact-toggle-btn { background: var(--black); color: white; border: none; padding: 15px 25px; border-radius: 50px; font-weight: 800; font-size: 14px; cursor: pointer; box-shadow: var(--shadow-md); transition: 0.3s; display: flex; align-items: center; gap: 10px; }
+        .contact-toggle-btn:hover { background: var(--red); transform: translateY(-2px); }
 
-        .page { display: none; padding-top: 80px; min-height: 100vh; animation: fadeIn 0.5s ease; }
+        /* === ESTRUTURA DE PÁGINAS === */
+        .page { display: none; min-height: 80vh; animation: fadeIn 0.4s ease; padding-top: 75px; }
         .page.active { display: block; }
-        .container { max-width: 1300px; margin: 0 auto; padding: 40px 5%; }
+        .container { max-width: 1400px; margin: 0 auto; padding: 40px 5% 80px; }
 
-        .hero-wrapper { position: relative; height: 85vh; min-height: 600px; overflow: hidden; display: flex; align-items: center; justify-content: center; background-color: #0F172A; margin-top: -80px; }
-        .hero-bg-img { position: absolute; inset: 0; width: 100%; height: 100%; background-image: url('https://images.unsplash.com/photo-1563720225384-9d0d6621f242?q=80&w=2000&auto=format&fit=crop'); background-size: cover; background-position: center; animation: heroPan 30s linear infinite alternate; }
-        .hero-overlay { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(15, 23, 42, 0.3) 0%, rgba(15, 23, 42, 0.9) 100%); }
-        .hero-watermark { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 20vw; font-weight: 900; color: rgba(255, 255, 255, 0.03); white-space: nowrap; pointer-events: none; z-index: 1; user-select: none; }
-        .hero-content { position: relative; z-index: 2; text-align: center; color: white; padding: 0 5%; margin-top: 80px; }
-        .hero-content h1 { font-size: clamp(45px, 7vw, 85px); font-weight: 800; letter-spacing: -2.5px; margin-bottom: 20px; line-height: 1.1; }
-        .hero-content p { font-size: 18px; color: #cbd5e1; font-weight: 400; max-width: 600px; margin: 0 auto; line-height: 1.6; }
-
-        .brands-marquee-wrapper { background: #0F172A; padding: 20px 0; border-bottom: 1px solid #1e293b; overflow: hidden; white-space: nowrap; position: relative; display: flex; }
-        .brands-marquee { display: inline-block; animation: marquee 20s linear infinite; font-weight: 800; font-size: 14px; color: #475569; letter-spacing: 3px; text-transform: uppercase; }
-        .brands-marquee span { margin: 0 40px; }
-
-        .search-bar-wrapper { max-width: 900px; margin: -35px auto 60px; background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); padding: 10px; border-radius: 12px; box-shadow: 0 20px 40px rgba(0,0,0,0.15); display: flex; gap: 10px; position: relative; z-index: 10; border: 1px solid var(--border); }
-        .search-bar-wrapper input { flex: 1; padding: 18px 25px; border: none; background: transparent; font-size: 16px; color: var(--text-main); outline: none; font-weight: 500; }
-        .search-bar-wrapper button { background: var(--text-main); color: white; border: none; padding: 0 35px; border-radius: 8px; font-size: 14px; font-weight: 700; cursor: pointer; transition: 0.3s; text-transform: uppercase; letter-spacing: 1px; }
-        .search-bar-wrapper button:hover { background: var(--primary); }
-
-        .features-flex { display: flex; justify-content: space-around; flex-wrap: wrap; gap: 30px; margin-top: 80px; padding: 60px 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
-        .feature-item { text-align: center; flex: 1; min-width: 250px; }
-        .feature-item strong { display: block; font-size: 18px; font-weight: 800; margin-bottom: 10px; color: var(--text-main); }
-        .feature-item p { font-size: 14px; color: var(--text-muted); line-height: 1.6; }
-
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 40px; }
-        .card { background: var(--bg-card); border-radius: var(--radius); border: 1px solid var(--border); overflow: hidden; cursor: pointer; transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); position: relative; box-shadow: var(--shadow-sm); }
-        .card:hover { transform: translateY(-10px); box-shadow: 0 30px 60px rgba(0,0,0,0.1); border-color: #cbd5e1; }
-        .card-img { height: 280px; background-size: cover; background-position: center; position: relative; transition: transform 0.7s ease; }
-        .card:hover .card-img { transform: scale(1.05); }
-        .card-info { padding: 30px; background: var(--bg-card); position: relative; z-index: 2; border-top: 1px solid #f1f5f9; }
-        .card-info h3 { font-size: 20px; font-weight: 700; margin-bottom: 15px; color: var(--text-main); line-height: 1.3; }
-        .card-price-row { display: flex; justify-content: space-between; align-items: flex-end; }
-        .card-price { font-size: 24px; font-weight: 800; color: var(--primary); }
-        .card-action { font-size: 12px; font-weight: 700; text-transform: uppercase; color: var(--text-main); opacity: 0; transition: 0.3s; transform: translateX(-10px); }
-        .card:hover .card-action { opacity: 1; transform: translateX(0); }
-
-        .badge { position: absolute; top: 20px; right: 20px; padding: 6px 16px; border-radius: 50px; font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; z-index: 2; }
-        .badge-reservado { background: #F59E0B; color: #fff; box-shadow: 0 4px 15px rgba(245, 158, 11, 0.5); }
-        .badge-vendido { background: #10B981; color: #fff; box-shadow: 0 4px 15px rgba(16, 185, 129, 0.5); }
-
-        .tab-header { height: 45vh; min-height: 350px; background-size: cover; background-position: center; display: flex; align-items: flex-end; padding: 60px 5%; position: relative; margin-top: -80px; margin-bottom: 80px; }
-        .tab-header::before { content: ''; position: absolute; inset: 0; background: linear-gradient(to top, rgba(15,23,42,0.9), transparent); }
-        .tab-header-content { position: relative; z-index: 1; color: white; width: 100%; max-width: 1300px; margin: 0 auto; }
-        .tab-header-content h2 { font-size: clamp(35px, 5vw, 55px); font-weight: 800; letter-spacing: -1px; margin-bottom: 10px; }
-        .tab-header-content p { font-size: 14px; text-transform: uppercase; letter-spacing: 4px; color: #cbd5e1; font-weight: 600; }
-
-        .premium-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start; margin-bottom: 80px; }
-        @media (max-width: 900px) { .premium-grid { grid-template-columns: 1fr; gap: 40px; } }
-        .premium-text h3 { font-size: 32px; font-weight: 800; letter-spacing: -1px; margin-bottom: 25px; color: var(--text-main); }
-        .premium-text p { color: var(--text-muted); font-size: 17px; line-height: 1.8; margin-bottom: 20px; }
+        /* === HERO BANNER DINÂMICO === */
+        .hero-banner { position: relative; width: 100%; padding: 120px 5% 160px; background: linear-gradient(to right, rgba(17, 24, 39, 0.95) 0%, rgba(17, 24, 39, 0.6) 100%), url('https://images.unsplash.com/photo-1614200187524-dc4b892acf16?q=80&w=1920&auto=format&fit=crop') no-repeat center center/cover; display: flex; align-items: center; justify-content: center; text-align: center; transition: 0.5s; }
+        .hero-content { position: relative; z-index: 2; width: 100%; max-width: 900px; }
         
-        .premium-checklist { background: var(--bg-card); border: 1px solid var(--border); padding: 50px; border-radius: var(--radius); box-shadow: var(--shadow-sm); }
-        .premium-checklist.dark { background: #0F172A; border: none; color: white; }
-        .premium-checklist h4 { font-size: 13px; text-transform: uppercase; letter-spacing: 2px; color: var(--primary); margin-bottom: 30px; border-bottom: 1px solid var(--border); padding-bottom: 15px; font-weight: 800; }
-        .premium-checklist.dark h4 { border-bottom-color: rgba(255,255,255,0.1); }
-        .premium-checklist ul { list-style: none; margin-bottom: 30px; }
-        .premium-checklist li { padding: 18px 0; border-bottom: 1px solid var(--border); font-size: 15px; display: flex; align-items: center; gap: 15px; font-weight: 500; }
-        .premium-checklist.dark li { border-bottom-color: rgba(255,255,255,0.05); color: #e2e8f0; }
-        .premium-checklist li::before { content: '—'; color: var(--primary); font-weight: bold; }
-        .premium-checklist li:last-child { border-bottom: none; }
-
-        .premium-input { width: 100%; padding: 15px 0; border: none; border-bottom: 1px solid rgba(255,255,255,0.2); background: transparent; color: white; font-size: 16px; margin-bottom: 20px; outline: none; transition: 0.3s; font-weight: 500; }
-        .premium-input::placeholder { color: #64748B; font-weight: 400; }
-        .premium-input:focus { border-bottom-color: white; }
+        .hero-standard h1 { font-size: clamp(32px, 5vw, 56px); font-weight: 800; color: white; line-height: 1.1; letter-spacing: -1px; margin-bottom: 20px; }
+        .hero-standard p { color: rgba(255,255,255,0.8); font-size: 18px; line-height: 1.6; font-weight: 400; }
         
-        .btn-luxury { display: inline-block; background: white; color: black; padding: 20px 35px; border: none; border-radius: 8px; font-size: 13px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; transition: 0.3s; text-align: center; width: 100%; }
-        .btn-luxury:hover { background: var(--primary); color: white; }
+        .hero-campaign { display: none; background: rgba(255,255,255,0.1); backdrop-filter: blur(15px); border: 1px solid rgba(255,255,255,0.2); padding: 50px; border-radius: 20px; animation: scaleIn 0.5s ease; box-shadow: 0 30px 60px rgba(0,0,0,0.5); }
+        .campaign-badge { background: var(--red); color: white; padding: 8px 16px; border-radius: 50px; font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 20px; display: inline-block; }
+        .hero-campaign h2 { font-size: clamp(28px, 4vw, 48px); font-weight: 800; color: white; line-height: 1.2; margin-bottom: 15px; }
+        .hero-campaign p { color: #E5E7EB; font-size: 16px; }
 
-        .box-form { background: var(--bg-card); padding: 40px; border-radius: var(--radius); box-shadow: var(--shadow-lg); border: 1px solid var(--border); }
-        .input-form { width: 100%; padding: 16px; border: 1px solid var(--border); border-radius: 8px; margin-bottom: 20px; font-size: 16px; outline: none; background: #f8fafc; transition: 0.3s; }
-        .input-form:focus { border-color: var(--primary); background: #fff; box-shadow: 0 0 0 3px rgba(217,4,41,0.1); }
-        .btn-main { background: var(--primary); color: #fff; padding: 18px 30px; border: none; border-radius: 8px; font-size: 14px; font-weight: 800; cursor: pointer; width: 100%; transition: 0.3s; text-transform: uppercase; letter-spacing: 1px; }
-        .btn-main:hover { background: var(--primary-hover); transform: translateY(-2px); box-shadow: 0 10px 20px rgba(217,4,41,0.2); }
+        /* === FILTRO AVANÇADO === */
+        .filter-wrapper { max-width: 1200px; margin: -80px auto 50px; position: relative; z-index: 10; padding: 0 5%; }
+        .advanced-filter { background: var(--bg-card); border-radius: 12px; padding: 35px; box-shadow: var(--shadow-md); border: 1px solid var(--border); }
+        .f-row { display: grid; gap: 20px; margin-bottom: 25px; }
+        .f-row.top { grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); }
+        .f-row.bottom { grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); margin-bottom: 0; align-items: end; }
+        .f-group { display: flex; flex-direction: column; gap: 8px; }
+        .f-group label { font-size: 12px; font-weight: 700; color: var(--text-main); display: flex; justify-content: space-between; text-transform: uppercase; }
+        .f-group label span { color: var(--red); font-weight: 800; }
+        .f-group select, .f-group input[type="text"] { padding: 14px 16px; border: 1px solid var(--border); border-radius: 8px; font-size: 14px; outline: none; color: var(--black); background: var(--bg-page); font-weight: 500; cursor: pointer; transition: 0.2s; }
+        .f-group select:focus, .f-group input[type="text"]:focus { border-color: var(--red); background: var(--bg-card); box-shadow: 0 0 0 3px rgba(230, 57, 70, 0.1); }
+        input[type="range"] { -webkit-appearance: none; width: 100%; height: 6px; background: var(--border); border-radius: 5px; outline: none; margin-bottom: 12px; }
+        input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 22px; height: 22px; border-radius: 50%; background: var(--red); cursor: pointer; border: 3px solid white; box-shadow: 0 2px 6px rgba(0,0,0,0.3); transition: 0.2s; }
+        input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.1); }
 
-        .modal-overlay { position: fixed; inset: 0; background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(5px); z-index: 3000; display: none; align-items: center; justify-content: center; padding: 20px; }
+        /* === SHOWROOM === */
+        .showroom-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 30px; }
+        .car-card { background: var(--bg-card); border-radius: 12px; border: 1px solid var(--border); overflow: hidden; transition: 0.3s; cursor: pointer; display: flex; flex-direction: column; position: relative; }
+        .car-card:hover { box-shadow: var(--shadow-lg); transform: translateY(-5px); }
+        .car-img-wrap { position: relative; height: 220px; width: 100%; background: var(--bg-page); overflow: hidden; }
+        .car-img-wrap img { width: 100%; height: 100%; object-fit: cover; transition: 0.6s ease; }
+        .car-card:hover .car-img-wrap img { transform: scale(1.08); }
         
-        .modal-content-car { 
-            background: var(--bg-card); width: 100%; max-width: 500px; border-radius: var(--radius); 
-            overflow: hidden; position: relative; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5); 
-            animation: zoomIn 0.3s cubic-bezier(0.16, 1, 0.3, 1); display: flex; flex-direction: column;
-        }
-        .modal-car-img { width: 100%; height: 350px; background-size: cover; background-position: center; position: relative; }
-        .modal-body { padding: 35px 40px; }
-        .modal-header-flex { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 15px; border-bottom: 1px solid var(--border); padding-bottom: 20px; }
-        .modal-title { font-size: 24px; font-weight: 800; color: var(--text-main); letter-spacing: -0.5px; line-height: 1.2; }
-        .modal-price { font-size: 26px; font-weight: 900; color: var(--primary); }
-        .modal-specs { font-size: 15px; color: var(--text-muted); margin-bottom: 30px; line-height: 1.6; }
+        .badge { position: absolute; padding: 6px 12px; border-radius: 4px; font-size: 11px; font-weight: 800; text-transform: uppercase; color: white; letter-spacing: 0.5px; z-index: 2; box-shadow: var(--shadow-sm); }
+        .badge-garantia { top: 15px; right: 15px; background: var(--red); }
+        .badge-reserva { top: 15px; left: 15px; background: #F59E0B; color: white; }
 
-        .close-btn { position: absolute; top: 15px; right: 15px; background: rgba(255,255,255,0.9); color: var(--text-main); border: none; width: 36px; height: 36px; border-radius: 50%; font-size: 16px; font-weight: bold; cursor: pointer; z-index: 10; transition: 0.3s; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
-        .close-btn:hover { background: white; transform: scale(1.1); }
+        .car-info { padding: 25px; display: flex; flex-direction: column; flex-grow: 1; justify-content: space-between; }
+        .car-title { font-size: 17px; font-weight: 700; color: var(--black); margin-bottom: 8px; line-height: 1.4; }
+        .car-price { font-size: 22px; font-weight: 800; color: var(--red); border-top: 1px solid var(--bg-page); padding-top: 15px; margin-top: 15px; }
+
+        /* === MAPA DA HOME === */
+        .map-wrapper { width: 100%; height: 650px; border-radius: 16px; overflow: hidden; border: 1px solid var(--border); margin-top: 60px; box-shadow: var(--shadow-md); }
+
+        /* === PÁGINAS INFORMATIVAS === */
+        .page-header { background: var(--bg-card); padding: 80px 5%; text-align: center; border-bottom: 1px solid var(--border); }
+        .page-header h1 { font-size: 40px; font-weight: 800; color: var(--black); margin-bottom: 15px; letter-spacing: -1px; }
+        .page-header p { font-size: 16px; color: var(--text-muted); max-width: 700px; margin: 0 auto; line-height: 1.6; }
         
-        .modal-content-login { background: var(--bg-card); width: 100%; max-width: 400px; border-radius: var(--radius); overflow: hidden; position: relative; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5); animation: zoomIn 0.3s cubic-bezier(0.16, 1, 0.3, 1); padding: 40px; text-align: center; }
-        .close-btn-login { position: absolute; top: 15px; right: 15px; background: #f1f5f9; color: var(--text-main); border: none; width: 36px; height: 36px; border-radius: 50%; font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+        .info-section { max-width: 1000px; margin: 0 auto; background: var(--bg-card); border-radius: 16px; padding: 50px; box-shadow: var(--shadow-sm); border: 1px solid var(--border); margin-bottom: 40px; }
+        .info-section h3 { font-size: 24px; font-weight: 800; color: var(--black); margin-bottom: 25px; border-bottom: 2px solid var(--bg-page); padding-bottom: 15px; }
+        .info-section p { font-size: 16px; color: var(--text-main); line-height: 1.8; margin-bottom: 20px; }
+        .info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; margin-top: 30px; }
+        .info-block { background: var(--bg-page); padding: 30px; border-radius: 12px; border: 1px solid var(--border); transition: 0.3s;}
+        .info-block:hover { border-color: var(--red); box-shadow: var(--shadow-md); transform: translateY(-3px);}
+        .info-block h4 { font-size: 18px; font-weight: 700; color: var(--red); margin-bottom: 15px; }
+        .info-list { list-style: none; }
+        .info-list li { font-size: 15px; color: var(--text-main); margin-bottom: 12px; display: flex; align-items: flex-start; gap: 12px; line-height: 1.6; font-weight: 500;}
+        .info-list li::before { content: '■'; color: var(--red); font-size: 10px; margin-top: 5px; }
 
-        footer { background: #0F172A; color: white; padding: 80px 5% 40px; margin-top: 100px; }
-        .footer-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 40px; max-width: 1300px; margin: 0 auto; }
-        .footer-col h4 { color: #94A3B8; font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 25px; }
-        .footer-col p { color: #CBD5E1; margin-bottom: 15px; font-size: 15px; font-weight: 300; }
+        /* === MODAIS === */
+        .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(17, 24, 39, 0.85); z-index: 2000; display: none; backdrop-filter: blur(4px); }
+        .modal { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -45%); width: 90%; max-width: 450px; background: var(--bg-card); border-radius: 16px; z-index: 2001; display: none; opacity: 0; transition: 0.3s ease; box-shadow: var(--shadow-lg); border: 1px solid var(--border); overflow: hidden; }
+        .modal.active { display: block; opacity: 1; transform: translate(-50%, -50%); }
+        
+        #modal-detalhes { max-width: 900px; display: none; }
+        #modal-detalhes.active { display: flex; }
+        .modal-left { width: 50%; background: var(--bg-page); position: relative; }
+        .modal-left img { width: 100%; height: 100%; object-fit: cover; }
+        .modal-right { width: 50%; padding: 40px; display: flex; flex-direction: column; overflow-y: auto; max-height: 85vh; background: var(--bg-card); }
+        @media(max-width: 768px) { #modal-detalhes.active { flex-direction: column; } .modal-left { width: 100%; height: 250px; } .modal-right { width: 100%; padding: 25px; } }
+
+        .modal-content { padding: 40px; position: relative; }
+        .modal-close { position: absolute; top: 20px; right: 20px; background: var(--bg-page); border: 1px solid var(--border); width: 36px; height: 36px; border-radius: 50%; font-size: 20px; cursor: pointer; color: var(--text-muted); display: flex; justify-content: center; align-items: center; transition: 0.2s; z-index: 10; }
+        .modal-close:hover { background: var(--red); color: white; border-color: var(--red); }
+
+        .input-std { width: 100%; padding: 18px 20px; border: 1px solid var(--border); border-radius: 8px; margin-bottom: 16px; font-size: 14px; outline: none; background: var(--bg-page); font-weight: 500; transition: 0.2s; text-align: center; letter-spacing: 10px; font-size: 28px;}
+        .input-std:focus { border-color: var(--red); background: var(--bg-card); }
+        .btn-main { width: 100%; background: var(--black); color: white; padding: 18px; border: none; border-radius: 8px; font-weight: 800; font-size: 14px; text-transform: uppercase; cursor: pointer; transition: 0.3s; letter-spacing: 0.5px; }
+        .btn-main:hover { background: var(--red); }
+
+        /* === PAINEL ADMIN (JORGE) === */
+        #page-admin { background: #E5E7EB; padding-top: 100px;}
+        .admin-dashboard { max-width: 1400px; margin: 0 auto; }
+        .admin-header-panel { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; background: var(--bg-card); padding: 25px 40px; border-radius: 16px; box-shadow: var(--shadow-sm); }
+        
+        .promo-dashboard { background: linear-gradient(135deg, #111827 0%, #1F2937 100%); padding: 30px 40px; border-radius: 16px; margin-bottom: 30px; color: white; box-shadow: var(--shadow-md); border: 1px solid var(--black); }
+        .promo-dashboard h3 { margin-bottom: 20px; font-size: 20px; font-weight: 800; color: #F3F4F6; }
+        .promo-grid { display: flex; gap: 15px; flex-wrap: wrap; }
+        .btn-promo { background: rgba(255,255,255,0.1); color: white; border: 1px solid rgba(255,255,255,0.2); padding: 12px 20px; border-radius: 8px; font-weight: 600; font-size: 13px; cursor: pointer; transition: 0.2s; flex: 1 1 calc(25% - 15px); min-width: 220px; text-align: left; display: flex; align-items: center; gap: 10px;}
+        .btn-promo:hover { background: var(--red); border-color: var(--red); transform: translateY(-2px); }
+        .btn-demo { background: #3B82F6; color: white; border: none; padding: 12px 20px; border-radius: 8px; font-weight: 700; font-size: 13px; cursor: pointer; width: 100%; margin-bottom: 20px; box-shadow: 0 4px 10px rgba(59, 130, 246, 0.3); transition: 0.3s;}
+        .btn-demo:hover { background: #2563EB; transform: translateY(-2px); }
+
+        .admin-grid { display: grid; grid-template-columns: 350px 1fr; gap: 30px; }
+        .admin-panel-card { background: var(--bg-card); padding: 30px; border-radius: 16px; border: 1px solid var(--border); box-shadow: var(--shadow-sm); }
+        .admin-car-row { display: flex; justify-content: space-between; align-items: center; padding: 15px 0; border-bottom: 1px solid var(--bg-page); transition: 0.2s; border-radius: 8px; }
+        .admin-car-row:hover { background: #F9FAFB; }
+        .admin-car-info { display: flex; align-items: center; gap: 15px; }
+        .admin-car-info img { width: 60px; height: 45px; border-radius: 6px; object-fit: cover; border: 1px solid var(--border); }
+        .admin-actions { display: flex; gap: 8px; }
+        .btn-action { padding: 8px 12px; border: none; border-radius: 6px; font-weight: 700; font-size: 11px; cursor: pointer; text-transform: uppercase; transition: 0.2s; }
+        .btn-action-reserva { background: #FEF3C7; color: #D97706; }
+        .btn-action-vendido { background: #D1FAE5; color: #059669; }
+        .btn-action-apagar { background: #FEE2E2; color: #DC2626; }
+        .btn-action:hover { opacity: 0.8; }
+
+        /* === FOOTER === */
+        footer { background: var(--bg-card); padding: 80px 5% 40px; border-top: 1px solid var(--border); margin-top: 80px; }
+        .footer-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 50px; max-width: 1400px; margin: 0 auto; }
+        .footer-col h4 { font-size: 15px; font-weight: 800; margin-bottom: 25px; color: var(--black); text-transform: uppercase; letter-spacing: 1px; }
+        .footer-col p { font-size: 14px; color: var(--text-muted); margin-bottom: 12px; line-height: 1.6; }
+        .credits { max-width: 1400px; margin: 60px auto 0; padding: 30px 20px 20px; border-top: 1px solid var(--border); display: flex; flex-direction: column; align-items: center; gap: 12px; font-size: 13px; color: var(--text-muted); font-weight: 500; text-align: center; }
+        .credits a { color: var(--black); font-weight: 800; text-decoration: none; transition: 0.3s; border-bottom: 2px solid var(--red); padding-bottom: 2px;}
+        .credits a:hover { color: var(--red); border-bottom-color: var(--black); }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes slideUp { from { opacity: 0; transform: translate(-50%, 20px); } to { opacity: 1; transform: translate(-50%, 0); } }
+        @keyframes scaleIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
     </style>
 </head>
 <body>
 
-<div class="floating-contact">
-    <div class="contact-box">
-        <div class="contact-header">Escolha como falar</div>
-        <a href="mailto:geral@jdauto.pt" class="contact-item"><span class="icon">✉️</span><div><strong>E-mail Oficial</strong><span>geral@jdauto.pt</span></div></a>
-        <a href="tel:+351912345678" class="contact-item"><span class="icon">📞</span><div><strong>Telemóvel</strong><span>+351 912 345 678</span></div></a>
-        <a href="https://wa.me/351912345678" target="_blank" class="contact-item"><span class="icon">💬</span><div><strong>WhatsApp Direto</strong><span>Mensagem instantânea</span></div></a>
+<div id="toast-box"></div>
+<div class="overlay" id="overlay" onclick="closeAll()"></div>
+
+<div class="contact-widget-container">
+    <div class="contact-info-bar" id="contactBar">
+        <span>📞 912 345 678</span>
+        <span style="color: var(--border);">|</span>
+        <span>✉️ geral@jdauto.pt</span>
     </div>
-    <button class="contact-btn-trigger">
-        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+    <button class="contact-toggle-btn" onclick="toggleContactBar()">
+        💬 Fale Connosco
     </button>
 </div>
 
-<div class="modal-overlay" id="overlay-carro" onclick="fecharModais()">
-    <div class="modal-content-car" id="modal-carro" onclick="event.stopPropagation()">
-        <div id="carro-detalhes-render"></div>
-    </div>
-</div>
-
-<div class="modal-overlay" id="overlay-login" onclick="fecharModais()">
-    <div class="modal-content-login" id="modal-login" onclick="event.stopPropagation()">
-        <button class="close-btn-login" onclick="fecharModais()">✕</button>
-        <h2 style="margin-bottom: 20px; font-weight: 800;">Área Técnica</h2>
-        <input type="password" id="pin" class="input-form" style="text-align:center; font-size:24px; letter-spacing: 8px;" placeholder="••••">
-        <button onclick="validarLogin()" class="btn-main">Autenticar Gestor</button>
-    </div>
-</div>
-
 <header>
-    <div class="logo" onclick="mostrarPagina('home')">JD<span>Auto</span></div>
+    <div class="logo">
+        <span onclick="showPage('home')" style="color: var(--black); cursor: pointer;">JD</span><span onclick="openModal('login')" style="cursor: pointer;">AUTO</span>
+    </div>
     <nav>
-        <button onclick="mostrarPagina('home')" class="nav-link active" id="nav-home">SHOWROOM</button>
-        
+        <a onclick="showPage('home')" id="nav-home" class="active">Showroom</a>
         <div class="dropdown">
-            <button class="nav-link" id="nav-servicos">SERVIÇOS</button>
+            <a>Serviços ▾</a>
             <div class="dropdown-content">
-                <a onclick="mostrarSubPagina('financiamento')">Financiamento</a>
-                <a onclick="mostrarSubPagina('seguros')">Seguros Auto</a>
-                <a onclick="mostrarSubPagina('oficina')">Oficina Pós-Venda</a>
-                <a onclick="mostrarSubPagina('retoma')">Simulador de Retoma</a>
+                <a onclick="showPage('oficina')" id="nav-oficina">Oficina Própria</a>
+                <a onclick="showPage('retoma')" id="nav-retoma">Avaliação de Retoma</a>
+                <a onclick="showPage('garantia')" id="nav-garantia">Garantia JD Auto</a>
             </div>
         </div>
-
-        <button onclick="mostrarPagina('sobre')" class="nav-link" id="nav-sobre">SOBRE NÓS</button>
-        <button onclick="abrirLogin()" class="btn-admin" id="nav-btn-admin">GERIR STOCK</button>
+        <a onclick="showPage('financiamento')" id="nav-financiamento">Financiamento</a>
+        <a onclick="showPage('seguros')" id="nav-seguros">Seguros</a>
+        <a onclick="showPage('sobre')" id="nav-sobre">A Empresa</a>
     </nav>
 </header>
 
 <main>
-    <section id="page-home" class="page active" style="padding-top: 0;">
+    <div id="page-home" class="page active" style="padding-top: 0;">
         
-        <div class="hero-wrapper">
-            <div class="hero-bg-img"></div>
-            <div class="hero-overlay"></div>
-            <div class="hero-watermark">PREMIUM</div>
-            
+        <div class="hero-banner" id="main-hero">
             <div class="hero-content">
-                <h1>A Excelência em<br>Movimento.</h1>
-                <p>A curadoria definitiva de viaturas premium em Estarreja. Rigor técnico, garantia absoluta e total transparência no mercado automóvel.</p>
+                <div id="hero-standard" class="hero-standard">
+                    <h1>Rigor. Transparência. Performance.</h1>
+                    <p>O seu parceiro automóvel de confiança. Encontre a sua próxima viatura no nosso stock premium rigorosamente selecionado.</p>
+                </div>
+                <div id="hero-campaign" class="hero-campaign">
+                    <span class="campaign-badge">Campanha Exclusiva Ativa</span>
+                    <h2 id="hero-campaign-text">Título da Campanha</h2>
+                    <p>Aproveite agora e garanta estas condições únicas na compra da sua nova viatura. Válido por tempo limitado.</p>
+                </div>
             </div>
         </div>
 
-        <div class="brands-marquee-wrapper">
-            <div class="brands-marquee">
-                <span>PORSCHE</span> • <span>BMW</span> • <span>MERCEDES-BENZ</span> • <span>AUDI</span> • <span>LAND ROVER</span> • <span>VOLVO</span> • 
-                <span>PORSCHE</span> • <span>BMW</span> • <span>MERCEDES-BENZ</span> • <span>AUDI</span> • <span>LAND ROVER</span> • <span>VOLVO</span>
+        <div class="filter-wrapper">
+            <div class="advanced-filter">
+                <div class="f-row top">
+                    <div class="f-group">
+                        <label>Marca</label>
+                        <select id="f-marca" onchange="applyFilters()"><option value="">Todas</option><option value="BMW">BMW</option><option value="Mercedes">Mercedes-Benz</option><option value="Audi">Audi</option><option value="Volkswagen">Volkswagen</option><option value="Renault">Renault</option><option value="Porsche">Porsche</option></select>
+                    </div>
+                    <div class="f-group">
+                        <label>Combustível</label>
+                        <select id="f-combustivel" onchange="applyFilters()"><option value="">Todos</option><option value="Gasóleo">Gasóleo</option><option value="Gasolina">Gasolina</option><option value="Elétrico">Elétrico</option><option value="Híbrido">Híbrido</option></select>
+                    </div>
+                    <div class="f-group">
+                        <label>Caixa</label>
+                        <select id="f-caixa" onchange="applyFilters()"><option value="">Todas</option><option value="Manual">Manual</option><option value="Automática">Automática</option></select>
+                    </div>
+                    <div class="f-group">
+                        <label>Ordenar Por</label>
+                        <select id="f-ordenar" onchange="applyFilters()">
+                            <option value="">Mais Recentes</option>
+                            <option value="preco-asc">Preço (Mais barato)</option>
+                            <option value="preco-desc">Preço (Mais caro)</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="f-row bottom">
+                    <div class="f-group">
+                        <label>Preço Máx: <span><span id="lbl-preco">100.000</span> €</span></label>
+                        <input type="range" id="f-preco" min="5000" max="150000" step="1000" value="150000" oninput="document.getElementById('lbl-preco').innerText=Number(this.value).toLocaleString(); applyFilters()">
+                    </div>
+                    <div class="f-group">
+                        <label>Ano Mín: <span><span id="lbl-ano">2005</span></span></label>
+                        <input type="range" id="f-ano" min="2005" max="2025" step="1" value="2005" oninput="document.getElementById('lbl-ano').innerText=this.value; applyFilters()">
+                    </div>
+                    <div class="f-group">
+                        <label>Pesquisa Livre</label>
+                        <input type="text" id="f-texto" placeholder="Ex: Pack M, AMG, S-Line..." onkeyup="applyFilters()" style="letter-spacing:0; text-align:left; font-size:14px; padding:14px 16px;">
+                    </div>
+                </div>
             </div>
         </div>
 
-        <div class="container" style="padding-top: 0; padding-bottom: 0;">
-            <div class="search-bar-wrapper reveal">
-                <input type="text" id="search-input" placeholder="Procure a sua próxima viatura (ex: Mercedes A200, BMW 420d)..." onkeyup="pesquisarCarros()">
-                <button onclick="pesquisarCarros()">Procurar</button>
-            </div>
-        </div>
-        
-        <div class="container" style="padding-top: 20px;">
-            <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 40px;" class="reveal">
-                <h2 style="font-size: 36px; font-weight: 800; letter-spacing: -1px; color: var(--text-main);">Coleção Atual</h2>
-                <span style="color: var(--primary); font-weight: 700; text-transform: uppercase; font-size: 13px; letter-spacing: 1px;">Inventário Inspecionado</span>
-            </div>
+        <div class="container" style="padding-top: 0;">
+            <div class="showroom-grid" id="showroom">
+                </div>
             
-            <div class="grid reveal" id="showroom"></div>
+            <div class="map-wrapper">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3019.26168478465!2d-8.5714777!3d40.7562479!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd2393d395786497%3A0x6b772413158f964!2sR.%20das%20Cavadas%20Sul%2C%20Estarreja!5e0!3m2!1spt-PT!2spt!4v17100000000002" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            </div>
+        </div>
+    </div>
 
-            <div class="features-flex reveal">
-                <div class="feature-item">
-                    <strong>100% Inspecionados</strong>
-                    <p>Todas as viaturas passam por um rigoroso teste antes de entrarem no showroom.</p>
+    <div id="page-oficina" class="page">
+        <div class="page-header">
+            <h1>Oficina JD Auto</h1>
+            <p>Manutenção técnica avançada nas nossas instalações próprias. O garante da fiabilidade da sua viatura.</p>
+        </div>
+        <div class="container">
+            <div class="info-section">
+                <h3>O Nosso Processo de Excelência</h3>
+                <p>Não dependemos de terceiros para garantir a qualidade das nossas viaturas. A JD Auto dispõe de um centro técnico próprio equipado com ferramentas de diagnóstico eletrónico de última geração.</p>
+                <div class="info-grid">
+                    <div class="info-block">
+                        <h4>1. Diagnóstico de Precisão</h4>
+                        <p style="font-size: 15px; color: var(--text-main); line-height: 1.6;">Utilizamos software atualizado para leitura de parâmetros, identificação de anomalias ocultas e verificação de histórico real de quilometragem.</p>
+                    </div>
+                    <div class="info-block">
+                        <h4>2. Intervenção Transparente</h4>
+                        <p style="font-size: 15px; color: var(--text-main); line-height: 1.6;">Todo o serviço é documentado. Os nossos clientes recebem um orçamento claro e fechado antes de qualquer reparação avançar.</p>
+                    </div>
+                    <div class="info-block">
+                        <h4>3. Peças de Origem</h4>
+                        <p style="font-size: 15px; color: var(--text-main); line-height: 1.6;">Preservamos a integridade do seu veículo utilizando componentes certificados e fluidos recomendados pelos próprios fabricantes.</p>
+                    </div>
                 </div>
-                <div class="feature-item">
-                    <strong>Garantia Estendida</strong>
-                    <p>Conduza tranquilo com a nossa garantia premium com cobertura a nível nacional.</p>
-                </div>
-                <div class="feature-item">
-                    <strong>Processo Chave na Mão</strong>
-                    <p>Tratamos do financiamento, seguro e entregamos o carro à sua porta.</p>
+                <div style="margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--border); text-align: center;">
+                    <p style="font-size: 16px; font-weight: 600; color: var(--black);">Para agendamentos ou dúvidas, ligue diretamente: <span style="color: var(--red);">912 345 678</span></p>
                 </div>
             </div>
         </div>
-    </section>
+    </div>
 
-    <section id="page-financiamento" class="page" style="padding-top: 0;">
-        <div class="tab-header" style="background-image: url('https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?q=80&w=2000&auto=format&fit=crop');">
-            <div class="tab-header-content"><p>Private Finance</p><h2>Financiamento à sua medida.</h2></div>
+    <div id="page-retoma" class="page">
+        <div class="page-header">
+            <h1>Avaliação de Retoma</h1>
+            <p>Valorizamos o seu carro atual com critérios justos e baseados no mercado real.</p>
         </div>
-        <div class="container" style="padding-top: 0;">
-            <div class="premium-grid">
-                <div class="premium-text reveal">
-                    <h3>Velocidade e Discrição.</h3>
-                    <p>Trabalhamos em exclusividade com as instituições financeiras de maior prestígio para garantir as condições mais favoráveis do mercado.</p>
-                    <p>Oferecemos aprovações em menos de 24 horas, prazos até 120 meses e flexibilidade total para avançar com ou sem entrada inicial.</p>
+        <div class="container">
+            <div class="info-section">
+                <h3>Como avaliamos a sua viatura?</h3>
+                <p>Na JD Auto, a retoma não é um obstáculo, é um facilitador de negócio. O nosso objetivo é apresentar-lhe a proposta mais competitiva possível para o ajudar a transitar para a sua nova viatura.</p>
+                <div class="info-grid">
+                    <div class="info-block">
+                        <h4>Fatores de Valorização</h4>
+                        <ul class="info-list">
+                            <li>Histórico de manutenções comprovado.</li>
+                            <li>Ausência de sinistros estruturais graves.</li>
+                            <li>Quilometragem coerente com o ano.</li>
+                            <li>Estado geral de conservação exterior e interior.</li>
+                        </ul>
+                    </div>
+                    <div class="info-block">
+                        <h4>O Nosso Processo</h4>
+                        <ul class="info-list">
+                            <li>Análise visual nas nossas instalações.</li>
+                            <li>Teste de estrada com os nossos técnicos.</li>
+                            <li>Consulta de valor de mercado e Eurotax.</li>
+                            <li>Apresentação de proposta final clara na hora.</li>
+                        </ul>
+                    </div>
                 </div>
-                <div class="premium-checklist dark reveal">
-                    <h4>Documentação Necessária</h4>
-                    <ul>
-                        <li>Documento de Identificação (Titular e Cônjuge)</li>
-                        <li>3 Últimos Recibos de Vencimento</li>
-                        <li>Última Declaração de IRS</li>
-                        <li>Comprovativo de Morada e IBAN</li>
-                    </ul>
-                    <input type="text" id="financiamento-matricula" class="premium-input" placeholder="Matrícula do veículo que pretende">
-                    <button class="btn-luxury" onclick="enviarMensagem('financiamento-matricula', 'simulação de financiamento')">Pedir Simulação Automática</button>
+                <div style="margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--border); text-align: center;">
+                    <p style="font-size: 16px; font-weight: 600; color: var(--black);">Visite-nos com a sua viatura atual para uma avaliação imediata e sem compromisso.</p>
                 </div>
             </div>
         </div>
-    </section>
+    </div>
 
-    <section id="page-seguros" class="page" style="padding-top: 0;">
-        <div class="tab-header" style="background-image: url('https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?q=80&w=2000&auto=format&fit=crop');">
-            <div class="tab-header-content"><p>Exclusive Protection</p><h2>Segurança sem compromissos.</h2></div>
+    <div id="page-seguros" class="page">
+        <div class="page-header">
+            <h1>Seguros Automóvel</h1>
+            <p>Trabalhamos com os melhores corretores para proteger o seu investimento de forma segura.</p>
         </div>
-        <div class="container" style="padding-top: 0;">
-            <div class="premium-grid" style="grid-template-columns: 1fr 1fr;">
-                <div class="premium-checklist dark reveal">
-                    <h4>Para Simulação de Apólice</h4>
-                    <ul>
-                        <li>Identificação do Condutor Habitual</li>
-                        <li>Carta de Condução</li>
-                        <li>Certificado de Tarifário (Carta de Bónus)</li>
-                    </ul>
-                    <input type="text" id="seguro-matricula" class="premium-input" placeholder="Matrícula a segurar (Ex: AA-00-BB)">
-                    <button class="btn-luxury" onclick="enviarMensagem('seguro-matricula', 'simulação de seguro automóvel')">Pedir Cotação</button>
-                </div>
-                <div class="premium-text reveal">
-                    <h3>Proteja o seu Investimento.</h3>
-                    <p>A exclusividade da sua viatura exige uma proteção à altura. Os nossos especialistas encarregam-se de estruturar a apólice ideal.</p>
-                    <p>Garantimos condições ímpares em apólices de Danos Próprios, minimizando franquias e maximizando o valor segurado.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="page-oficina" class="page" style="padding-top: 0;">
-        <div class="tab-header" style="background-image: url('https://images.unsplash.com/photo-1486262715619-670810a044e1?q=80&w=2000&auto=format&fit=crop');">
-            <div class="tab-header-content"><p>Technical Excellence</p><h2>Serviço Pós-Venda de Elite.</h2></div>
-        </div>
-        <div class="container" style="padding-top: 0;">
-            <div class="premium-grid">
-                <div class="premium-text reveal">
-                    <h3>Rigor em cada Detalhe.</h3>
-                    <p>O nosso centro técnico está dotado da tecnologia mais recente para assistir a sua viatura com a precisão exigida pelos padrões de fábrica.</p>
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 40px;">
-                        <div>
-                            <h4 style="font-size: 13px; text-transform: uppercase; color: var(--text-main); border-bottom: 1px solid var(--border); padding-bottom: 10px; margin-bottom: 10px; font-weight:800;">Mecânica & Eletrónica</h4>
-                            <p style="font-size: 14px;">Diagnóstico computorizado e manutenções programadas rigorosas.</p>
-                        </div>
-                        <div>
-                            <h4 style="font-size: 13px; text-transform: uppercase; color: var(--text-main); border-bottom: 1px solid var(--border); padding-bottom: 10px; margin-bottom: 10px; font-weight:800;">Car Detail Estético</h4>
-                            <p style="font-size: 14px;">Polimento, proteção cerâmica e revitalização profunda de interiores.</p>
-                        </div>
+        <div class="container">
+            <div class="info-section">
+                <h3>Proteção sem complicações</h3>
+                <p>Sabemos que o momento de sair do stand com a viatura nova deve ser de pura alegria. É por isso que asseguramos a ponte com as principais seguradoras nacionais para que a sua viatura saia devidamente protegida.</p>
+                <div class="info-grid">
+                    <div class="info-block">
+                        <h4>As Coberturas Premium</h4>
+                        <ul class="info-list">
+                            <li>Danos Próprios (Choque, Colisão, Capotamento).</li>
+                            <li>Proteção contra Furto ou Roubo.</li>
+                            <li>Assistência em Viagem VIP 24h.</li>
+                            <li>Garantia de Viatura de Substituição.</li>
+                        </ul>
                     </div>
-                </div>
-                <div class="premium-checklist dark reveal">
-                    <h4>Agendar Manutenção</h4>
-                    <ul>
-                        <li>Trazer Documento Único (Livrete)</li>
-                        <li>Livro de Revisões Físico/Digital</li>
-                        <li>Chave de Segurança das Jantes</li>
-                    </ul>
-                    <input type="text" id="oficina-matricula" class="premium-input" placeholder="Matrícula para manutenção">
-                    <button class="btn-luxury" onclick="enviarMensagem('oficina-matricula', 'agendar um serviço de oficina')">Solicitar Marcação</button>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="page-retoma" class="page" style="padding-top: 0;">
-        <div class="tab-header" style="background-image: url('https://images.unsplash.com/photo-1503376780353-7e6692767b70?q=80&w=2000&auto=format&fit=crop');">
-            <div class="tab-header-content"><p>Trade-in Simulator</p><h2>Valorizamos o que é seu.</h2></div>
-        </div>
-        <div class="container" style="padding-top: 0;">
-            <div class="premium-grid">
-                <div class="premium-checklist dark reveal">
-                    <h4>Motor de Avaliação</h4>
-                    <input type="text" id="retoma-matricula" class="premium-input" placeholder="Matrícula do seu carro atual">
-                    <input type="text" id="retoma-marca" class="premium-input" placeholder="Marca e Modelo">
-                    
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
-                        <input type="number" id="retoma-ano" class="premium-input" placeholder="Ano (Ex: 2018)">
-                        <input type="number" id="retoma-kms" class="premium-input" placeholder="Quilómetros">
-                    </div>
-                    <button class="btn-luxury" onclick="calcularRetoma()">Calcular Estimativa</button>
-                    
-                    <div id="retoma-resultado" style="display:none; margin-top: 40px; text-align: center; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 30px;">
-                        <p style="font-size: 11px; text-transform: uppercase; letter-spacing: 2px; color: #94A3B8; font-weight:800;">Valor Estimado</p>
-                        <h2 id="valor-retoma-txt" style="font-size: 42px; font-weight: 300; margin: 10px 0; color: white;">0 €</h2>
-                        <p style="font-size: 11px; color: #64748B;">*Sujeito a inspeção física.</p>
-                        <button class="btn-luxury" style="margin-top: 20px; background: var(--primary); color: white; border:none;" onclick="enviarMensagem('retoma-matricula', 'agendar a avaliação física da minha retoma')">Avançar com Retoma</button>
-                    </div>
-                </div>
-                <div class="reveal">
-                    <div class="premium-text" style="margin-bottom: 40px;">
-                        <h3>Transição Simples e Justa.</h3>
-                        <p>O processo de retoma na JD Auto é desenhado para ser fluido e transparente. O valor do seu automóvel atual é deduzido de forma clara na aquisição do seu novo modelo.</p>
-                    </div>
-                    <div class="premium-checklist" style="padding: 0; border: none; background: transparent; box-shadow: none;">
-                        <h4>Checklist para o dia da troca</h4>
-                        <ul style="color: var(--text-main);">
-                            <li style="border-bottom: 1px solid var(--border); padding: 15px 0;">Documento Único Automóvel (Livrete)</li>
-                            <li style="border-bottom: 1px solid var(--border); padding: 15px 0;">Folha da Última Inspeção</li>
-                            <li style="border-bottom: 1px solid var(--border); padding: 15px 0;">Comprovativo do IUC pago</li>
-                            <li style="border-bottom: 1px solid var(--border); padding: 15px 0;">Duplicado de Chaves Original</li>
+                    <div class="info-block">
+                        <h4>Como processamos?</h4>
+                        <ul class="info-list">
+                            <li>Analisamos o seu histórico de bonificação.</li>
+                            <li>Comparamos o mercado com os nossos parceiros.</li>
+                            <li>Apresentamos a proposta com melhor rácio custo/benefício.</li>
                         </ul>
                     </div>
                 </div>
             </div>
         </div>
-    </section>
+    </div>
 
-    <section id="page-sobre" class="page" style="padding-top: 0;">
-        <div class="tab-header" style="background-image: url('https://images.unsplash.com/photo-1617531653332-bd46c24f2068?q=80&w=2000&auto=format&fit=crop');">
-            <div class="tab-header-content"><p>A Nossa Agência</p><h2>Tradição e Transparência.</h2></div>
+    <div id="page-financiamento" class="page">
+        <div class="page-header">
+            <h1>Soluções de Financiamento</h1>
+            <p>Aprovamos o seu crédito rapidamente, com condições claras e ajustadas ao seu orçamento.</p>
         </div>
-        <div class="container" style="padding-top: 0;">
-            <div class="premium-grid reveal" style="grid-template-columns: 1.2fr 1fr; align-items: center;">
-                <div class="premium-text">
-                    <h3>Elevamos o padrão do mercado.</h3>
-                    <p>Fundada com a paixão pela excelência, a JD Auto não é apenas um stand. Somos uma agência de curadoria automóvel em Estarreja. Cada viatura que entra no nosso showroom é alvo de um rigoroso escrutínio técnico e histórico.</p>
-                    <p>Acreditamos que a compra de um carro premium deve ser uma experiência memorável, isenta de surpresas e pautada por uma transparência absoluta do primeiro contacto à entrega da chave.</p>
-                    <div style="display: flex; gap: 40px; margin-top: 50px;">
-                        <div><h4 style="font-size: 36px; font-weight: 800; color: var(--primary); line-height: 1;">+10</h4><p style="font-size: 13px; text-transform: uppercase; color: var(--text-muted); margin-top: 8px; font-weight:700;">Anos</p></div>
-                        <div><h4 style="font-size: 36px; font-weight: 800; color: var(--primary); line-height: 1;">100%</h4><p style="font-size: 13px; text-transform: uppercase; color: var(--text-muted); margin-top: 8px; font-weight:700;">Transparência</p></div>
+        <div class="container">
+            <div class="info-section">
+                <h3>Condições de Crédito JD Auto</h3>
+                <p>Graças ao nosso volume de negócio constante, detemos protocolos privilegiados com as principais instituições de crédito em Portugal. Isto traduz-se em taxas de aprovação mais altas e spreads competitivos para os nossos clientes.</p>
+                <div class="info-grid">
+                    <div class="info-block">
+                        <h4>Vantagens do Processo</h4>
+                        <ul class="info-list">
+                            <li>Aprovação rápida e 100% digital.</li>
+                            <li>Possibilidade de crédito com 0% de entrada.</li>
+                            <li>Prazos flexíveis de 12 a 120 meses.</li>
+                            <li>Taxas de juro fixas até ao fim do contrato.</li>
+                        </ul>
+                    </div>
+                    <div class="info-block">
+                        <h4>Documentos Base (Particulares)</h4>
+                        <ul class="info-list">
+                            <li>Cartão de Cidadão / Título de Residência.</li>
+                            <li>Comprovativo de Morada (Água, Luz).</li>
+                            <li>3 Últimos Recibos de Vencimento.</li>
+                            <li>Comprovativo de IBAN do titular.</li>
+                            <li>Última Declaração de IRS.</li>
+                        </ul>
                     </div>
                 </div>
-                <div style="width: 100%; height: 500px; border-radius: var(--radius); background-image: url('https://images.unsplash.com/photo-1552519507-da3b142c6e3d?q=80&w=1000'); background-size: cover; background-position: center; box-shadow: var(--shadow-lg);"></div>
-            </div>
-            
-            <div class="reveal" style="width: 100%; height: 400px; border-radius: var(--radius); overflow: hidden; border: 1px solid var(--border); margin-top: 40px;">
-                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3019.26168478465!2d-8.5714777!3d40.7562479!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd2393d395786497%3A0x6b772413158f964!2sR.%20das%20Cavadas%20Sul%2C%20Estarreja!5e0!3m2!1spt-PT!2spt!4v17100000000000" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
             </div>
         </div>
-    </section>
+    </div>
 
-    <section id="page-admin" class="page">
+    <div id="page-garantia" class="page">
+        <div class="page-header">
+            <h1>Garantia JD Auto</h1>
+            <p>A sua paz de espírito ao volante é a nossa prioridade. Cobertura transparente e robusta.</p>
+        </div>
         <div class="container">
-            <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 40px;">
-                <h2 style="font-size: 36px; font-weight: 800; letter-spacing: -1px;">Consola de Gestão</h2>
-                <button onclick="sairAdmin()" style="background: #f1f5f9; border: none; padding: 10px 20px; border-radius: 8px; font-weight: 700; cursor: pointer;">Encerrar Sessão</button>
-            </div>
-            
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 40px;" id="admin-stats"></div>
-
-            <div style="display: grid; grid-template-columns: 1fr 2.5fr; gap: 40px;">
-                <div class="box-form" style="align-self: start;">
-                    <h3 style="margin-bottom: 25px; font-size: 18px; font-weight:800;">Adicionar ao Stock</h3>
-                    <input type="text" id="a-tit" class="input-form" placeholder="Marca e Modelo">
-                    <input type="number" id="a-pre" class="input-form" placeholder="Preço (€)">
-                    <input type="text" id="a-img" class="input-form" placeholder="URL da Imagem">
-                    <textarea id="a-des" class="input-form" rows="4" placeholder="Descrição da viatura"></textarea>
-                    <button onclick="inserirCarro()" class="btn-main">Publicar no Site</button>
-                </div>
-                <div class="box-form" style="background: transparent; border: none; padding: 0; box-shadow: none;">
-                    <div id="admin-lista" style="display: flex; flex-direction: column; gap: 15px;"></div>
+            <div class="info-section">
+                <h3 style="color: var(--red); font-size: 32px; border: none; padding: 0; text-align: center; margin-bottom: 20px;">18 Meses de Proteção Total</h3>
+                <p style="text-align: center; max-width: 800px; margin: 0 auto 50px; font-size: 16px;">Na JD Auto, a qualidade da nossa preparação técnica permite-nos oferecer uma das garantias mais abrangentes e transparentes do mercado. Sem surpresas, sem letras pequenas.</p>
+                
+                <div class="info-grid">
+                    <div class="info-block">
+                        <h4>⚙️ Motor e Mecânica</h4>
+                        <ul class="info-list">
+                            <li>Bloco do motor, colaça e juntas vitais.</li>
+                            <li>Pistões, bielas, válvulas e árvores de cames.</li>
+                            <li>Bomba de óleo e bomba de água principal.</li>
+                            <li>Sistema de distribuição integral.</li>
+                        </ul>
+                    </div>
+                    <div class="info-block">
+                        <h4>🕹️ Caixa e Transmissão</h4>
+                        <ul class="info-list">
+                            <li>Caixas manuais e automáticas (engrenagens).</li>
+                            <li>Conversor de binário e unidade mecatrónica.</li>
+                            <li>Diferenciais e eixos estruturais.</li>
+                            <li>Veios de transmissão e juntas homocinéticas.</li>
+                        </ul>
+                    </div>
+                    <div class="info-block">
+                        <h4>⚡ Eletrónica Essencial</h4>
+                        <ul class="info-list">
+                            <li>Módulos de controlo do motor (ECU).</li>
+                            <li>Alternador e motor de arranque.</li>
+                            <li>Turbocompressor e sobrealimentação.</li>
+                            <li>Sistema de injeção e bombas de alta pressão.</li>
+                        </ul>
+                    </div>
+                    <div class="info-block" style="border-color: var(--red); background: white;">
+                        <h4 style="color: var(--red);">🛡️ Serviços Premium Incluídos</h4>
+                        <ul class="info-list">
+                            <li>Assistência em viagem 24h em toda a Europa.</li>
+                            <li>Reboque direto para oficina especializada.</li>
+                            <li>Viatura de substituição em caso de imobilização.</li>
+                            <li>Apoio prioritário na Oficina JD Auto.</li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>
-    </section>
+    </div>
+
+    <div id="page-sobre" class="page">
+        <div class="page-header">
+            <h1>JD Auto Estarreja</h1>
+            <p>Onde o rigor técnico encontra a paixão automóvel. Conheça a nossa visão.</p>
+        </div>
+        <div class="container">
+            <div class="info-section">
+                <h3 style="text-align: center; border: none; font-size: 32px; margin-bottom: 30px;">Uma Nova Visão de Mobilidade Premium</h3>
+                <p style="text-align: center; max-width: 800px; margin: 0 auto 50px; font-size: 16px; color: var(--text-main); line-height: 1.8;">
+                    A JD Auto nasceu da pura paixão pelo setor automóvel. Com sede na Zona Industrial de Estarreja, especializamo-nos no comércio de viaturas usadas e seminovas de qualidade muito superior à média de mercado. O nosso compromisso é entregar não apenas um carro, mas uma experiência de propriedade sem falhas.
+                </p>
+
+                <div class="info-grid" style="margin-bottom: 50px;">
+                    <div class="info-block" style="text-align: center; padding: 40px 30px;">
+                        <div style="font-size: 40px; margin-bottom: 15px;">🔍</div>
+                        <h4 style="font-size: 20px; color: var(--black);">Transparência Total</h4>
+                        <p style="font-size: 15px; color: var(--text-muted); line-height: 1.6;">Sem quilómetros ocultos, sem histórico omitido. Entregamos-lhe os relatórios e garantimos a proveniência da viatura.</p>
+                    </div>
+                    <div class="info-block" style="text-align: center; padding: 40px 30px;">
+                        <div style="font-size: 40px; margin-bottom: 15px;">🔧</div>
+                        <h4 style="font-size: 20px; color: var(--black);">Rigor Técnico</h4>
+                        <p style="font-size: 15px; color: var(--text-muted); line-height: 1.6;">O nosso maior orgulho é a oficina própria. Cada carro é rigorosamente inspecionado e recondicionado antes da venda.</p>
+                    </div>
+                    <div class="info-block" style="text-align: center; padding: 40px 30px;">
+                        <div style="font-size: 40px; margin-bottom: 15px;">🤝</div>
+                        <h4 style="font-size: 20px; color: var(--black);">Foco no Cliente</h4>
+                        <p style="font-size: 15px; color: var(--text-muted); line-height: 1.6;">Acompanhamos desde o test-drive ao pós-venda. Ajudamos no financiamento, no seguro e em qualquer eventualidade futura.</p>
+                    </div>
+                </div>
+
+                <div style="padding-top: 40px; border-top: 1px solid var(--border); text-align: center;">
+                    <h4 style="font-size: 22px; font-weight: 800; color: var(--black); margin-bottom: 15px;">Venha conhecer o nosso espaço</h4>
+                    <p style="font-size: 16px; color: var(--text-muted); margin-bottom: 25px;">Estamos localizados na Rua das Cavadas Sul, em Estarreja. Marque a sua visita e faça um test-drive sem compromisso.</p>
+                    <button class="btn-main" style="width: auto; padding: 18px 40px;" onclick="window.location.href='tel:+351912345678'">📞 CONTACTAR EQUIPA COMERCIAL</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="page-admin" class="page" style="background: #E5E7EB;">
+        <div class="admin-dashboard container">
+            <div class="admin-header-panel">
+                <h1 style="font-size: 32px; font-weight: 800;">Painel de Comando</h1>
+                <button onclick="location.reload()" style="background:var(--white); border:1px solid var(--border); color:var(--text-main); font-weight:700; padding:12px 24px; border-radius:8px; cursor:pointer;">Sair da Conta</button>
+            </div>
+
+            <div style="background: linear-gradient(135deg, #111827 0%, #1F2937 100%); padding: 35px 40px; border-radius: 16px; margin-bottom: 40px; box-shadow: var(--shadow-md); border: 1px solid var(--black);">
+                <h3 style="color: white; margin-bottom: 15px; font-size: 20px; font-weight: 800;">🚀 Arsenal de Campanhas</h3>
+                <p style="margin-bottom: 25px; font-size: 15px; color: #9CA3AF; line-height: 1.5;">Ative uma destas campanhas de forte impacto visual para converter clientes que visitam a página inicial do stand.</p>
+                
+                <div style="display: flex; flex-wrap: wrap; gap: 15px;">
+                    <button class="btn-promo" style="flex: 1 1 calc(25% - 15px); background: rgba(255,255,255,0.1); color: white; border: 1px solid rgba(255,255,255,0.2); padding: 12px 20px; border-radius: 8px; font-weight: 600; font-size: 13px; cursor: pointer; text-align: left;" onclick="setPromo('Campanha: Compre hoje e leve o depósito atestado!')">⛽ Depósito Cheio</button>
+                    <button class="btn-promo" style="flex: 1 1 calc(25% - 15px); background: rgba(255,255,255,0.1); color: white; border: 1px solid rgba(255,255,255,0.2); padding: 12px 20px; border-radius: 8px; font-weight: 600; font-size: 13px; cursor: pointer; text-align: left;" onclick="setPromo('Oferta da 1ª Revisão na Oficina JD Auto')">🔧 1ª Revisão Grátis</button>
+                    <button class="btn-promo" style="flex: 1 1 calc(25% - 15px); background: rgba(255,255,255,0.1); color: white; border: 1px solid rgba(255,255,255,0.2); padding: 12px 20px; border-radius: 8px; font-weight: 600; font-size: 13px; cursor: pointer; text-align: left;" onclick="setPromo('A JD Auto oferece a Transferência de Propriedade')">📄 Registo Grátis</button>
+                    <button class="btn-promo" style="flex: 1 1 calc(25% - 15px); background: rgba(255,255,255,0.1); color: white; border: 1px solid rgba(255,255,255,0.2); padding: 12px 20px; border-radius: 8px; font-weight: 600; font-size: 13px; cursor: pointer; text-align: left;" onclick="setPromo('Campanha Exclusiva: Super Valorização da sua Retoma!')">📈 Retoma Valorizada</button>
+                    <button class="btn-promo" style="flex: 1 1 calc(25% - 15px); background: rgba(255,255,255,0.1); color: white; border: 1px solid rgba(255,255,255,0.2); padding: 12px 20px; border-radius: 8px; font-weight: 600; font-size: 13px; cursor: pointer; text-align: left;" onclick="setPromo('Oferta Especial: Extensão de Garantia para 24 Meses')">🛡️ Garantia 24M</button>
+                    <button class="btn-promo" style="flex: 1 1 calc(25% - 15px); background: rgba(255,255,255,0.1); color: white; border: 1px solid rgba(255,255,255,0.2); padding: 12px 20px; border-radius: 8px; font-weight: 600; font-size: 13px; cursor: pointer; text-align: left;" onclick="setPromo('Condições Especiais: 0% de Entrada e Taxas Reduzidas')">💶 Financiamento Top</button>
+                    <button class="btn-promo" style="flex: 1 1 calc(25% - 15px); background: rgba(255,255,255,0.1); color: white; border: 1px solid rgba(255,255,255,0.2); padding: 12px 20px; border-radius: 8px; font-weight: 600; font-size: 13px; cursor: pointer; text-align: left;" onclick="setPromo('Na compra da sua viatura oferecemos um fim-de-semana!')">🎁 Voucher Férias</button>
+                    <button class="btn-promo" style="flex: 1 1 calc(25% - 15px); background: rgba(255,255,255,0.1); color: white; border: 1px solid rgba(255,255,255,0.2); padding: 12px 20px; border-radius: 8px; font-weight: 600; font-size: 13px; cursor: pointer; text-align: left;" onclick="setPromo('Campanha Flash: Desconto Extra em toda a frota hoje!')">⚡ Mega Desconto</button>
+                    
+                    <button class="btn-promo" style="width: 100%; margin-top: 15px; background: rgba(239,68,68,0.2); color:#FCA5A5; border-color: transparent; text-align: center; border:none; padding: 14px; font-weight: 700; cursor: pointer; border-radius: 8px;" onclick="setPromo('')">❌ Desativar Todas as Campanhas</button>
+                </div>
+            </div>
+
+            <div class="admin-grid">
+                <div class="admin-panel-card">
+                    <h3 style="margin-bottom: 25px; font-size: 18px; font-weight: 800; padding-bottom: 15px; border-bottom: 1px solid var(--border);">Nova Viatura</h3>
+                    
+                    <button class="btn-demo" style="background: #3B82F6; color: white; border: none; padding: 12px 20px; border-radius: 8px; font-weight: 700; font-size: 13px; cursor: pointer; width: 100%; margin-bottom: 20px; box-shadow: 0 4px 10px rgba(59, 130, 246, 0.3);" onclick="seedDemoCars()">🚗 ADICIONAR VIATURAS DE TESTE</button>
+
+                    <input type="text" id="a-tit" class="input-std" placeholder="Marca e Modelo (Ex: BMW 116d)" style="background:white; text-align:left; font-size:14px; letter-spacing:0;">
+                    <input type="number" id="a-pre" class="input-std" placeholder="Preço Final (€)" style="background:white; text-align:left; font-size:14px; letter-spacing:0;">
+                    <input type="text" id="a-img" class="input-std" placeholder="URL da Imagem" style="background:white; text-align:left; font-size:14px; letter-spacing:0;">
+                    <textarea id="a-des" class="input-std" rows="5" placeholder="Detalhes (Ano, Kms, Combustível, Extras...)" style="background:white; text-align:left; font-size:14px; letter-spacing:0;"></textarea>
+                    <button class="btn-main" style="background:var(--black);" onclick="inserirViatura()">PUBLICAR MANUALMENTE</button>
+                </div>
+
+                <div class="admin-panel-card">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px solid var(--border);">
+                        <h3 style="font-size: 18px; font-weight: 800;">Viaturas Registadas</h3>
+                        <span id="admin-count" style="font-size:14px; font-weight:700; color:var(--text-muted);">0 Carros</span>
+                    </div>
+                    <div id="admin-list-content" style="max-height: 500px; overflow-y: auto; padding-right: 10px;">
+                        </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </main>
 
 <footer>
     <div class="footer-grid">
-        <div>
-            <h2 style="font-size: 28px; font-weight: 900; margin-bottom: 15px; letter-spacing:-1px;">JD<span style="color:var(--primary)">Auto</span></h2>
-            <p style="color: #94A3B8;">Rigor, transparência e excelência no distrito de Aveiro.</p>
+        <div class="footer-col">
+            <div class="logo" style="margin-bottom: 20px;">JD<span>AUTO</span></div>
+            <p>Comércio automóvel multimarca de alta qualidade.</p>
+            <p>Transparência, rigor e confiança absoluta.</p>
         </div>
-        <div>
-            <h4>Contactos</h4>
-            <p>📞 +351 912 345 678</p>
-            <p>✉️ geral@jdauto.pt</p>
+        <div class="footer-col">
+            <h4>Contactos Diretos</h4>
             <p>📍 R. das Cavadas Sul, Estarreja</p>
+            <p>📞 912 345 678</p>
+            <p>✉️ geral@jdauto.pt</p>
         </div>
-        <div>
-            <h4>Funcionamento</h4>
-            <p>Seg - Sex: 09:30 - 19:00</p>
-            <p>Sáb: 10:00 - 17:00</p>
+        <div class="footer-col">
+            <h4>Horário do Stand</h4>
+            <p>Seg a Sex: 09:30 – 19:00</p>
+            <p>Sábados: 10:00 – 13:00</p>
+            <p>Domingos: Encerrado (Só marcação)</p>
         </div>
+    </div>
+    
+    <div class="credits">
+        <p>© 2026 JD Auto Estarreja. Todos os direitos reservados.</p>
+        <p>Desenvolvido por: <a href="https://github.com/t0mas17" target="_blank">Rui Silva</a></p>
     </div>
 </footer>
 
+<div class="modal" id="modal-login">
+    <div class="modal-content">
+        <button class="modal-close" onclick="closeAll()">×</button>
+        <h2 style="font-size: 24px; font-weight: 800; margin-bottom: 10px;">Acesso Restrito</h2>
+        <p style="color: var(--text-muted); margin-bottom: 25px; font-size: 15px;">Introduza o PIN de segurança para aceder ao Dashboard.</p>
+        <input type="password" id="pin-input" class="input-std" style="text-align:center; font-size:32px; letter-spacing:15px; font-weight:800; border: 2px solid var(--border);" placeholder="••••">
+        <button class="btn-main" onclick="verificarLogin()">ENTRAR NO SISTEMA</button>
+    </div>
+</div>
+
+<div class="modal" id="modal-detalhes">
+    <button class="modal-close" onclick="closeAll()" style="color:var(--text-muted); text-shadow:0 2px 4px rgba(255,255,255,0.8); z-index:20;">×</button>
+    <div class="modal-left">
+        <img id="m-img" src="" alt="Viatura JD Auto">
+    </div>
+    <div class="modal-right">
+        <div id="m-badges" style="margin-bottom: 10px;"></div>
+        <h2 id="m-tit" style="font-size: 28px; font-weight: 800; color: var(--black); line-height: 1.2;"></h2>
+        <div id="m-pre" style="font-size: 32px; font-weight: 800; color: var(--red); padding-bottom: 20px; border-bottom: 1px solid var(--border); margin: 15px 0 20px;"></div>
+        
+        <h3 style="font-size: 15px; font-weight: 700; margin-bottom: 10px; color: var(--black);">Descrição da Viatura:</h3>
+        <p id="m-des" style="color: var(--text-main); line-height: 1.8; font-size: 14px; margin-bottom: 30px; white-space: pre-wrap; background: var(--bg-page); padding: 20px; border-radius: 8px; border: 1px solid var(--border);"></p>
+        
+        <button class="btn-main" id="btn-info" onclick="simularEnvio(this, 'Pedido Registado! Os nossos consultores contactam em breve.')">SOLICITAR INFORMAÇÕES</button>
+    </div>
+</div>
+
 <script>
+    // SUPABASE SETUP
     const URL_S = 'https://nhmhlcipomnshywkxwpl.supabase.co';
     const KEY_S = 'sb_publishable_r98j53EhXUKlSOrpeuxxCg_uTvz-5qM';
     const supa = window.supabase.createClient(URL_S, KEY_S);
-    let stock = [];
+    let allCars = [];
 
-    function checkReveal() {
-        var reveals = document.querySelectorAll(".reveal");
-        for (var i = 0; i < reveals.length; i++) {
-            var windowHeight = window.innerHeight;
-            var elementTop = reveals[i].getBoundingClientRect().top;
-            if (elementTop < windowHeight - 50) reveals[i].classList.add("active");
+    // TOAST NOTIFICATIONS
+    const App = {
+        toast: function(msg) {
+            const b = document.getElementById('toast-box');
+            const t = document.createElement('div');
+            t.className = 'toast'; 
+            t.innerHTML = `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg> <span>${msg}</span>`;
+            b.appendChild(t);
+            setTimeout(() => t.remove(), 4000);
+        }
+    };
+
+    // WIDGET CONTACTO BARRA DINÂMICA
+    function toggleContactBar() {
+        const bar = document.getElementById('contactBar');
+        bar.classList.toggle('show');
+    }
+
+    // INIT APP E REFRESH FLUIDO
+    async function refreshData() {
+        const { data } = await supa.from('carros').select('*').order('created_at', {ascending: false});
+        if(data) {
+            allCars = data;
+            
+            // VERIFICAÇÃO DE PROMOÇÕES NO HERO
+            const promoConfig = allCars.find(c => c.imagem_url === 'PROMO_CONFIG');
+            if(promoConfig && promoConfig.descricao && !promoConfig.vendido) {
+                document.getElementById('hero-standard').style.display = 'none';
+                document.getElementById('hero-campaign').style.display = 'block';
+                document.getElementById('hero-campaign-text').innerText = promoConfig.descricao;
+            } else {
+                document.getElementById('hero-standard').style.display = 'block';
+                document.getElementById('hero-campaign').style.display = 'none';
+            }
+            
+            applyFilters();
+            
+            if(document.getElementById('page-admin').classList.contains('active')) {
+                renderAdmin();
+            }
         }
     }
-    window.addEventListener("scroll", checkReveal);
 
-    async function carregarDados() {
-        const { data } = await supa.from('carros').select('*').order('created_at', {ascending: false});
-        if(data) { stock = data; renderShowroomUI(stock); renderAdmin(); setTimeout(checkReveal, 300); }
+    async function init() {
+        await refreshData();
     }
 
-    function renderShowroomUI(listaCarros) {
+    // FILTRO AVANÇADO
+    window.applyFilters = function() {
         const grid = document.getElementById('showroom');
-        if (listaCarros.length === 0) {
-            grid.innerHTML = "<p style='grid-column: 1/-1; text-align:center; color: var(--text-muted); padding: 40px;'>Nenhuma viatura encontrada.</p>";
+        let filtered = allCars.filter(c => c.imagem_url !== 'PROMO_CONFIG' && !c.vendido); 
+
+        const textBusca = document.getElementById('f-texto').value.toLowerCase();
+        const maxPreco = parseInt(document.getElementById('f-preco').value);
+        const ordem = document.getElementById('f-ordenar').value;
+        const marca = document.getElementById('f-marca').value.toLowerCase();
+        const comb = document.getElementById('f-combustivel').value.toLowerCase();
+        const caixa = document.getElementById('f-caixa').value.toLowerCase();
+
+        if(textBusca) { filtered = filtered.filter(c => c.titulo.toLowerCase().includes(textBusca) || (c.descricao && c.descricao.toLowerCase().includes(textBusca))); }
+        if(maxPreco) { filtered = filtered.filter(c => parseInt(c.preco) <= maxPreco); }
+        if(marca) { filtered = filtered.filter(c => c.titulo.toLowerCase().includes(marca)); }
+        if(comb) { filtered = filtered.filter(c => c.descricao && c.descricao.toLowerCase().includes(comb)); }
+        if(caixa) { filtered = filtered.filter(c => c.descricao && c.descricao.toLowerCase().includes(caixa)); }
+
+        if(ordem === 'preco-asc') filtered.sort((a,b) => parseInt(a.preco) - parseInt(b.preco));
+        if(ordem === 'preco-desc') filtered.sort((a,b) => parseInt(b.preco) - parseInt(a.preco));
+
+        if(filtered.length === 0) {
+            grid.innerHTML = `<div style="grid-column: 1/-1; text-align:center; padding: 60px; color: var(--text-muted); font-size:16px;">Nenhuma viatura corresponde aos critérios de pesquisa.</div>`;
             return;
         }
-        grid.innerHTML = listaCarros.map(c => {
-            let badge = '';
-            if(c.status === 'reservado') badge = '<div class="badge badge-reservado">Reservado</div>';
-            if(c.status === 'vendido') badge = '<div class="badge badge-vendido">Vendido</div>';
 
-            return `
-            <div class="card reveal" onclick="abrirCarro(${c.id})">
-                <div class="card-img" style="background-image:url('${c.imagem_url}')">${badge}</div>
-                <div class="card-info">
-                    <div class="card-price-row">
-                        <h3 style="margin:0; width:65%; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${c.titulo}</h3>
-                        <div class="card-price" style="font-size:20px;">${Number(c.preco).toLocaleString()} €</div>
-                    </div>
-                    <div style="display:flex; justify-content:space-between; margin-top:15px; border-top:1px solid #f1f5f9; padding-top:15px;">
-                        <span class="card-action">Ver Detalhes →</span>
-                    </div>
+        grid.innerHTML = filtered.map(c => `
+            <div class="car-card" onclick="verDetalhes(${c.id})">
+                <div class="car-img-wrap">
+                    ${c.reservado ? '<div class="badge badge-reserva" style="top:15px; left:15px;">RESERVADO</div>' : ''}
+                    <div class="badge badge-garantia" style="top:15px; right:15px; background:var(--red);">18 Meses Garantia</div>
+                    <img src="${c.imagem_url}" onerror="this.src='https://via.placeholder.com/600x400?text=JD+AUTO'">
                 </div>
-            </div>
-            `;
-        }).join('');
-        setTimeout(checkReveal, 100);
-    }
-
-    function pesquisarCarros() {
-        const termo = document.getElementById('search-input').value.toLowerCase();
-        const filtrados = stock.filter(c => c.titulo.toLowerCase().includes(termo));
-        renderShowroomUI(filtrados);
-    }
-
-    function abrirCarro(id) {
-        const c = stock.find(x => x.id === id);
-        let badge = '';
-        if(c.status === 'reservado') badge = '<span style="display:inline-block; background:#F59E0B; color:white; padding:4px 12px; border-radius:4px; font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:1px;">Reservado</span>';
-        if(c.status === 'vendido') badge = '<span style="display:inline-block; background:#10B981; color:white; padding:4px 12px; border-radius:4px; font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:1px;">Vendido</span>';
-
-        document.getElementById('carro-detalhes-render').innerHTML = `
-            <button class="close-btn" onclick="fecharModais()">✕</button>
-            <div class="modal-car-img" style="background-image:url('${c.imagem_url}')">
-                <div style="position: absolute; top: 15px; left: 15px;">${badge}</div>
-            </div>
-            <div class="modal-body">
-                <div class="modal-header-flex">
-                    <h2 class="modal-title">${c.titulo}</h2>
-                    <div class="modal-price">${Number(c.preco).toLocaleString()} €</div>
-                </div>
-                <p class="modal-specs">${c.descricao || 'Viatura premium inspecionada. Mais detalhes disponíveis na nossa agência física.'}</p>
-                
-                ${c.status !== 'vendido' ? `<button class="btn-main" style="padding: 20px;" onclick="window.open('https://wa.me/351912345678?text=Olá,%20tenho%20interesse%20na%20viatura:%20${c.titulo}')">RESERVAR VIA WHATSAPP</button>` : '<button class="btn-main" style="background:#cbd5e1; cursor:not-allowed; padding:20px;">INDISPONÍVEL</button>'}
-            </div>
-        `;
-        document.getElementById('overlay-carro').style.display = 'flex';
-    }
-
-    function renderAdmin() {
-        const total = stock.length;
-        const disp = stock.filter(c => !c.status || c.status === 'disponivel').length;
-        const res = stock.filter(c => c.status === 'reservado').length;
-        const vend = stock.filter(c => c.status === 'vendido').length;
-
-        document.getElementById('admin-stats').innerHTML = `
-            <div class="box-form" style="padding:20px;"><span>Total</span><br><strong style="font-size:28px; font-weight:900;">${total}</strong></div>
-            <div class="box-form" style="padding:20px;"><span>Disponíveis</span><br><strong style="font-size:28px; color:var(--text-main); font-weight:900;">${disp}</strong></div>
-            <div class="box-form" style="padding:20px;"><span>Reservados</span><br><strong style="font-size:28px; color:#F59E0B; font-weight:900;">${res}</strong></div>
-            <div class="box-form" style="padding:20px;"><span>Vendidos</span><br><strong style="font-size:28px; color:#10B981; font-weight:900;">${vend}</strong></div>
-        `;
-
-        document.getElementById('admin-lista').innerHTML = stock.map(c => `
-            <div style="display:flex; justify-content:space-between; align-items:center; padding:15px 20px; background:#fff; border:1px solid var(--border); border-radius:12px; box-shadow:var(--shadow-sm);">
-                <div style="display:flex; align-items:center; gap:15px;">
-                    <div style="width:70px; height:50px; border-radius:6px; background-size:cover; background-position:center; background-image:url('${c.imagem_url}')"></div>
-                    <div>
-                        <strong style="font-size:15px; display:block; font-weight:800;">${c.titulo}</strong>
-                        <span style="color:var(--text-muted); font-size:13px; margin-right:10px; font-weight:600;">${Number(c.preco).toLocaleString()}€</span>
-                        <span style="font-size:10px; background:#f1f5f9; padding:4px 8px; border-radius:4px; text-transform:uppercase; font-weight:800; letter-spacing:0.5px; color:${c.status === 'vendido' ? '#059669' : c.status === 'reservado' ? '#d97706' : '#64748B'}">${c.status || 'disponivel'}</span>
-                    </div>
-                </div>
-                <div style="display:flex; gap:8px;">
-                    <button style="padding:8px 14px; border-radius:6px; border:none; background:#fffbeb; color:#b45309; font-weight:700; cursor:pointer;" onclick="mudarEstado(${c.id}, 'reservado')">Reservar</button>
-                    <button style="padding:8px 14px; border-radius:6px; border:none; background:#ecfdf5; color:#047857; font-weight:700; cursor:pointer;" onclick="mudarEstado(${c.id}, 'vendido')">Vender</button>
-                    <button style="padding:8px 14px; border-radius:6px; border:none; background:#f1f5f9; color:#475569; font-weight:700; cursor:pointer;" onclick="mudarEstado(${c.id}, 'disponivel')">Limpar</button>
-                    <button style="padding:8px 14px; border-radius:6px; border:none; background:#fef2f2; color:#b91c1c; font-weight:700; cursor:pointer;" onclick="apagarCarro(${c.id})">Apagar</button>
+                <div class="car-info">
+                    <div class="car-title">${c.titulo}</div>
+                    <div class="car-price">${Number(c.preco).toLocaleString()} €</div>
                 </div>
             </div>
         `).join('');
     }
 
-    async function inserirCarro() { await supa.from('carros').insert([{ titulo: document.getElementById('a-tit').value, preco: document.getElementById('a-pre').value, imagem_url: document.getElementById('a-img').value, descricao: document.getElementById('a-des').value, status: 'disponivel' }]); carregarDados(); }
-    async function mudarEstado(id, novo) { await supa.from('carros').update({ status: novo }).eq('id', id); carregarDados(); }
-    async function apagarCarro(id) { if(confirm("Apagar viatura permanentemente?")) { await supa.from('carros').delete().eq('id', id); carregarDados(); } }
+    // MODAL DETALHES CARRO
+    window.verDetalhes = function(id) {
+        const c = allCars.find(x => x.id === id);
+        document.getElementById('m-img').src = c.imagem_url;
+        document.getElementById('m-tit').innerText = c.titulo;
+        document.getElementById('m-pre').innerText = Number(c.preco).toLocaleString() + ' €';
+        document.getElementById('m-des').innerText = c.descricao || 'Viatura sujeita a inspeção rigorosa. Contacte-nos para mais informações.';
+        
+        let badges = '';
+        if(c.reservado && !c.vendido) badges += '<span style="background:#F59E0B; color:white; padding:6px 12px; border-radius:4px; font-size:11px; font-weight:800; margin-right:10px;">⚠️ RESERVADA</span>';
+        if(c.vendido) badges += '<span style="background:var(--black); color:white; padding:6px 12px; border-radius:4px; font-size:11px; font-weight:800;">🔒 VENDIDA</span>';
+        document.getElementById('m-badges').innerHTML = badges;
+        
+        const btn = document.getElementById('btn-info');
+        btn.innerText = "SOLICITAR INFORMAÇÕES";
+        btn.style.background = "var(--black)";
+        btn.disabled = false;
 
-    function calcularRetoma() {
-        const matricula = document.getElementById('retoma-matricula').value;
-        const ano = parseInt(document.getElementById('retoma-ano').value);
-        const kms = parseInt(document.getElementById('retoma-kms').value);
-        
-        if(!matricula) return alert("Por favor, preencha a Matrícula da sua viatura.");
-        if(!ano || !kms) return alert("Preencha o ano e os quilómetros para calcular o valor.");
-        
-        let est = 25000 - ((2026 - ano) * 1150) - (kms * 0.035);
-        document.getElementById('valor-retoma-txt').innerText = Number(Math.max(est, 500).toFixed(0)).toLocaleString() + " €";
-        document.getElementById('retoma-resultado').style.display = 'block';
+        openModal('detalhes');
     }
 
-    function enviarMensagem(inputId, assunto) {
-        const matricula = document.getElementById(inputId).value;
-        if(!matricula) { alert("Por favor, insira primeiro a matrícula do seu veículo."); return; }
-        const mensagem = `Olá, pretendo ${assunto} para a viatura com a matrícula: ${matricula}`;
-        window.open(`https://wa.me/351912345678?text=${encodeURIComponent(mensagem)}`);
+    // NAVEGAÇÃO
+    window.showPage = function(id) {
+        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+        document.querySelectorAll('nav > a').forEach(a => a.classList.remove('active'));
+        document.getElementById('page-' + id).classList.add('active');
+        document.getElementById('nav-' + id)?.classList.add('active');
+        window.scrollTo(0,0);
+        closeAll();
+    }
+    
+    window.openModal = function(id) { 
+        document.getElementById('overlay').style.display = 'block'; 
+        document.getElementById('modal-' + id).classList.add('active'); 
+        if(id === 'login') {
+            document.getElementById('pin-input').value = '';
+            setTimeout(() => document.getElementById('pin-input').focus(), 100); 
+        }
+    }
+    window.closeAll = function() { 
+        document.getElementById('overlay').style.display = 'none'; 
+        document.querySelectorAll('.modal').forEach(m => m.classList.remove('active')); 
     }
 
-    function atualizarMenu(activeId) {
-       
-        document.querySelectorAll('.nav-link').forEach(a => a.classList.remove('active'));
+    // FEEDBACK VISUAL PARA BOTÃO DO MODAL CARRO
+    window.simularEnvio = function(button, mensagem) {
+        button.innerText = "A PROCESSAR...";
+        button.style.background = "#6B7280";
+        button.disabled = true;
+        setTimeout(() => {
+            button.innerText = "✓ ENVIADO";
+            button.style.background = "#059669";
+            App.toast(mensagem);
+            setTimeout(() => { closeAll(); }, 1800);
+        }, 1000);
+    }
+
+    // LOGIN ADMIN
+    document.getElementById('pin-input').addEventListener('keypress', (e) => { if(e.key === 'Enter') verificarLogin(); });
+    window.verificarLogin = function() {
+        if(document.getElementById('pin-input').value === "2026") {
+            closeAll(); showPage('admin'); renderAdmin();
+            App.toast("Acesso de Administrador Garantido.");
+        } else { alert("Acesso Negado: PIN Incorreto."); }
+    }
+
+    // RENDER ADMIN LIST
+    function renderAdmin() {
+        const list = document.getElementById('admin-list-content');
+        const validCars = allCars.filter(c => c.imagem_url !== 'PROMO_CONFIG');
+        document.getElementById('admin-count').innerText = `${validCars.length} viaturas registadas`;
         
-        if (['financiamento', 'seguros', 'oficina', 'retoma'].includes(activeId)) {
-            
-            document.getElementById('nav-servicos').classList.add('active');
+        list.innerHTML = validCars.map(c => `
+            <div class="admin-car-row" style="${c.vendido ? 'opacity:0.4; filter: grayscale(100%);' : ''}">
+                <div class="admin-car-info">
+                    <img src="${c.imagem_url}" onerror="this.src='https://via.placeholder.com/70x50'">
+                    <div>
+                        <strong style="display:block; font-size:14px; color:var(--black); margin-bottom: 4px;">${c.titulo}</strong>
+                        <span style="font-size:13px; font-weight: 700; color:var(--red);">${Number(c.preco).toLocaleString()} €</span>
+                    </div>
+                </div>
+                <div class="admin-actions">
+                    <button class="btn-action btn-action-reserva" onclick="mudarEstado(${c.id}, 'reservado', ${!c.reservado})">${c.reservado ? 'Desreservar' : 'Reservar'}</button>
+                    <button class="btn-action btn-action-vendido" onclick="mudarEstado(${c.id}, 'vendido', ${!c.vendido})">${c.vendido ? 'Repor Venda' : 'Vendido'}</button>
+                    <button class="btn-action btn-action-apagar" onclick="apagarCarro(${c.id})">Apagar</button>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    // DB ACTIONS COM REFRESH FLUIDO (SEM RELOAD DA PÁGINA)
+    window.inserirViatura = async function() {
+        const t = document.getElementById('a-tit').value;
+        const p = document.getElementById('a-pre').value;
+        const img = document.getElementById('a-img').value || 'https://via.placeholder.com/600x400?text=JD+AUTO';
+        const des = document.getElementById('a-des').value;
+        
+        if(!t || !p) return alert("Preencha título e preço.");
+        
+        const { error } = await supa.from('carros').insert([{ titulo: t, preco: p, imagem_url: img, descricao: des, vendido: false, reservado: false }]);
+        
+        if(error) {
+            alert("Erro de gravação. Verifique o RLS.");
         } else {
-            
-            const target = document.getElementById('nav-' + activeId);
-            if (target) target.classList.add('active');
+            document.getElementById('a-tit').value = '';
+            document.getElementById('a-pre').value = '';
+            document.getElementById('a-img').value = '';
+            document.getElementById('a-des').value = '';
+            App.toast("Adicionado ao Stand!");
+            await refreshData();
         }
     }
 
-    function mostrarPagina(id) {
-        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-        document.getElementById('page-' + id).classList.add('active');
-        atualizarMenu(id);
-        window.scrollTo(0,0);
-        setTimeout(checkReveal, 100);
+    window.mudarEstado = async function(id, campo, valor) { 
+        await supa.from('carros').update({ [campo]: valor }).eq('id', id); 
+        await refreshData();
+        App.toast("Estado atualizado com sucesso.");
     }
     
-    function mostrarSubPagina(id) {
-        mostrarPagina(id);
+    window.apagarCarro = async function(id) { 
+        if(confirm("Deseja eliminar esta viatura permanentemente?")) { 
+            await supa.from('carros').delete().eq('id', id); 
+            await refreshData();
+            App.toast("Viatura removida do sistema.");
+        } 
     }
 
-    function abrirLogin() { document.getElementById('overlay-login').style.display = 'flex'; }
-    
-    function fecharModais() { 
-        document.getElementById('overlay-carro').style.display = 'none'; 
-        document.getElementById('overlay-login').style.display = 'none'; 
+    // PROMOÇÕES HERO FLUIDAS
+    window.setPromo = async function(texto) {
+        await supa.from('carros').delete().eq('imagem_url', 'PROMO_CONFIG');
+        
+        if(texto !== '') {
+            const { error } = await supa.from('carros').insert([{ 
+                titulo: 'PROMO_GLOBAL_CONFIG', 
+                preco: 0, 
+                imagem_url: 'PROMO_CONFIG', 
+                descricao: texto, 
+                vendido: false, 
+                reservado: false 
+            }]);
+            if(error) { alert("Erro de gravação. Verifique o RLS no Supabase."); return; }
+        }
+        
+        App.toast(texto !== '' ? "Campanha ativada no Ecrã Inicial!" : "Todas as campanhas removidas.");
+        await refreshData();
     }
     
-    function validarLogin() { 
-        if(document.getElementById('pin').value === "2026") { 
-            fecharModais(); mostrarPagina('admin'); 
-            document.getElementById('nav-btn-admin').style.display = 'none';
-        } else alert("PIN Errado"); 
+    // CARROS DE TESTE
+    window.seedDemoCars = async function() {
+        const demoCars = [
+            { titulo: 'BMW 420d Gran Coupé M Sport', preco: 34500, imagem_url: 'https://images.unsplash.com/photo-1555215695-3004980ad54e?q=80&w=800', descricao: 'Gasóleo | Automática | 85.000 km | Ano: 2020\nViatura nacional. Pack M completo, jantes 19".', vendido: false, reservado: false },
+            { titulo: 'Mercedes-Benz A 180 d AMG Line', preco: 31900, imagem_url: 'https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?q=80&w=800', descricao: 'Gasóleo | Automática | 60.000 km | Ano: 2021\nPacote AMG interior e exterior. Teto panorâmico duplo.', vendido: false, reservado: false },
+            { titulo: 'Porsche 911 Carrera S', preco: 125000, imagem_url: 'https://images.unsplash.com/photo-1503376780353-7e6692767b70?q=80&w=800', descricao: 'Gasolina | Automática | 45.000 km | Ano: 2019\nSport Chrono Pack, suspensão PASM e jantes RS Spyder 20/21".', vendido: false, reservado: false }
+        ];
+        App.toast("A processar viaturas de demonstração...");
+        const { error } = await supa.from('carros').insert(demoCars);
+        if(error) alert("Erro a carregar. Verifique o RLS da tabela.");
+        else await refreshData();
     }
-    function sairAdmin() { document.getElementById('pin').value = ''; document.getElementById('nav-btn-admin').style.display = 'block'; mostrarPagina('home'); }
 
-    window.onload = carregarDados;
+    window.onload = init;
 </script>
 </body>
 </html>
