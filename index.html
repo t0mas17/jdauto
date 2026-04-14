@@ -115,7 +115,7 @@
         .info-list li { font-size: 15px; color: var(--text-main); margin-bottom: 12px; display: flex; align-items: flex-start; gap: 12px; line-height: 1.6; font-weight: 500;}
         .info-list li::before { content: '■'; color: var(--red); font-size: 10px; margin-top: 5px; }
 
-        /* === MODAIS === */
+        /* === MODAIS E OVERLAY === */
         .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(17, 24, 39, 0.85); z-index: 2000; display: none; backdrop-filter: blur(4px); }
         .modal { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -45%); width: 90%; max-width: 450px; background: var(--bg-card); border-radius: 16px; z-index: 2001; display: none; opacity: 0; transition: 0.3s ease; box-shadow: var(--shadow-lg); border: 1px solid var(--border); overflow: hidden; }
         .modal.active { display: block; opacity: 1; transform: translate(-50%, -50%); }
@@ -136,7 +136,7 @@
         .btn-main { width: 100%; background: var(--black); color: white; padding: 18px; border: none; border-radius: 8px; font-weight: 800; font-size: 14px; text-transform: uppercase; cursor: pointer; transition: 0.3s; letter-spacing: 0.5px; }
         .btn-main:hover { background: var(--red); box-shadow: 0 8px 20px rgba(230, 57, 70, 0.25); transform: translateY(-2px); }
 
-        /* === PAINEL ADMIN (JORGE) === */
+        /* === PAINEL ADMIN === */
         #page-admin { background: #E5E7EB; padding-top: 100px;}
         .admin-dashboard { max-width: 1400px; margin: 0 auto; }
         .admin-header-panel { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; background: var(--bg-card); padding: 25px 40px; border-radius: 16px; box-shadow: var(--shadow-sm); }
@@ -164,7 +164,7 @@
         .btn-action-apagar { background: #FEE2E2; color: #DC2626; }
         .btn-action:hover { opacity: 0.8; }
 
-        /* === FOOTER E CRÉDITOS CENTRALIZADOS === */
+        /* === FOOTER === */
         footer { background: var(--bg-card); padding: 80px 5% 40px; border-top: 1px solid var(--border); margin-top: 80px; }
         .footer-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 50px; max-width: 1400px; margin: 0 auto; }
         .footer-col h4 { font-size: 15px; font-weight: 800; margin-bottom: 25px; color: var(--black); text-transform: uppercase; letter-spacing: 1px; }
@@ -267,7 +267,7 @@
                     </div>
                     <div class="f-group">
                         <label>Pesquisa Livre</label>
-                        <input type="text" id="f-texto" placeholder="Ex: Pack M, AMG, S-Line..." onkeyup="applyFilters()" style="letter-spacing:0; text-align:left; font-size:14px; padding:14px 16px;">
+                        <input type="text" id="f-texto" placeholder="Ex: Pack M, AMG, S-Line..." onkeyup="applyFilters()" style="text-align:left; font-size:14px; padding:14px 16px;">
                     </div>
                 </div>
             </div>
@@ -630,7 +630,6 @@
         }
     };
 
-    // WIDGET CONTACTO
     function toggleContactBar() {
         const bar = document.getElementById('contactBar');
         bar.classList.toggle('show');
@@ -659,7 +658,6 @@
 
     async function init() {
         await refreshData();
-        // Verifica se o Jorge já tinha feito login e guardado sessão no browser
         const { data: { session } } = await supa.auth.getSession();
         if(session && document.getElementById('page-admin').classList.contains('active')) {
             renderAdmin();
