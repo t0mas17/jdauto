@@ -131,10 +131,10 @@
         .modal-close { position: absolute; top: 20px; right: 20px; background: var(--bg-page); border: 1px solid var(--border); width: 36px; height: 36px; border-radius: 50%; font-size: 20px; cursor: pointer; color: var(--text-muted); display: flex; justify-content: center; align-items: center; transition: 0.2s; z-index: 10; }
         .modal-close:hover { background: var(--red); color: white; border-color: var(--red); }
 
-        .input-std { width: 100%; padding: 18px 20px; border: 1px solid var(--border); border-radius: 8px; margin-bottom: 16px; font-size: 14px; outline: none; background: var(--bg-page); font-weight: 500; transition: 0.2s; text-align: center; letter-spacing: 10px; font-size: 28px;}
-        .input-std:focus { border-color: var(--red); background: var(--bg-card); }
+        .input-std { width: 100%; padding: 18px 20px; border: 1px solid var(--border); border-radius: 8px; margin-bottom: 16px; font-size: 14px; outline: none; background: var(--bg-page); font-weight: 500; transition: 0.2s; }
+        .input-std:focus { border-color: var(--red); background: var(--bg-card); box-shadow: 0 0 0 3px rgba(230, 57, 70, 0.1); }
         .btn-main { width: 100%; background: var(--black); color: white; padding: 18px; border: none; border-radius: 8px; font-weight: 800; font-size: 14px; text-transform: uppercase; cursor: pointer; transition: 0.3s; letter-spacing: 0.5px; }
-        .btn-main:hover { background: var(--red); }
+        .btn-main:hover { background: var(--red); box-shadow: 0 8px 20px rgba(230, 57, 70, 0.25); transform: translateY(-2px); }
 
         /* === PAINEL ADMIN (JORGE) === */
         #page-admin { background: #E5E7EB; padding-top: 100px;}
@@ -146,6 +146,8 @@
         .promo-grid { display: flex; gap: 15px; flex-wrap: wrap; }
         .btn-promo { background: rgba(255,255,255,0.1); color: white; border: 1px solid rgba(255,255,255,0.2); padding: 12px 20px; border-radius: 8px; font-weight: 600; font-size: 13px; cursor: pointer; transition: 0.2s; flex: 1 1 calc(25% - 15px); min-width: 220px; text-align: left; display: flex; align-items: center; gap: 10px;}
         .btn-promo:hover { background: var(--red); border-color: var(--red); transform: translateY(-2px); }
+        .btn-promo-off { background: rgba(239, 68, 68, 0.2); color: #FCA5A5; border-color: transparent; }
+        .btn-promo-off:hover { background: #EF4444; color: white; }
         .btn-demo { background: #3B82F6; color: white; border: none; padding: 12px 20px; border-radius: 8px; font-weight: 700; font-size: 13px; cursor: pointer; width: 100%; margin-bottom: 20px; box-shadow: 0 4px 10px rgba(59, 130, 246, 0.3); transition: 0.3s;}
         .btn-demo:hover { background: #2563EB; transform: translateY(-2px); }
 
@@ -162,11 +164,12 @@
         .btn-action-apagar { background: #FEE2E2; color: #DC2626; }
         .btn-action:hover { opacity: 0.8; }
 
-        /* === FOOTER === */
+        /* === FOOTER E CRÉDITOS CENTRALIZADOS === */
         footer { background: var(--bg-card); padding: 80px 5% 40px; border-top: 1px solid var(--border); margin-top: 80px; }
         .footer-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 50px; max-width: 1400px; margin: 0 auto; }
         .footer-col h4 { font-size: 15px; font-weight: 800; margin-bottom: 25px; color: var(--black); text-transform: uppercase; letter-spacing: 1px; }
         .footer-col p { font-size: 14px; color: var(--text-muted); margin-bottom: 12px; line-height: 1.6; }
+        
         .credits { max-width: 1400px; margin: 60px auto 0; padding: 30px 20px 20px; border-top: 1px solid var(--border); display: flex; flex-direction: column; align-items: center; gap: 12px; font-size: 13px; color: var(--text-muted); font-weight: 500; text-align: center; }
         .credits a { color: var(--black); font-weight: 800; text-decoration: none; transition: 0.3s; border-bottom: 2px solid var(--red); padding-bottom: 2px;}
         .credits a:hover { color: var(--red); border-bottom-color: var(--black); }
@@ -507,7 +510,7 @@
         <div class="admin-dashboard container">
             <div class="admin-header-panel">
                 <h1 style="font-size: 32px; font-weight: 800;">Painel de Comando</h1>
-                <button onclick="location.reload()" style="background:var(--white); border:1px solid var(--border); color:var(--text-main); font-weight:700; padding:12px 24px; border-radius:8px; cursor:pointer;">Sair da Conta</button>
+                <button onclick="fazerLogout()" style="background:var(--white); border:1px solid var(--border); color:var(--text-main); font-weight:700; padding:12px 24px; border-radius:8px; cursor:pointer;">Sair da Conta</button>
             </div>
 
             <div style="background: linear-gradient(135deg, #111827 0%, #1F2937 100%); padding: 35px 40px; border-radius: 16px; margin-bottom: 40px; box-shadow: var(--shadow-md); border: 1px solid var(--black);">
@@ -515,25 +518,22 @@
                 <p style="margin-bottom: 25px; font-size: 15px; color: #9CA3AF; line-height: 1.5;">Ative uma destas campanhas de forte impacto visual para converter clientes que visitam a página inicial do stand.</p>
                 
                 <div style="display: flex; flex-wrap: wrap; gap: 15px;">
-                    <button class="btn-promo" style="flex: 1 1 calc(25% - 15px); background: rgba(255,255,255,0.1); color: white; border: 1px solid rgba(255,255,255,0.2); padding: 12px 20px; border-radius: 8px; font-weight: 600; font-size: 13px; cursor: pointer; text-align: left;" onclick="setPromo('Campanha: Compre hoje e leve o depósito atestado!')">⛽ Depósito Cheio</button>
-                    <button class="btn-promo" style="flex: 1 1 calc(25% - 15px); background: rgba(255,255,255,0.1); color: white; border: 1px solid rgba(255,255,255,0.2); padding: 12px 20px; border-radius: 8px; font-weight: 600; font-size: 13px; cursor: pointer; text-align: left;" onclick="setPromo('Oferta da 1ª Revisão na Oficina JD Auto')">🔧 1ª Revisão Grátis</button>
-                    <button class="btn-promo" style="flex: 1 1 calc(25% - 15px); background: rgba(255,255,255,0.1); color: white; border: 1px solid rgba(255,255,255,0.2); padding: 12px 20px; border-radius: 8px; font-weight: 600; font-size: 13px; cursor: pointer; text-align: left;" onclick="setPromo('A JD Auto oferece a Transferência de Propriedade')">📄 Registo Grátis</button>
-                    <button class="btn-promo" style="flex: 1 1 calc(25% - 15px); background: rgba(255,255,255,0.1); color: white; border: 1px solid rgba(255,255,255,0.2); padding: 12px 20px; border-radius: 8px; font-weight: 600; font-size: 13px; cursor: pointer; text-align: left;" onclick="setPromo('Campanha Exclusiva: Super Valorização da sua Retoma!')">📈 Retoma Valorizada</button>
-                    <button class="btn-promo" style="flex: 1 1 calc(25% - 15px); background: rgba(255,255,255,0.1); color: white; border: 1px solid rgba(255,255,255,0.2); padding: 12px 20px; border-radius: 8px; font-weight: 600; font-size: 13px; cursor: pointer; text-align: left;" onclick="setPromo('Oferta Especial: Extensão de Garantia para 24 Meses')">🛡️ Garantia 24M</button>
-                    <button class="btn-promo" style="flex: 1 1 calc(25% - 15px); background: rgba(255,255,255,0.1); color: white; border: 1px solid rgba(255,255,255,0.2); padding: 12px 20px; border-radius: 8px; font-weight: 600; font-size: 13px; cursor: pointer; text-align: left;" onclick="setPromo('Condições Especiais: 0% de Entrada e Taxas Reduzidas')">💶 Financiamento Top</button>
-                    <button class="btn-promo" style="flex: 1 1 calc(25% - 15px); background: rgba(255,255,255,0.1); color: white; border: 1px solid rgba(255,255,255,0.2); padding: 12px 20px; border-radius: 8px; font-weight: 600; font-size: 13px; cursor: pointer; text-align: left;" onclick="setPromo('Na compra da sua viatura oferecemos um fim-de-semana!')">🎁 Voucher Férias</button>
-                    <button class="btn-promo" style="flex: 1 1 calc(25% - 15px); background: rgba(255,255,255,0.1); color: white; border: 1px solid rgba(255,255,255,0.2); padding: 12px 20px; border-radius: 8px; font-weight: 600; font-size: 13px; cursor: pointer; text-align: left;" onclick="setPromo('Campanha Flash: Desconto Extra em toda a frota hoje!')">⚡ Mega Desconto</button>
-                    
-                    <button class="btn-promo" style="width: 100%; margin-top: 15px; background: rgba(239,68,68,0.2); color:#FCA5A5; border-color: transparent; text-align: center; border:none; padding: 14px; font-weight: 700; cursor: pointer; border-radius: 8px;" onclick="setPromo('')">❌ Desativar Todas as Campanhas</button>
+                    <button class="btn-promo" onclick="setPromo('Campanha: Compre hoje e leve o depósito atestado!')">⛽ Depósito Cheio</button>
+                    <button class="btn-promo" onclick="setPromo('Oferta da 1ª Revisão na Oficina JD Auto')">🔧 1ª Revisão Grátis</button>
+                    <button class="btn-promo" onclick="setPromo('A JD Auto oferece a Transferência de Propriedade')">📄 Registo Grátis</button>
+                    <button class="btn-promo" onclick="setPromo('Campanha Exclusiva: Super Valorização da sua Retoma!')">📈 Retoma Valorizada</button>
+                    <button class="btn-promo" onclick="setPromo('Oferta Especial: Extensão de Garantia para 24 Meses')">🛡️ Garantia 24M</button>
+                    <button class="btn-promo" onclick="setPromo('Condições Especiais: 0% de Entrada e Taxas Reduzidas')">💶 Financiamento Top</button>
+                    <button class="btn-promo" onclick="setPromo('Na compra da sua viatura oferecemos um fim-de-semana!')">🎁 Voucher Férias</button>
+                    <button class="btn-promo" onclick="setPromo('Campanha Flash: Desconto Extra em toda a frota hoje!')">⚡ Mega Desconto</button>
+                    <button class="btn-promo-off" style="width: 100%; margin-top: 15px; border-radius: 8px; padding: 14px; font-weight: 700; cursor: pointer; border: none; text-align: center;" onclick="setPromo('')">❌ Desativar Todas as Campanhas</button>
                 </div>
             </div>
 
             <div class="admin-grid">
                 <div class="admin-panel-card">
                     <h3 style="margin-bottom: 25px; font-size: 18px; font-weight: 800; padding-bottom: 15px; border-bottom: 1px solid var(--border);">Nova Viatura</h3>
-                    
-                    <button class="btn-demo" style="background: #3B82F6; color: white; border: none; padding: 12px 20px; border-radius: 8px; font-weight: 700; font-size: 13px; cursor: pointer; width: 100%; margin-bottom: 20px; box-shadow: 0 4px 10px rgba(59, 130, 246, 0.3);" onclick="seedDemoCars()">🚗 ADICIONAR VIATURAS DE TESTE</button>
-
+                    <button class="btn-demo" onclick="seedDemoCars()">🚗 ADICIONAR VIATURAS DE TESTE</button>
                     <input type="text" id="a-tit" class="input-std" placeholder="Marca e Modelo (Ex: BMW 116d)" style="background:white; text-align:left; font-size:14px; letter-spacing:0;">
                     <input type="number" id="a-pre" class="input-std" placeholder="Preço Final (€)" style="background:white; text-align:left; font-size:14px; letter-spacing:0;">
                     <input type="text" id="a-img" class="input-std" placeholder="URL da Imagem" style="background:white; text-align:left; font-size:14px; letter-spacing:0;">
@@ -585,9 +585,12 @@
     <div class="modal-content">
         <button class="modal-close" onclick="closeAll()">×</button>
         <h2 style="font-size: 24px; font-weight: 800; margin-bottom: 10px;">Acesso Restrito</h2>
-        <p style="color: var(--text-muted); margin-bottom: 25px; font-size: 15px;">Introduza o PIN de segurança para aceder ao Dashboard.</p>
-        <input type="password" id="pin-input" class="input-std" style="text-align:center; font-size:32px; letter-spacing:15px; font-weight:800; border: 2px solid var(--border);" placeholder="••••">
-        <button class="btn-main" onclick="verificarLogin()">ENTRAR NO SISTEMA</button>
+        <p style="color: var(--text-muted); margin-bottom: 25px; font-size: 15px;">Acesso encriptado. Exclusivo à equipa de gestão.</p>
+        
+        <input type="email" id="admin-email" class="input-std" style="text-align:center; font-size:16px; letter-spacing:1px;" placeholder="Email do Administrador">
+        <input type="password" id="admin-pass" class="input-std" style="text-align:center; font-size:24px; letter-spacing:5px; font-weight:800; border: 2px solid var(--border);" placeholder="••••••••">
+        
+        <button class="btn-main" id="btn-login" onclick="verificarLogin()">ENTRAR NO SISTEMA</button>
     </div>
 </div>
 
@@ -627,19 +630,17 @@
         }
     };
 
-    // WIDGET CONTACTO BARRA DINÂMICA
+    // WIDGET CONTACTO
     function toggleContactBar() {
         const bar = document.getElementById('contactBar');
         bar.classList.toggle('show');
     }
 
-    // INIT APP E REFRESH FLUIDO
+    // INIT APP (Verifica login do Jorge logo ao abrir)
     async function refreshData() {
         const { data } = await supa.from('carros').select('*').order('created_at', {ascending: false});
         if(data) {
             allCars = data;
-            
-            // VERIFICAÇÃO DE PROMOÇÕES NO HERO
             const promoConfig = allCars.find(c => c.imagem_url === 'PROMO_CONFIG');
             if(promoConfig && promoConfig.descricao && !promoConfig.vendido) {
                 document.getElementById('hero-standard').style.display = 'none';
@@ -649,9 +650,7 @@
                 document.getElementById('hero-standard').style.display = 'block';
                 document.getElementById('hero-campaign').style.display = 'none';
             }
-            
             applyFilters();
-            
             if(document.getElementById('page-admin').classList.contains('active')) {
                 renderAdmin();
             }
@@ -660,6 +659,11 @@
 
     async function init() {
         await refreshData();
+        // Verifica se o Jorge já tinha feito login e guardado sessão no browser
+        const { data: { session } } = await supa.auth.getSession();
+        if(session && document.getElementById('page-admin').classList.contains('active')) {
+            renderAdmin();
+        }
     }
 
     // FILTRO AVANÇADO
@@ -710,21 +714,18 @@
         document.getElementById('m-tit').innerText = c.titulo;
         document.getElementById('m-pre').innerText = Number(c.preco).toLocaleString() + ' €';
         document.getElementById('m-des').innerText = c.descricao || 'Viatura sujeita a inspeção rigorosa. Contacte-nos para mais informações.';
-        
         let badges = '';
         if(c.reservado && !c.vendido) badges += '<span style="background:#F59E0B; color:white; padding:6px 12px; border-radius:4px; font-size:11px; font-weight:800; margin-right:10px;">⚠️ RESERVADA</span>';
         if(c.vendido) badges += '<span style="background:var(--black); color:white; padding:6px 12px; border-radius:4px; font-size:11px; font-weight:800;">🔒 VENDIDA</span>';
         document.getElementById('m-badges').innerHTML = badges;
-        
         const btn = document.getElementById('btn-info');
         btn.innerText = "SOLICITAR INFORMAÇÕES";
         btn.style.background = "var(--black)";
         btn.disabled = false;
-
         openModal('detalhes');
     }
 
-    // NAVEGAÇÃO
+    // NAVEGAÇÃO E MODAIS
     window.showPage = function(id) {
         document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
         document.querySelectorAll('nav > a').forEach(a => a.classList.remove('active'));
@@ -734,20 +735,28 @@
         closeAll();
     }
     
-    window.openModal = function(id) { 
+    window.openModal = async function(id) { 
+        if(id === 'login') {
+            const { data: { session } } = await supa.auth.getSession();
+            if(session) {
+                closeAll();
+                showPage('admin');
+                renderAdmin();
+                return; 
+            }
+            document.getElementById('admin-email').value = '';
+            document.getElementById('admin-pass').value = '';
+        }
         document.getElementById('overlay').style.display = 'block'; 
         document.getElementById('modal-' + id).classList.add('active'); 
-        if(id === 'login') {
-            document.getElementById('pin-input').value = '';
-            setTimeout(() => document.getElementById('pin-input').focus(), 100); 
-        }
+        if(id === 'login') setTimeout(() => document.getElementById('admin-email').focus(), 100); 
     }
+    
     window.closeAll = function() { 
         document.getElementById('overlay').style.display = 'none'; 
         document.querySelectorAll('.modal').forEach(m => m.classList.remove('active')); 
     }
 
-    // FEEDBACK VISUAL PARA BOTÃO DO MODAL CARRO
     window.simularEnvio = function(button, mensagem) {
         button.innerText = "A PROCESSAR...";
         button.style.background = "#6B7280";
@@ -760,13 +769,42 @@
         }, 1000);
     }
 
-    // LOGIN ADMIN
-    document.getElementById('pin-input').addEventListener('keypress', (e) => { if(e.key === 'Enter') verificarLogin(); });
-    window.verificarLogin = function() {
-        if(document.getElementById('pin-input').value === "2026") {
-            closeAll(); showPage('admin'); renderAdmin();
-            App.toast("Acesso de Administrador Garantido.");
-        } else { alert("Acesso Negado: PIN Incorreto."); }
+    // === LOGIN SEGURO COM SUPABASE AUTH ===
+    document.getElementById('admin-pass').addEventListener('keypress', (e) => { if(e.key === 'Enter') verificarLogin(); });
+    
+    window.verificarLogin = async function() {
+        const email = document.getElementById('admin-email').value;
+        const pass = document.getElementById('admin-pass').value;
+        const btn = document.getElementById('btn-login');
+        
+        if(!email || !pass) return alert("Preencha o email e a password.");
+
+        btn.innerText = "A VERIFICAR...";
+        btn.disabled = true;
+
+        const { data, error } = await supa.auth.signInWithPassword({
+            email: email,
+            password: pass
+        });
+
+        if (error) {
+            alert("Acesso Negado: Email ou palavra-passe incorretos.");
+            btn.innerText = "ENTRAR NO SISTEMA";
+            btn.disabled = false;
+        } else {
+            closeAll(); 
+            showPage('admin'); 
+            renderAdmin();
+            App.toast("Acesso Seguro Concedido.");
+            btn.innerText = "ENTRAR NO SISTEMA";
+            btn.disabled = false;
+        }
+    }
+
+    // === LOGOUT SEGURO ===
+    window.fazerLogout = async function() {
+        await supa.auth.signOut();
+        location.reload(); // Recarrega para voltar à página pública limpa
     }
 
     // RENDER ADMIN LIST
@@ -793,7 +831,7 @@
         `).join('');
     }
 
-    // DB ACTIONS COM REFRESH FLUIDO (SEM RELOAD DA PÁGINA)
+    // DB ACTIONS COM PROTEÇÃO RLS
     window.inserirViatura = async function() {
         const t = document.getElementById('a-tit').value;
         const p = document.getElementById('a-pre').value;
@@ -805,7 +843,7 @@
         const { error } = await supa.from('carros').insert([{ titulo: t, preco: p, imagem_url: img, descricao: des, vendido: false, reservado: false }]);
         
         if(error) {
-            alert("Erro de gravação. Verifique o RLS.");
+            alert("Erro de gravação. Ocorreu um problema de segurança no Supabase.");
         } else {
             document.getElementById('a-tit').value = '';
             document.getElementById('a-pre').value = '';
@@ -817,20 +855,24 @@
     }
 
     window.mudarEstado = async function(id, campo, valor) { 
-        await supa.from('carros').update({ [campo]: valor }).eq('id', id); 
-        await refreshData();
-        App.toast("Estado atualizado com sucesso.");
+        const { error } = await supa.from('carros').update({ [campo]: valor }).eq('id', id); 
+        if(!error) {
+            await refreshData();
+            App.toast("Estado atualizado com sucesso.");
+        } else { alert("Ação bloqueada pelo Supabase."); }
     }
     
     window.apagarCarro = async function(id) { 
         if(confirm("Deseja eliminar esta viatura permanentemente?")) { 
-            await supa.from('carros').delete().eq('id', id); 
-            await refreshData();
-            App.toast("Viatura removida do sistema.");
+            const { error } = await supa.from('carros').delete().eq('id', id); 
+            if(!error) {
+                await refreshData();
+                App.toast("Viatura removida do sistema.");
+            } else { alert("Ação bloqueada pelo Supabase."); }
         } 
     }
 
-    // PROMOÇÕES HERO FLUIDAS
+    // PROMOÇÕES HERO
     window.setPromo = async function(texto) {
         await supa.from('carros').delete().eq('imagem_url', 'PROMO_CONFIG');
         
@@ -843,7 +885,7 @@
                 vendido: false, 
                 reservado: false 
             }]);
-            if(error) { alert("Erro de gravação. Verifique o RLS no Supabase."); return; }
+            if(error) { alert("Erro de gravação. Ação bloqueada pelo Supabase."); return; }
         }
         
         App.toast(texto !== '' ? "Campanha ativada no Ecrã Inicial!" : "Todas as campanhas removidas.");
@@ -859,7 +901,7 @@
         ];
         App.toast("A processar viaturas de demonstração...");
         const { error } = await supa.from('carros').insert(demoCars);
-        if(error) alert("Erro a carregar. Verifique o RLS da tabela.");
+        if(error) alert("Erro a carregar. Ação bloqueada pelo Supabase.");
         else await refreshData();
     }
 
