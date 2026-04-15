@@ -7,7 +7,12 @@
     <title>JD Auto Estarreja | Viaturas Premium & Usados de Confiança</title>
     <meta name="description" content="JD Auto Estarreja - O seu parceiro automóvel. Viaturas premium rigorosamente selecionadas, com garantia de 18 meses, oficina própria e financiamento à medida.">
     <meta name="keywords" content="JD Auto, stand estarreja, carros usados estarreja, viaturas premium, retoma automóvel, carros com garantia, financiamento automóvel">
-    <meta name="author" content="JD Auto">
+    
+    <meta property="og:title" content="JD Auto Estarreja | Showroom Premium">
+    <meta property="og:description" content="Descubra o nosso stock de viaturas rigorosamente selecionadas. Transparência, Rigor e Performance.">
+    <meta property="og:image" content="https://images.unsplash.com/photo-1614200187524-dc4b892acf16?q=80&w=1200&auto=format&fit=crop">
+    <meta property="og:url" content="https://t0mas17.github.io/jdauto/">
+    <meta property="og:type" content="website">
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -28,6 +33,14 @@
         /* === SISTEMA DE NOTIFICAÇÕES === */
         #toast-box { position: fixed; bottom: 100px; left: 50%; transform: translateX(-50%); z-index: 10000; display: flex; flex-direction: column; gap: 10px; }
         .toast { background: var(--black); color: white; padding: 16px 32px; border-radius: 8px; font-size: 14px; font-weight: 600; box-shadow: var(--shadow-lg); animation: slideUp 0.4s ease forwards; display: flex; align-items: center; gap: 10px; }
+
+        /* === LOADING SKELETONS === */
+        .skeleton-card { background: var(--bg-card); border-radius: 12px; border: 1px solid var(--border); overflow: hidden; height: 320px; position: relative; }
+        .skeleton-img { height: 220px; background: #e2e5e7; position: relative; overflow: hidden; }
+        .skeleton-text { height: 20px; background: #e2e5e7; margin: 20px; border-radius: 4px; width: 70%; position: relative; overflow: hidden;}
+        .skeleton-price { height: 25px; background: #e2e5e7; margin: 0 20px; border-radius: 4px; width: 40%; position: relative; overflow: hidden;}
+        .shimmer::after { content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent); animation: loading 1.5s infinite; }
+        @keyframes loading { 100% { left: 100%; } }
 
         /* === HEADER === */
         header { position: fixed; top: 0; width: 100%; height: 75px; z-index: 1000; padding: 0 5%; display: flex; justify-content: space-between; align-items: center; background: rgba(255, 255, 255, 0.98); backdrop-filter: blur(10px); box-shadow: var(--shadow-sm); border-bottom: 1px solid var(--border); transition: 0.3s; }
@@ -50,8 +63,8 @@
         .contact-info-bar { display: flex; align-items: center; gap: 20px; background: var(--bg-card); padding: 15px 25px; border-radius: 50px; box-shadow: var(--shadow-md); border: 1px solid var(--border); opacity: 0; visibility: hidden; transform: translateX(20px); transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
         .contact-info-bar.show { opacity: 1; visibility: visible; transform: translateX(0); }
         .contact-info-bar span { font-size: 14px; font-weight: 700; color: var(--black); display: flex; align-items: center; gap: 8px; }
-        .contact-toggle-btn { background: var(--black); color: white; border: none; padding: 15px 25px; border-radius: 50px; font-weight: 800; font-size: 14px; cursor: pointer; box-shadow: var(--shadow-md); transition: 0.3s; display: flex; align-items: center; gap: 10px; }
-        .contact-toggle-btn:hover { background: var(--red); transform: translateY(-2px); }
+        .contact-toggle-btn { background: #25D366; color: white; border: none; padding: 15px 25px; border-radius: 50px; font-weight: 800; font-size: 14px; cursor: pointer; box-shadow: var(--shadow-md); transition: 0.3s; display: flex; align-items: center; gap: 10px; text-decoration: none;}
+        .contact-toggle-btn:hover { background: #128C7E; transform: translateY(-2px); }
 
         /* === ESTRUTURA DE PÁGINAS === */
         .page { display: none; min-height: 80vh; animation: fadeIn 0.4s ease; padding-top: 75px; }
@@ -79,7 +92,7 @@
         .f-group { display: flex; flex-direction: column; gap: 8px; }
         .f-group label { font-size: 12px; font-weight: 700; color: var(--text-main); display: flex; justify-content: space-between; text-transform: uppercase; }
         .f-group label span { color: var(--red); font-weight: 800; }
-        .f-group select, .f-group input[type="text"] { padding: 14px 16px; border: 1px solid var(--border); border-radius: 8px; font-size: 14px; outline: none; color: var(--black); background: var(--bg-page); font-weight: 500; cursor: pointer; transition: 0.2s; }
+        .f-group select, .f-group input[type="text"], .file-input { padding: 14px 16px; border: 1px solid var(--border); border-radius: 8px; font-size: 14px; outline: none; color: var(--black); background: var(--bg-page); font-weight: 500; cursor: pointer; transition: 0.2s; }
         .f-group select:focus, .f-group input[type="text"]:focus { border-color: var(--red); background: var(--bg-card); box-shadow: 0 0 0 3px rgba(230, 57, 70, 0.1); }
         input[type="range"] { -webkit-appearance: none; width: 100%; height: 6px; background: var(--border); border-radius: 5px; outline: none; margin-bottom: 12px; }
         input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 22px; height: 22px; border-radius: 50%; background: var(--red); cursor: pointer; border: 3px solid white; box-shadow: 0 2px 6px rgba(0,0,0,0.3); transition: 0.2s; }
@@ -140,6 +153,9 @@
         .input-std:focus { border-color: var(--red); background: var(--bg-card); box-shadow: 0 0 0 3px rgba(230, 57, 70, 0.1); }
         .btn-main { width: 100%; background: var(--black); color: white; padding: 18px; border: none; border-radius: 8px; font-weight: 800; font-size: 14px; text-transform: uppercase; cursor: pointer; transition: 0.3s; letter-spacing: 0.5px; }
         .btn-main:hover { background: var(--red); box-shadow: 0 8px 20px rgba(230, 57, 70, 0.25); transform: translateY(-2px); }
+        
+        .btn-whatsapp { background: #25D366; box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3); }
+        .btn-whatsapp:hover { background: #128C7E; }
 
         /* === PAINEL ADMIN === */
         #page-admin { background: #E5E7EB; padding-top: 100px;}
@@ -190,14 +206,9 @@
 <div class="overlay" id="overlay" onclick="closeAll()"></div>
 
 <div class="contact-widget-container">
-    <div class="contact-info-bar" id="contactBar">
-        <span>📞 912 345 678</span>
-        <span style="color: var(--border);">|</span>
-        <span>✉️ geral@jdauto.pt</span>
-    </div>
-    <button class="contact-toggle-btn" onclick="toggleContactBar()">
-        💬 Fale Connosco
-    </button>
+    <a href="https://wa.me/351912345678" target="_blank" class="contact-toggle-btn">
+        💬 Falar no WhatsApp
+    </a>
 </div>
 
 <header>
@@ -222,7 +233,6 @@
 
 <main>
     <div id="page-home" class="page active" style="padding-top: 0;">
-        
         <div class="hero-banner" id="main-hero">
             <div class="hero-content">
                 <div id="hero-standard" class="hero-standard">
@@ -537,17 +547,22 @@
 
             <div class="admin-grid">
                 <div class="admin-panel-card">
-                    <h3 style="margin-bottom: 25px; font-size: 18px; font-weight: 800; padding-bottom: 15px; border-bottom: 1px solid var(--border);">Nova Viatura</h3>
+                    <h3 style="margin-bottom: 25px; font-size: 18px; font-weight: 800; border-bottom: 1px solid var(--border); padding-bottom: 15px;">Nova Viatura</h3>
                     <button class="btn-demo" onclick="seedDemoCars()">🚗 ADICIONAR VIATURAS DE TESTE</button>
                     <input type="text" id="a-tit" class="input-std" placeholder="Marca e Modelo (Ex: BMW 116d)" style="background:white; text-align:left; font-size:14px; letter-spacing:0;">
                     <input type="number" id="a-pre" class="input-std" placeholder="Preço Final (€)" style="background:white; text-align:left; font-size:14px; letter-spacing:0;">
-                    <input type="text" id="a-img" class="input-std" placeholder="URL da Imagem" style="background:white; text-align:left; font-size:14px; letter-spacing:0;">
+                    
+                    <div style="background: white; padding: 14px 16px; border: 1px solid var(--border); border-radius: 8px; margin-bottom: 16px;">
+                        <label style="font-size: 12px; font-weight: 700; color: var(--text-muted); display: block; margin-bottom: 8px; text-transform: uppercase;">Fotografia Principal</label>
+                        <input type="file" id="a-img-file" accept="image/*" class="file-input" style="width:100%; border:none; padding:0; background:transparent;">
+                    </div>
+
                     <textarea id="a-des" class="input-std" rows="5" placeholder="Detalhes (Ex: Ano: 2020 | Automática | Extras...)" style="background:white; text-align:left; font-size:14px; letter-spacing:0;"></textarea>
-                    <button class="btn-main" style="background:var(--black);" onclick="inserirViatura()">PUBLICAR MANUALMENTE</button>
+                    <button class="btn-main" id="btn-publicar" style="background:var(--black);" onclick="inserirViatura()">PUBLICAR NO STAND</button>
                 </div>
 
                 <div class="admin-panel-card">
-                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px solid var(--border);">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 20px; border-bottom: 1px solid var(--border); padding-bottom: 15px;">
                         <h3 style="font-size: 18px; font-weight: 800;">Viaturas Registadas</h3>
                         <span id="admin-count" style="font-size:14px; font-weight:700; color:var(--text-muted);">0 Carros</span>
                     </div>
@@ -612,7 +627,7 @@
         <h3 style="font-size: 15px; font-weight: 700; margin-bottom: 10px; color: var(--black);">Descrição da Viatura:</h3>
         <p id="m-des" style="color: var(--text-main); line-height: 1.8; font-size: 14px; margin-bottom: 30px; white-space: pre-wrap; background: var(--bg-page); padding: 20px; border-radius: 8px; border: 1px solid var(--border);"></p>
         
-        <button class="btn-main" id="btn-info" onclick="simularEnvio(this, 'Pedido Registado! Os nossos consultores contactam em breve.')">SOLICITAR INFORMAÇÕES</button>
+        <button class="btn-main btn-whatsapp" id="btn-info" onclick="contactarWhatsApp()">SOLICITAR INFORMAÇÕES (WHATSAPP)</button>
     </div>
 </div>
 
@@ -622,6 +637,7 @@
     const KEY_S = 'sb_publishable_r98j53EhXUKlSOrpeuxxCg_uTvz-5qM';
     const supa = window.supabase.createClient(URL_S, KEY_S);
     let allCars = [];
+    let carroAtual = null;
 
     // TOAST NOTIFICATIONS
     const App = {
@@ -638,6 +654,19 @@
     function toggleContactBar() {
         const bar = document.getElementById('contactBar');
         bar.classList.toggle('show');
+    }
+
+    // CARREGAR SKELETONS
+    function renderSkeletons() {
+        const grid = document.getElementById('showroom');
+        grid.innerHTML = Array(6).fill(`
+            <div class="skeleton-card">
+                <div class="skeleton-img shimmer"></div>
+                <div class="skeleton-text shimmer" style="margin-top:25px;"></div>
+                <div class="skeleton-text shimmer" style="width: 40%;"></div>
+                <div class="skeleton-price shimmer" style="margin-top: 30px;"></div>
+            </div>
+        `).join('');
     }
 
     // INIT APP
@@ -662,6 +691,7 @@
     }
 
     async function init() {
+        renderSkeletons();
         await refreshData();
         const { data: { session } } = await supa.auth.getSession();
         if(session && document.getElementById('page-admin').classList.contains('active')) {
@@ -669,7 +699,7 @@
         }
     }
 
-    // FILTRO AVANÇADO (AGORA COM FILTRO DE ANO A 100%)
+    // FILTRO AVANÇADO (COM FILTRO DE ANO A 100%)
     window.applyFilters = function() {
         const grid = document.getElementById('showroom');
         let filtered = allCars.filter(c => c.imagem_url !== 'PROMO_CONFIG' && !c.vendido); 
@@ -688,11 +718,10 @@
         if(comb) { filtered = filtered.filter(c => c.descricao && c.descricao.toLowerCase().includes(comb)); }
         if(caixa) { filtered = filtered.filter(c => c.descricao && c.descricao.toLowerCase().includes(caixa)); }
 
-        // O NOVO FILTRO DO ANO
         if(minAno > 2005) {
             filtered = filtered.filter(c => {
-                if(!c.descricao) return true; // Se o Jorge se esquecer de pôr a descrição, mostramos na mesma
-                const match = c.descricao.match(/Ano:\s*(\d{4})/i); // O sistema procura invisivelmente por "Ano: 2020"
+                if(!c.descricao) return true; 
+                const match = c.descricao.match(/Ano:\s*(\d{4})/i); 
                 if(match) { return parseInt(match[1]) >= minAno; }
                 return true; 
             });
@@ -721,22 +750,28 @@
         `).join('');
     }
 
-    // MODAL DETALHES CARRO
+    // MODAL DETALHES CARRO & WHATSAPP
     window.verDetalhes = function(id) {
-        const c = allCars.find(x => x.id === id);
-        document.getElementById('m-img').src = c.imagem_url;
-        document.getElementById('m-tit').innerText = c.titulo;
-        document.getElementById('m-pre').innerText = Number(c.preco).toLocaleString() + ' €';
-        document.getElementById('m-des').innerText = c.descricao || 'Viatura sujeita a inspeção rigorosa. Contacte-nos para mais informações.';
+        carroAtual = allCars.find(x => x.id === id);
+        document.getElementById('m-img').src = carroAtual.imagem_url;
+        document.getElementById('m-tit').innerText = carroAtual.titulo;
+        document.getElementById('m-pre').innerText = Number(carroAtual.preco).toLocaleString() + ' €';
+        document.getElementById('m-des').innerText = carroAtual.descricao || 'Viatura sujeita a inspeção rigorosa. Contacte-nos para mais informações.';
+        
         let badges = '';
-        if(c.reservado && !c.vendido) badges += '<span style="background:#F59E0B; color:white; padding:6px 12px; border-radius:4px; font-size:11px; font-weight:800; margin-right:10px;">⚠️ RESERVADA</span>';
-        if(c.vendido) badges += '<span style="background:var(--black); color:white; padding:6px 12px; border-radius:4px; font-size:11px; font-weight:800;">🔒 VENDIDA</span>';
+        if(carroAtual.reservado && !carroAtual.vendido) badges += '<span style="background:#F59E0B; color:white; padding:6px 12px; border-radius:4px; font-size:11px; font-weight:800; margin-right:10px;">⚠️ RESERVADA</span>';
+        if(carroAtual.vendido) badges += '<span style="background:var(--black); color:white; padding:6px 12px; border-radius:4px; font-size:11px; font-weight:800;">🔒 VENDIDA</span>';
         document.getElementById('m-badges').innerHTML = badges;
-        const btn = document.getElementById('btn-info');
-        btn.innerText = "SOLICITAR INFORMAÇÕES";
-        btn.style.background = "var(--black)";
-        btn.disabled = false;
+        
         openModal('detalhes');
+    }
+
+    window.contactarWhatsApp = function() {
+        if(!carroAtual) return;
+        const mensagem = `Olá equipa JD Auto! Gostaria de obter mais informações sobre a viatura *${carroAtual.titulo}* que está no site por *${Number(carroAtual.preco).toLocaleString()} €*. Pode ajudar-me?`;
+        const url = `https://wa.me/351912345678?text=${encodeURIComponent(mensagem)}`;
+        window.open(url, '_blank');
+        closeAll();
     }
 
     // NAVEGAÇÃO E MODAIS
@@ -769,18 +804,6 @@
     window.closeAll = function() { 
         document.getElementById('overlay').style.display = 'none'; 
         document.querySelectorAll('.modal').forEach(m => m.classList.remove('active')); 
-    }
-
-    window.simularEnvio = function(button, mensagem) {
-        button.innerText = "A PROCESSAR...";
-        button.style.background = "#6B7280";
-        button.disabled = true;
-        setTimeout(() => {
-            button.innerText = "✓ ENVIADO";
-            button.style.background = "#059669";
-            App.toast(mensagem);
-            setTimeout(() => { closeAll(); }, 1800);
-        }, 1000);
     }
 
     // LOGIN SEGURO
@@ -836,21 +859,49 @@
         `).join('');
     }
 
-    // DB ACTIONS
+    // UPLOAD REAL DE IMAGENS E DB ACTIONS
     window.inserirViatura = async function() {
         const t = document.getElementById('a-tit').value;
         const p = document.getElementById('a-pre').value;
-        const img = document.getElementById('a-img').value || 'https://via.placeholder.com/600x400?text=JD+AUTO';
-        const des = document.getElementById('a-des').value;
+        const d = document.getElementById('a-des').value;
+        const fileInput = document.getElementById('a-img-file');
+        const btn = document.getElementById('btn-publicar');
         
         if(!t || !p) return alert("Preencha título e preço.");
         
-        const { error } = await supa.from('carros').insert([{ titulo: t, preco: p, imagem_url: img, descricao: des, vendido: false, reservado: false }]);
+        btn.innerText = "A CARREGAR IMAGEM...";
+        btn.disabled = true;
+        
+        let imgUrl = 'https://via.placeholder.com/600x400?text=JD+AUTO';
+
+        if (fileInput.files.length > 0) {
+            const file = fileInput.files[0];
+            const fileExt = file.name.split('.').pop();
+            const fileName = `${Date.now()}_${Math.random().toString(36).substring(7)}.${fileExt}`;
+            
+            const { error: uploadError } = await supa.storage.from('carros').upload(fileName, file);
+            
+            if (uploadError) {
+                alert("Erro a enviar a foto. Certifica-te que criaste o Storage Bucket 'carros' no Supabase como Public.");
+                btn.innerText = "PUBLICAR NO STAND"; btn.disabled = false;
+                return;
+            }
+            
+            const { data: publicUrlData } = supa.storage.from('carros').getPublicUrl(fileName);
+            imgUrl = publicUrlData.publicUrl;
+        }
+
+        btn.innerText = "A GRAVAR VIATURA...";
+
+        const { error } = await supa.from('carros').insert([{ titulo: t, preco: p, imagem_url: imgUrl, descricao: d, vendido: false, reservado: false }]);
         if(error) alert("Erro de gravação. Ocorreu um problema de segurança no Supabase.");
         else {
-            document.getElementById('a-tit').value = ''; document.getElementById('a-pre').value = ''; document.getElementById('a-img').value = ''; document.getElementById('a-des').value = '';
+            document.getElementById('a-tit').value = ''; document.getElementById('a-pre').value = ''; document.getElementById('a-des').value = ''; fileInput.value = '';
             App.toast("Adicionado ao Stand!"); await refreshData();
         }
+        
+        btn.innerText = "PUBLICAR NO STAND";
+        btn.disabled = false;
     }
 
     window.mudarEstado = async function(id, campo, valor) { 
@@ -867,6 +918,7 @@
         } 
     }
 
+    // PROMOÇÕES E DADOS DEMO
     window.setPromo = async function(texto) {
         await supa.from('carros').delete().eq('imagem_url', 'PROMO_CONFIG');
         if(texto !== '') {
