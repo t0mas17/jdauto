@@ -3,7 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JD Auto | Viaturas Premium</title>
+    
+    <title>JD Auto Estarreja | Viaturas Premium & Usados de Confiança</title>
+    <meta name="description" content="JD Auto Estarreja - O seu parceiro automóvel. Viaturas premium rigorosamente selecionadas, com garantia de 18 meses, oficina própria e financiamento à medida.">
+    <meta name="keywords" content="JD Auto, stand estarreja, carros usados estarreja, viaturas premium, retoma automóvel, carros com garantia, financiamento automóvel">
+    <meta name="author" content="JD Auto">
+
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
@@ -251,14 +256,14 @@
                         <label>Ordenar Por</label>
                         <select id="f-ordenar" onchange="applyFilters()">
                             <option value="">Mais Recentes</option>
-                            <option value="preco-asc">Preço (Mais barato)</option>
-                            <option value="preco-desc">Preço (Mais caro)</option>
+                            <option value="preco-asc">Preço (Menor a Maior)</option>
+                            <option value="preco-desc">Preço (Maior a Menor)</option>
                         </select>
                     </div>
                 </div>
                 <div class="f-row bottom">
                     <div class="f-group">
-                        <label>Preço Máx: <span><span id="lbl-preco">100.000</span> €</span></label>
+                        <label>Preço Máx: <span><span id="lbl-preco">150.000</span> €</span></label>
                         <input type="range" id="f-preco" min="5000" max="150000" step="1000" value="150000" oninput="document.getElementById('lbl-preco').innerText=Number(this.value).toLocaleString(); applyFilters()">
                     </div>
                     <div class="f-group">
@@ -537,7 +542,7 @@
                     <input type="text" id="a-tit" class="input-std" placeholder="Marca e Modelo (Ex: BMW 116d)" style="background:white; text-align:left; font-size:14px; letter-spacing:0;">
                     <input type="number" id="a-pre" class="input-std" placeholder="Preço Final (€)" style="background:white; text-align:left; font-size:14px; letter-spacing:0;">
                     <input type="text" id="a-img" class="input-std" placeholder="URL da Imagem" style="background:white; text-align:left; font-size:14px; letter-spacing:0;">
-                    <textarea id="a-des" class="input-std" rows="5" placeholder="Detalhes (Ano, Kms, Combustível, Extras...)" style="background:white; text-align:left; font-size:14px; letter-spacing:0;"></textarea>
+                    <textarea id="a-des" class="input-std" rows="5" placeholder="Detalhes (Ex: Ano: 2020 | Automática | Extras...)" style="background:white; text-align:left; font-size:14px; letter-spacing:0;"></textarea>
                     <button class="btn-main" style="background:var(--black);" onclick="inserirViatura()">PUBLICAR MANUALMENTE</button>
                 </div>
 
@@ -635,7 +640,7 @@
         bar.classList.toggle('show');
     }
 
-    // INIT APP (Verifica login do Jorge logo ao abrir)
+    // INIT APP
     async function refreshData() {
         const { data } = await supa.from('carros').select('*').order('created_at', {ascending: false});
         if(data) {
@@ -664,13 +669,14 @@
         }
     }
 
-    // FILTRO AVANÇADO
+    // FILTRO AVANÇADO (AGORA COM FILTRO DE ANO A 100%)
     window.applyFilters = function() {
         const grid = document.getElementById('showroom');
         let filtered = allCars.filter(c => c.imagem_url !== 'PROMO_CONFIG' && !c.vendido); 
 
         const textBusca = document.getElementById('f-texto').value.toLowerCase();
         const maxPreco = parseInt(document.getElementById('f-preco').value);
+        const minAno = parseInt(document.getElementById('f-ano').value);
         const ordem = document.getElementById('f-ordenar').value;
         const marca = document.getElementById('f-marca').value.toLowerCase();
         const comb = document.getElementById('f-combustivel').value.toLowerCase();
@@ -681,6 +687,16 @@
         if(marca) { filtered = filtered.filter(c => c.titulo.toLowerCase().includes(marca)); }
         if(comb) { filtered = filtered.filter(c => c.descricao && c.descricao.toLowerCase().includes(comb)); }
         if(caixa) { filtered = filtered.filter(c => c.descricao && c.descricao.toLowerCase().includes(caixa)); }
+
+        // O NOVO FILTRO DO ANO
+        if(minAno > 2005) {
+            filtered = filtered.filter(c => {
+                if(!c.descricao) return true; // Se o Jorge se esquecer de pôr a descrição, mostramos na mesma
+                const match = c.descricao.match(/Ano:\s*(\d{4})/i); // O sistema procura invisivelmente por "Ano: 2020"
+                if(match) { return parseInt(match[1]) >= minAno; }
+                return true; 
+            });
+        }
 
         if(ordem === 'preco-asc') filtered.sort((a,b) => parseInt(a.preco) - parseInt(b.preco));
         if(ordem === 'preco-desc') filtered.sort((a,b) => parseInt(b.preco) - parseInt(a.preco));
@@ -767,7 +783,7 @@
         }, 1000);
     }
 
-    // === LOGIN SEGURO COM SUPABASE AUTH ===
+    // LOGIN SEGURO
     document.getElementById('admin-pass').addEventListener('keypress', (e) => { if(e.key === 'Enter') verificarLogin(); });
     
     window.verificarLogin = async function() {
@@ -780,30 +796,21 @@
         btn.innerText = "A VERIFICAR...";
         btn.disabled = true;
 
-        const { data, error } = await supa.auth.signInWithPassword({
-            email: email,
-            password: pass
-        });
+        const { data, error } = await supa.auth.signInWithPassword({ email: email, password: pass });
 
         if (error) {
             alert("Acesso Negado: Email ou palavra-passe incorretos.");
             btn.innerText = "ENTRAR NO SISTEMA";
             btn.disabled = false;
         } else {
-            closeAll(); 
-            showPage('admin'); 
-            renderAdmin();
+            closeAll(); showPage('admin'); renderAdmin();
             App.toast("Acesso Seguro Concedido.");
             btn.innerText = "ENTRAR NO SISTEMA";
             btn.disabled = false;
         }
     }
 
-    // === LOGOUT SEGURO ===
-    window.fazerLogout = async function() {
-        await supa.auth.signOut();
-        location.reload(); // Recarrega para voltar à página pública limpa
-    }
+    window.fazerLogout = async function() { await supa.auth.signOut(); location.reload(); }
 
     // RENDER ADMIN LIST
     function renderAdmin() {
@@ -829,7 +836,7 @@
         `).join('');
     }
 
-    // DB ACTIONS COM PROTEÇÃO RLS
+    // DB ACTIONS
     window.inserirViatura = async function() {
         const t = document.getElementById('a-tit').value;
         const p = document.getElementById('a-pre').value;
@@ -839,63 +846,42 @@
         if(!t || !p) return alert("Preencha título e preço.");
         
         const { error } = await supa.from('carros').insert([{ titulo: t, preco: p, imagem_url: img, descricao: des, vendido: false, reservado: false }]);
-        
-        if(error) {
-            alert("Erro de gravação. Ocorreu um problema de segurança no Supabase.");
-        } else {
-            document.getElementById('a-tit').value = '';
-            document.getElementById('a-pre').value = '';
-            document.getElementById('a-img').value = '';
-            document.getElementById('a-des').value = '';
-            App.toast("Adicionado ao Stand!");
-            await refreshData();
+        if(error) alert("Erro de gravação. Ocorreu um problema de segurança no Supabase.");
+        else {
+            document.getElementById('a-tit').value = ''; document.getElementById('a-pre').value = ''; document.getElementById('a-img').value = ''; document.getElementById('a-des').value = '';
+            App.toast("Adicionado ao Stand!"); await refreshData();
         }
     }
 
     window.mudarEstado = async function(id, campo, valor) { 
         const { error } = await supa.from('carros').update({ [campo]: valor }).eq('id', id); 
-        if(!error) {
-            await refreshData();
-            App.toast("Estado atualizado com sucesso.");
-        } else { alert("Ação bloqueada pelo Supabase."); }
+        if(!error) { await refreshData(); App.toast("Estado atualizado com sucesso."); } 
+        else alert("Ação bloqueada pelo Supabase."); 
     }
     
     window.apagarCarro = async function(id) { 
         if(confirm("Deseja eliminar esta viatura permanentemente?")) { 
             const { error } = await supa.from('carros').delete().eq('id', id); 
-            if(!error) {
-                await refreshData();
-                App.toast("Viatura removida do sistema.");
-            } else { alert("Ação bloqueada pelo Supabase."); }
+            if(!error) { await refreshData(); App.toast("Viatura removida do sistema."); } 
+            else alert("Ação bloqueada pelo Supabase."); 
         } 
     }
 
-    // PROMOÇÕES HERO
     window.setPromo = async function(texto) {
         await supa.from('carros').delete().eq('imagem_url', 'PROMO_CONFIG');
-        
         if(texto !== '') {
-            const { error } = await supa.from('carros').insert([{ 
-                titulo: 'PROMO_GLOBAL_CONFIG', 
-                preco: 0, 
-                imagem_url: 'PROMO_CONFIG', 
-                descricao: texto, 
-                vendido: false, 
-                reservado: false 
-            }]);
+            const { error } = await supa.from('carros').insert([{ titulo: 'PROMO_GLOBAL_CONFIG', preco: 0, imagem_url: 'PROMO_CONFIG', descricao: texto, vendido: false, reservado: false }]);
             if(error) { alert("Erro de gravação. Ação bloqueada pelo Supabase."); return; }
         }
-        
         App.toast(texto !== '' ? "Campanha ativada no Ecrã Inicial!" : "Todas as campanhas removidas.");
         await refreshData();
     }
     
-    // CARROS DE TESTE
     window.seedDemoCars = async function() {
         const demoCars = [
-            { titulo: 'BMW 420d Gran Coupé M Sport', preco: 34500, imagem_url: 'https://images.unsplash.com/photo-1555215695-3004980ad54e?q=80&w=800', descricao: 'Gasóleo | Automática | 85.000 km | Ano: 2020\nViatura nacional. Pack M completo, jantes 19".', vendido: false, reservado: false },
-            { titulo: 'Mercedes-Benz A 180 d AMG Line', preco: 31900, imagem_url: 'https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?q=80&w=800', descricao: 'Gasóleo | Automática | 60.000 km | Ano: 2021\nPacote AMG interior e exterior. Teto panorâmico duplo.', vendido: false, reservado: false },
-            { titulo: 'Porsche 911 Carrera S', preco: 125000, imagem_url: 'https://images.unsplash.com/photo-1503376780353-7e6692767b70?q=80&w=800', descricao: 'Gasolina | Automática | 45.000 km | Ano: 2019\nSport Chrono Pack, suspensão PASM e jantes RS Spyder 20/21".', vendido: false, reservado: false }
+            { titulo: 'BMW 420d Gran Coupé M Sport', preco: 34500, imagem_url: 'https://images.unsplash.com/photo-1555215695-3004980ad54e?q=80&w=800', descricao: 'Ano: 2020 | Gasóleo | Automática | 85.000 km\nViatura nacional. Pack M completo, jantes 19".', vendido: false, reservado: false },
+            { titulo: 'Mercedes-Benz A 180 d AMG Line', preco: 31900, imagem_url: 'https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?q=80&w=800', descricao: 'Ano: 2021 | Gasóleo | Automática | 60.000 km\nPacote AMG interior e exterior. Teto panorâmico duplo.', vendido: false, reservado: false },
+            { titulo: 'Porsche 911 Carrera S', preco: 125000, imagem_url: 'https://images.unsplash.com/photo-1503376780353-7e6692767b70?q=80&w=800', descricao: 'Ano: 2019 | Gasolina | Automática | 45.000 km\nSport Chrono Pack, suspensão PASM e jantes RS Spyder 20/21".', vendido: false, reservado: false }
         ];
         App.toast("A processar viaturas de demonstração...");
         const { error } = await supa.from('carros').insert(demoCars);
