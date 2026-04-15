@@ -381,7 +381,6 @@
         .credits a:hover { color: var(--red); border-bottom-color: var(--black); }
 
         /* === RESPONSIVO PARA TELEMÓVEIS === */
-       /* === RESPONSIVO PARA TELEMÓVEIS === */
         @media (max-width: 900px) {
             .menu-toggle { display: block; }
             
@@ -390,7 +389,7 @@
                 top: 75px; 
                 left: 0; 
                 width: 100%; 
-                height: auto; /* A CORREÇÃO ESTÁ AQUI! Deixa o menu crescer */
+                height: auto; 
                 background: rgba(255, 255, 255, 0.98); 
                 backdrop-filter: blur(10px); 
                 flex-direction: column; 
@@ -432,6 +431,7 @@
             .modal-left { width: 100%; height: 250px; } 
             .modal-right { width: 100%; padding: 25px; }
         }
+
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes slideUp { from { opacity: 0; transform: translate(-50%, 20px); } to { opacity: 1; transform: translate(-50%, 0); } }
         @keyframes scaleIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
@@ -960,7 +960,7 @@
         }
     }
 
-    // 7. SISTEMA DE FILTROS AVANÇADOS
+    // 7. SISTEMA DE FILTROS AVANÇADOS (BLINDADO PARA MOBILE)
     window.applyFilters = function() {
         const grid = document.getElementById('showroom');
         let filtered = allCars.filter(c => c.imagem_url !== 'PROMO_CONFIG' && !c.vendido); 
@@ -1015,9 +1015,9 @@
             return;
         }
 
-        // Imprimir os carros no HTML
+        // ADICIONADO role="button" e id como String para forçar o clique em qualquer telemóvel
         grid.innerHTML = filtered.map(c => `
-            <div class="car-card" onclick="verDetalhes(${c.id})">
+            <div class="car-card" onclick="verDetalhes('${c.id}')" role="button" tabindex="0">
                 <div class="car-img-wrap">
                     ${c.reservado ? '<div class="badge badge-reserva">RESERVADO</div>' : ''}
                     <div class="badge badge-garantia">18 Meses Garantia</div>
@@ -1031,24 +1031,32 @@
         `).join('');
     }
 
-    // 8. MODAL DO CARRO & INTEGRAÇÃO WHATSAPP
+    // 8. MODAL DO CARRO (COM REDE DE SEGURANÇA ANTI-ERROS)
     window.verDetalhes = function(id) {
-        carroAtual = allCars.find(x => x.id === id);
-        document.getElementById('m-img').src = carroAtual.imagem_url;
-        document.getElementById('m-tit').innerText = carroAtual.titulo;
-        document.getElementById('m-pre').innerText = Number(carroAtual.preco).toLocaleString() + ' €';
-        document.getElementById('m-des').innerText = carroAtual.descricao || 'Contacte-nos para mais informações.';
-        
-        let badges = '';
-        if(carroAtual.reservado && !carroAtual.vendido) {
-            badges += '<span style="background:#F59E0B; color:white; padding:6px 12px; border-radius:4px; font-size:11px; font-weight:800; margin-right:10px;">⚠️ RESERVADA</span>';
+        try {
+            // Garante que compara o ID corretamente, independentemente do tipo de telemóvel
+            carroAtual = allCars.find(x => String(x.id) === String(id));
+            
+            if(!carroAtual) {
+                alert("Erro: Não foi possível carregar os detalhes desta viatura.");
+                return;
+            }
+
+            document.getElementById('m-img').src = carroAtual.imagem_url;
+            document.getElementById('m-tit').innerText = carroAtual.titulo;
+            document.getElementById('m-pre').innerText = Number(carroAtual.preco).toLocaleString() + ' €';
+            document.getElementById('m-des').innerText = carroAtual.descricao || 'Contacte-nos para mais informações.';
+            
+            let badges = '';
+            if(carroAtual.reservado && !carroAtual.vendido) badges += '<span style="background:#F59E0B; color:white; padding:6px 12px; border-radius:4px; font-size:11px; font-weight:800; margin-right:10px;">⚠️ RESERVADA</span>';
+            if(carroAtual.vendido) badges += '<span style="background:var(--black); color:white; padding:6px 12px; border-radius:4px; font-size:11px; font-weight:800;">🔒 VENDIDA</span>';
+            document.getElementById('m-badges').innerHTML = badges;
+            
+            openModal('detalhes');
+        } catch (erro) {
+            console.error(erro);
+            alert("Aconteceu um erro técnico no seu telemóvel. Por favor, atualize a página.");
         }
-        if(carroAtual.vendido) {
-            badges += '<span style="background:var(--black); color:white; padding:6px 12px; border-radius:4px; font-size:11px; font-weight:800;">🔒 VENDIDA</span>';
-        }
-        document.getElementById('m-badges').innerHTML = badges;
-        
-        openModal('detalhes');
     }
 
     window.contactarWhatsApp = function() {
@@ -1159,9 +1167,9 @@
                     </div>
                 </div>
                 <div class="admin-actions">
-                    <button class="btn-action btn-action-reserva" onclick="mudarEstado(${c.id}, 'reservado', ${!c.reservado})">${c.reservado ? 'Desreservar' : 'Reservar'}</button>
-                    <button class="btn-action btn-action-vendido" onclick="mudarEstado(${c.id}, 'vendido', ${!c.vendido})">${c.vendido ? 'Repor Venda' : 'Vendido'}</button>
-                    <button class="btn-action btn-action-apagar" onclick="apagarCarro(${c.id})">Apagar</button>
+                    <button class="btn-action btn-action-reserva" onclick="mudarEstado('${c.id}', 'reservado', ${!c.reservado})">${c.reservado ? 'Desreservar' : 'Reservar'}</button>
+                    <button class="btn-action btn-action-vendido" onclick="mudarEstado('${c.id}', 'vendido', ${!c.vendido})">${c.vendido ? 'Repor Venda' : 'Vendido'}</button>
+                    <button class="btn-action btn-action-apagar" onclick="apagarCarro('${c.id}')">Apagar</button>
                 </div>
             </div>
         `).join('');
