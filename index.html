@@ -130,6 +130,15 @@
         /* === PÁGINA: DETALHE DO CARRO === */
         .car-detail-container { display: grid; grid-template-columns: 1.2fr 1fr; gap: 50px; background: var(--bg-card); padding: 40px; border-radius: 16px; border: 1px solid var(--border); box-shadow: var(--shadow-sm); }
         .cd-left img { width: 100%; border-radius: 12px; object-fit: cover; aspect-ratio: 4/3; }
+        
+        /* GALERIA MULTI-FOTOS MELHORADA */
+        .cd-gallery { display: flex; gap: 15px; margin-top: 20px; overflow-x: auto; padding-bottom: 10px; }
+        .cd-thumb { width: 100px; height: 75px; object-fit: cover; border-radius: 8px; cursor: pointer; border: 3px solid transparent; transition: 0.3s; opacity: 0.5; }
+        .cd-thumb:hover, .cd-thumb.active { opacity: 1; border-color: var(--red); transform: translateY(-2px); }
+        .cd-gallery::-webkit-scrollbar { height: 6px; }
+        .cd-gallery::-webkit-scrollbar-track { background: var(--border); border-radius: 4px; }
+        .cd-gallery::-webkit-scrollbar-thumb { background: var(--red); border-radius: 4px; }
+        
         .cd-right { display: flex; flex-direction: column; }
         .cd-title { font-size: 36px; font-weight: 800; color: var(--black); margin-bottom: 15px; line-height: 1.2; }
         .cd-price { font-size: 40px; font-weight: 800; color: var(--red); padding-bottom: 25px; border-bottom: 1px solid var(--border); margin-bottom: 25px; }
@@ -305,21 +314,9 @@
 
         <div class="home-benefits">
             <div class="benefits-grid">
-                <div class="benefit-item">
-                    <div class="benefit-icon">🛡️</div>
-                    <h4>Garantia de 18 Meses</h4>
-                    <p>Cobertura total e transparente, com assistência em viagem e viatura de substituição para sua tranquilidade.</p>
-                </div>
-                <div class="benefit-item">
-                    <div class="benefit-icon">💶</div>
-                    <h4>Financiamento Flexível</h4>
-                    <p>Aprovação rápida e 100% digital até 120 meses, com ou sem entrada inicial e taxas fixas.</p>
-                </div>
-                <div class="benefit-item">
-                    <div class="benefit-icon">🔧</div>
-                    <h4>Oficina Própria</h4>
-                    <p>Todas as nossas viaturas são rigorosamente inspecionadas e recondicionadas nas nossas instalações.</p>
-                </div>
+                <div class="benefit-item"><div class="benefit-icon">🛡️</div><h4>Garantia de 18 Meses</h4><p>Cobertura total e transparente, com assistência em viagem e viatura de substituição.</p></div>
+                <div class="benefit-item"><div class="benefit-icon">💶</div><h4>Financiamento Flexível</h4><p>Aprovação rápida e 100% digital até 120 meses, com ou sem entrada inicial e taxas fixas.</p></div>
+                <div class="benefit-item"><div class="benefit-icon">🔧</div><h4>Oficina Própria</h4><p>Todas as nossas viaturas são rigorosamente inspecionadas e recondicionadas.</p></div>
             </div>
         </div>
     </div>
@@ -363,7 +360,10 @@
                 <div class="cd-left">
                     <div id="cd-badges" style="margin-bottom: 15px;"></div>
                     <img id="cd-img" src="" alt="Detalhe Viatura">
+                    
+                    <div id="cd-gallery" class="cd-gallery"></div>
                 </div>
+                
                 <div class="cd-right">
                     <h1 id="cd-tit" class="cd-title"></h1>
                     <div id="cd-pre" class="cd-price"></div>
@@ -382,288 +382,46 @@
     <div id="page-contactos" class="page">
         <div class="page-header">
             <h1>Contactos JD Auto</h1>
-            <p>Estamos ao seu dispor. Visite-nos ou entre em contacto direto connosco.</p>
+            <p>Estamos ao seu dispor em dois espaços distintos em Estarreja. Visite-nos!</p>
         </div>
         <div class="container">
-            
             <div class="contact-page-grid" style="margin-bottom: 60px;">
                 <div class="contact-box" style="border-color: var(--red); box-shadow: 0 10px 25px rgba(230, 57, 70, 0.1);">
                     <div style="display:inline-block; background:var(--red); color:white; padding:4px 10px; font-size:11px; font-weight:800; border-radius:4px; margin-bottom:15px; text-transform:uppercase;">Showroom Principal</div>
                     <h3 style="font-size: 24px; font-weight: 800; margin-bottom: 30px; color: var(--black);">Stand Viaturas</h3>
-                    
-                    <div style="margin-bottom: 25px;">
-                        <h4 style="font-size: 14px; color: var(--text-muted); text-transform: uppercase; margin-bottom: 5px;">📍 Morada Oficial</h4>
-                        <p style="font-size: 16px; font-weight: 600; color: var(--black);">Rua das Cavadas Sul<br><span style="font-size:14px; font-weight:500; color:var(--text-muted);">(Junto à N109)</span><br>Canelas, Estarreja</p>
-                    </div>
-                    
-                    <div style="margin-bottom: 25px;">
-                        <h4 style="font-size: 14px; color: var(--text-muted); text-transform: uppercase; margin-bottom: 5px;">📞 Equipa Comercial</h4>
-                        <p style="font-size: 16px; font-weight: 600; color: var(--black);">+351 912 345 679</p>
-                    </div>
-
-                    <div style="margin-bottom: 25px;">
-                        <h4 style="font-size: 14px; color: var(--text-muted); text-transform: uppercase; margin-bottom: 5px;">✉️ Email Comercial</h4>
-                        <p style="font-size: 16px; font-weight: 600; color: var(--black);">geral@jdauto.pt</p>
-                    </div>
-
-                    <div style="margin-bottom: 25px;">
-                        <h4 style="font-size: 14px; color: var(--text-muted); text-transform: uppercase; margin-bottom: 5px;">🕒 Horário do Stand</h4>
-                        <p style="font-size: 15px; color: var(--text-main); line-height: 1.6;"><strong>Segunda a Sexta:</strong> 09:30 – 19:00<br><strong>Sábados:</strong> 10:00 – 13:00<br><strong>Domingos:</strong> Só por marcação</p>
-                    </div>
+                    <div style="margin-bottom: 25px;"><h4 style="font-size: 14px; color: var(--text-muted); text-transform: uppercase; margin-bottom: 5px;">📍 Morada Oficial</h4><p style="font-size: 16px; font-weight: 600; color: var(--black);">Rua das Cavadas Sul<br><span style="font-size:14px; font-weight:500; color:var(--text-muted);">(Junto à N109)</span><br>Canelas, Estarreja</p></div>
+                    <div style="margin-bottom: 25px;"><h4 style="font-size: 14px; color: var(--text-muted); text-transform: uppercase; margin-bottom: 5px;">📞 Equipa Comercial</h4><p style="font-size: 16px; font-weight: 600; color: var(--black);">+351 912 345 679</p></div>
+                    <div style="margin-bottom: 25px;"><h4 style="font-size: 14px; color: var(--text-muted); text-transform: uppercase; margin-bottom: 5px;">✉️ Email Comercial</h4><p style="font-size: 16px; font-weight: 600; color: var(--black);">geral@jdauto.pt</p></div>
+                    <div style="margin-bottom: 25px;"><h4 style="font-size: 14px; color: var(--text-muted); text-transform: uppercase; margin-bottom: 5px;">🕒 Horário do Stand</h4><p style="font-size: 15px; color: var(--text-main); line-height: 1.6;"><strong>Segunda a Sexta:</strong> 09:30 – 19:00<br><strong>Sábados:</strong> 10:00 – 13:00<br><strong>Domingos:</strong> Só por marcação</p></div>
                 </div>
                 <div class="map-wrapper">
                     <iframe src="https://maps.google.com/maps?q=Rua%20das%20Cavadas%20Sul%2C%20Canelas%2C%20Estarreja&t=&z=16&ie=UTF8&iwloc=&output=embed" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
                 </div>
             </div>
-
             <div class="contact-page-grid">
                 <div class="contact-box">
                     <h3 style="font-size: 24px; font-weight: 800; margin-bottom: 30px; color: var(--black);">Sede & Oficina</h3>
-                    
-                    <div style="margin-bottom: 25px;">
-                        <h4 style="font-size: 14px; color: var(--text-muted); text-transform: uppercase; margin-bottom: 5px;">📍 Morada da Oficina</h4>
-                        <p style="font-size: 16px; font-weight: 600; color: var(--black);">Rua das Cavadas Sul<br>Canelas, Estarreja</p>
-                    </div>
-                    
-                    <div style="margin-bottom: 25px;">
-                        <h4 style="font-size: 14px; color: var(--text-muted); text-transform: uppercase; margin-bottom: 5px;">📞 Assistência Técnica</h4>
-                        <p style="font-size: 16px; font-weight: 600; color: var(--black);">+351 912 345 678</p>
-                    </div>
-
-                    <div style="margin-bottom: 25px;">
-                        <h4 style="font-size: 14px; color: var(--text-muted); text-transform: uppercase; margin-bottom: 5px;">✉️ Email da Oficina</h4>
-                        <p style="font-size: 16px; font-weight: 600; color: var(--black);">oficina@jdauto.pt</p>
-                    </div>
-
-                    <div style="margin-bottom: 25px;">
-                        <h4 style="font-size: 14px; color: var(--text-muted); text-transform: uppercase; margin-bottom: 5px;">🕒 Horário</h4>
-                        <p style="font-size: 15px; color: var(--text-main); line-height: 1.6;"><strong>Seg a Sex:</strong> 09:00 – 18:30<br><strong>Sábados e Domingos:</strong> Encerrado</p>
-                    </div>
+                    <div style="margin-bottom: 25px;"><h4 style="font-size: 14px; color: var(--text-muted); text-transform: uppercase; margin-bottom: 5px;">📍 Morada da Oficina</h4><p style="font-size: 16px; font-weight: 600; color: var(--black);">Rua das Cavadas Sul<br>Canelas, Estarreja</p></div>
+                    <div style="margin-bottom: 25px;"><h4 style="font-size: 14px; color: var(--text-muted); text-transform: uppercase; margin-bottom: 5px;">📞 Assistência Técnica</h4><p style="font-size: 16px; font-weight: 600; color: var(--black);">+351 912 345 678</p></div>
+                    <div style="margin-bottom: 25px;"><h4 style="font-size: 14px; color: var(--text-muted); text-transform: uppercase; margin-bottom: 5px;">✉️ Email da Oficina</h4><p style="font-size: 16px; font-weight: 600; color: var(--black);">oficina@jdauto.pt</p></div>
+                    <div style="margin-bottom: 25px;"><h4 style="font-size: 14px; color: var(--text-muted); text-transform: uppercase; margin-bottom: 5px;">🕒 Horário</h4><p style="font-size: 15px; color: var(--text-main); line-height: 1.6;"><strong>Seg a Sex:</strong> 09:00 – 18:30<br><strong>Sábados e Domingos:</strong> Encerrado</p></div>
                 </div>
                 <div class="map-wrapper">
                     <iframe src="https://maps.google.com/maps?q=Rua%20das%20Cavadas%20Sul%2C%20Canelas%2C%20Estarreja&t=&z=16&ie=UTF8&iwloc=&output=embed" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
                 </div>
             </div>
-
         </div>
     </div>
 
-    <div id="page-retoma" class="page">
-        <div class="page-header">
-            <h1>Avaliação de Retoma</h1>
-            <p>Compre o seu carro novo com facilidade. Damos o valor mais justo pelo seu carro antigo na hora.</p>
-        </div>
-        <div class="service-container container">
-            <div class="service-card">
-                <h3 style="font-size: 28px; font-weight: 800; color: var(--black); margin-bottom: 15px; text-align: center;">O processo mais simples do mercado</h3>
-                <p style="font-size: 16px; color: var(--text-muted); text-align: center; margin-bottom: 50px;">Avaliamos a sua viatura com base no Eurotax e no real estado de conservação. Sem complicações, sem burocracias.</p>
-                
-                <div class="step-row">
-                    <div class="step-number">1</div>
-                    <div class="step-content">
-                        <h4>Visite as nossas instalações</h4>
-                        <p>Traga a sua viatura atual até ao nosso stand na R. das Cavadas Sul. Não precisa de marcação prévia, a nossa equipa recebe-o com todo o gosto.</p>
-                    </div>
-                </div>
-                <div class="step-row">
-                    <div class="step-number">2</div>
-                    <div class="step-content">
-                        <h4>Inspeção Visual e Test-Drive</h4>
-                        <p>Os nossos técnicos farão uma rápida avaliação ao estado exterior, interior e um breve teste de estrada para garantir a integridade mecânica.</p>
-                    </div>
-                </div>
-                <div class="step-row">
-                    <div class="step-number">3</div>
-                    <div class="step-content">
-                        <h4>Proposta Final na Hora</h4>
-                        <p>Cruzamos os dados com o valor de mercado atual e apresentamos-lhe uma proposta justa e transparente para abater no valor da sua nova viatura.</p>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="cta-banner">
-                <h3>Quer saber quanto vale o seu carro?</h3>
-                <p>Fale diretamente com um dos nossos avaliadores pelo WhatsApp e envie as fotos e matrícula da sua viatura para uma pré-avaliação rápida.</p>
-                <button class="btn-main btn-whatsapp" style="width: auto; padding: 18px 40px; margin: 0 auto;" onclick="contactarWhatsAppServico('Retoma')">💬 PEDIR PRÉ-AVALIAÇÃO</button>
-            </div>
-        </div>
-    </div>
+    <div id="page-retoma" class="page"><div class="page-header"><h1>Avaliação de Retoma</h1><p>Compre o seu carro novo com facilidade. Damos o valor mais justo pelo seu carro antigo na hora.</p></div><div class="service-container container"><div class="service-card"><h3 style="font-size: 28px; font-weight: 800; color: var(--black); margin-bottom: 15px; text-align: center;">O processo mais simples do mercado</h3><p style="font-size: 16px; color: var(--text-muted); text-align: center; margin-bottom: 50px;">Avaliamos a sua viatura com base no Eurotax e no real estado de conservação. Sem complicações, sem burocracias.</p><div class="step-row"><div class="step-number">1</div><div class="step-content"><h4>Visite as nossas instalações</h4><p>Traga a sua viatura atual até ao nosso stand na R. das Cavadas Sul. Não precisa de marcação prévia, a nossa equipa recebe-o com todo o gosto.</p></div></div><div class="step-row"><div class="step-number">2</div><div class="step-content"><h4>Inspeção Visual e Test-Drive</h4><p>Os nossos técnicos farão uma rápida avaliação ao estado exterior, interior e um breve teste de estrada para garantir a integridade mecânica.</p></div></div><div class="step-row"><div class="step-number">3</div><div class="step-content"><h4>Proposta Final na Hora</h4><p>Cruzamos os dados com o valor de mercado atual e apresentamos-lhe uma proposta justa e transparente para abater no valor da sua nova viatura.</p></div></div></div><div class="cta-banner"><h3>Quer saber quanto vale o seu carro?</h3><p>Fale diretamente com um dos nossos avaliadores pelo WhatsApp e envie as fotos e matrícula da sua viatura para uma pré-avaliação rápida.</p><button class="btn-main btn-whatsapp" style="width: auto; padding: 18px 40px; margin: 0 auto;" onclick="contactarWhatsAppServico('Retoma')">💬 PEDIR PRÉ-AVALIAÇÃO</button></div></div></div>
 
-    <div id="page-financiamento" class="page">
-        <div class="page-header">
-            <h1>Soluções de Financiamento</h1>
-            <p>O carro dos seus sonhos não tem de ser um peso no orçamento. Condições à sua medida.</p>
-        </div>
-        <div class="service-container container">
-            <div class="feature-grid" style="margin-bottom: 40px;">
-                <div class="feature-box">
-                    <div class="feature-icon">💶</div>
-                    <h4>0% de Entrada Inicial</h4>
-                    <p>Financiamos até 100% do valor da sua nova viatura, para que não precise de descapitalizar.</p>
-                </div>
-                <div class="feature-box">
-                    <div class="feature-icon">⏳</div>
-                    <h4>Prazos Flexíveis</h4>
-                    <p>Estenda o seu pagamento de 12 até 120 meses. Ajustamos a mensalidade ao seu conforto.</p>
-                </div>
-                <div class="feature-box">
-                    <div class="feature-icon">⚡</div>
-                    <h4>Aprovação em 24h</h4>
-                    <p>Processo 100% digital e rápido através das principais instituições de crédito em Portugal.</p>
-                </div>
-            </div>
+    <div id="page-financiamento" class="page"><div class="page-header"><h1>Soluções de Financiamento</h1><p>O carro dos seus sonhos não tem de ser um peso no orçamento. Condições à sua medida.</p></div><div class="service-container container"><div class="feature-grid" style="margin-bottom: 40px;"><div class="feature-box"><div class="feature-icon">💶</div><h4>0% de Entrada Inicial</h4><p>Financiamos até 100% do valor da sua nova viatura, para que não precise de descapitalizar.</p></div><div class="feature-box"><div class="feature-icon">⏳</div><h4>Prazos Flexíveis</h4><p>Estenda o seu pagamento de 12 até 120 meses. Ajustamos a mensalidade ao seu conforto.</p></div><div class="feature-box"><div class="feature-icon">⚡</div><h4>Aprovação em 24h</h4><p>Processo 100% digital e rápido através das principais instituições de crédito em Portugal.</p></div></div><div class="service-card" style="display: flex; gap: 40px; align-items: center; flex-wrap: wrap;"><div style="flex: 1; min-width: 300px;"><h3 style="font-size: 24px; font-weight: 800; margin-bottom: 20px;">O que preciso para aprovar o crédito?</h3><p style="color: var(--text-muted); margin-bottom: 25px; line-height: 1.6;">Reúna a seguinte documentação básica para particulares. Tratamos de todo o processo de submissão por si, sem custos adicionais.</p><ul class="check-list"><li>Cartão de Cidadão / Título de Residência</li><li>Comprovativo de Morada (Água, Luz ou Telefone)</li><li>3 Últimos Recibos de Vencimento</li><li>Comprovativo de IBAN com nome do titular</li><li>Última Declaração de IRS</li></ul></div></div><div class="cta-banner"><h3>Simule a sua mensalidade sem compromisso</h3><p>Os nossos consultores financeiros ajudam-no a encontrar a melhor taxa do mercado em poucos minutos.</p><button class="btn-main btn-whatsapp" style="width: auto; padding: 18px 40px; margin: 0 auto;" onclick="contactarWhatsAppServico('Financiamento')">💬 PEDIR SIMULAÇÃO GRATUITA</button></div></div></div>
 
-            <div class="service-card" style="display: flex; gap: 40px; align-items: center; flex-wrap: wrap;">
-                <div style="flex: 1; min-width: 300px;">
-                    <h3 style="font-size: 24px; font-weight: 800; margin-bottom: 20px;">O que preciso para aprovar o crédito?</h3>
-                    <p style="color: var(--text-muted); margin-bottom: 25px; line-height: 1.6;">Reúna a seguinte documentação básica para particulares. Tratamos de todo o processo de submissão por si, sem custos adicionais.</p>
-                    <ul class="check-list">
-                        <li>Cartão de Cidadão / Título de Residência</li>
-                        <li>Comprovativo de Morada (Água, Luz ou Telefone)</li>
-                        <li>3 Últimos Recibos de Vencimento</li>
-                        <li>Comprovativo de IBAN com nome do titular</li>
-                        <li>Última Declaração de IRS</li>
-                    </ul>
-                </div>
-            </div>
+    <div id="page-seguros" class="page"><div class="page-header"><h1>Seguros Automóvel</h1><p>Trabalhamos com os melhores corretores para proteger o seu investimento com toda a segurança.</p></div><div class="service-container container"><div class="service-card" style="text-align: center;"><h3 style="font-size: 28px; font-weight: 800; margin-bottom: 15px;">Saia do Stand 100% Protegido</h3><p style="font-size: 16px; color: var(--text-muted); max-width: 700px; margin: 0 auto 40px; line-height: 1.6;">Não queremos que se preocupe com burocracias no dia de levantar o seu carro. Asseguramos a ponte com as principais seguradoras (Fidelidade, Allianz, Tranquilidade) para garantir a melhor apólice ao melhor preço.</p><div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; text-align: left;"><div style="border: 2px solid var(--border); padding: 30px; border-radius: 12px; background: var(--bg-page);"><h4 style="font-size: 20px; font-weight: 800; color: var(--black); margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px solid var(--border);">Seguro Contra Terceiros (Base)</h4><ul class="check-list" style="display: block;"><li>Responsabilidade Civil Obrigatória</li><li>Assistência em Viagem VIP 24h</li><li>Proteção Jurídica</li><li>Cobertura de Ocupantes</li></ul></div><div style="border: 2px solid var(--red); padding: 30px; border-radius: 12px; background: white; box-shadow: var(--shadow-md); position: relative;"><div style="position: absolute; top: -12px; right: 20px; background: var(--red); color: white; padding: 4px 12px; font-size: 11px; font-weight: 800; border-radius: 20px; text-transform: uppercase;">RECOMENDADO</div><h4 style="font-size: 20px; font-weight: 800; color: var(--red); margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px solid var(--border);">Seguro Danos Próprios (Total)</h4><ul class="check-list" style="display: block;"><li>Todas as coberturas Base</li><li>Choque, Colisão e Capotamento</li><li>Furto ou Roubo Total</li><li>Incêndio, Raio ou Explosão</li><li>Viatura de Substituição</li></ul></div></div></div><div class="cta-banner"><h3>Quer comparar preços para o seu próximo carro?</h3><p>Envie-nos os dados da sua carta de condução e histórico e conseguimos a apólice mais barata do mercado para si.</p><button class="btn-main btn-whatsapp" style="width: auto; padding: 18px 40px; margin: 0 auto;" onclick="contactarWhatsAppServico('Seguros')">💬 PEDIR COTAÇÃO DE SEGURO</button></div></div></div>
 
-            <div class="cta-banner">
-                <h3>Simule a sua mensalidade sem compromisso</h3>
-                <p>Os nossos consultores financeiros ajudam-no a encontrar a melhor taxa do mercado em poucos minutos.</p>
-                <button class="btn-main btn-whatsapp" style="width: auto; padding: 18px 40px; margin: 0 auto;" onclick="contactarWhatsAppServico('Financiamento')">💬 PEDIR SIMULAÇÃO GRATUITA</button>
-            </div>
-        </div>
-    </div>
+    <div id="page-garantia" class="page"><div class="page-header"><h1>Garantia JD Auto</h1><p>Conduza sem preocupações. Cobertura transparente e robusta para total paz de espírito.</p></div><div class="service-container container"><div style="background: var(--red); color: white; padding: 50px 30px; border-radius: 16px; text-align: center; box-shadow: var(--shadow-md); margin-bottom: 40px;"><h2 style="font-size: 48px; font-weight: 900; margin-bottom: 10px; letter-spacing: -1px;">18 MESES</h2><h3 style="font-size: 24px; font-weight: 600; opacity: 0.9;">De Proteção Total e Assistência</h3></div><div class="service-card"><h3 style="font-size: 24px; font-weight: 800; margin-bottom: 20px; text-align: center;">O que está coberto pela nossa garantia?</h3><p style="text-align: center; color: var(--text-muted); margin-bottom: 40px; line-height: 1.6; max-width: 700px; margin-left: auto; margin-right: auto;">Sem letras pequenas. Graças ao nosso rigoroso recondicionamento na oficina própria, conseguimos oferecer uma das coberturas mecânicas mais alargadas do mercado automóvel de usados.</p><div class="info-grid" style="margin-top: 0;"><div class="info-block"><div class="feature-icon" style="font-size: 30px; margin-bottom: 10px;">⚙️</div><h4>Motor e Mecânica</h4><ul class="info-list"><li>Bloco do motor, colaça e juntas.</li><li>Pistões, bielas, válvulas.</li><li>Bomba de óleo e água principal.</li><li>Sistema de distribuição integral.</li></ul></div><div class="info-block"><div class="feature-icon" style="font-size: 30px; margin-bottom: 10px;">🕹️</div><h4>Transmissão e Caixa</h4><ul class="info-list"><li>Caixas manuais e automáticas.</li><li>Conversor de binário.</li><li>Diferenciais e eixos.</li><li>Veios de transmissão.</li></ul></div><div class="info-block"><div class="feature-icon" style="font-size: 30px; margin-bottom: 10px;">⚡</div><h4>Eletrónica Vital</h4><ul class="info-list"><li>Módulos de controlo (ECU).</li><li>Alternador e motor de arranque.</li><li>Turbocompressor.</li><li>Sistema de injeção.</li></ul></div></div></div><div class="cta-banner"><h3>Tem alguma dúvida sobre as coberturas?</h3><p>A nossa equipa técnica está sempre disponível para lhe explicar todos os detalhes sobre a garantia do seu novo carro.</p><button class="btn-main btn-whatsapp" style="width: auto; padding: 18px 40px; margin: 0 auto;" onclick="contactarWhatsAppServico('Garantia')">💬 FALAR COM EQUIPA TÉCNICA</button></div></div></div>
 
-    <div id="page-seguros" class="page">
-        <div class="page-header">
-            <h1>Seguros Automóvel</h1>
-            <p>Trabalhamos com os melhores corretores para proteger o seu investimento com toda a segurança.</p>
-        </div>
-        <div class="service-container container">
-            <div class="service-card" style="text-align: center;">
-                <h3 style="font-size: 28px; font-weight: 800; margin-bottom: 15px;">Saia do Stand 100% Protegido</h3>
-                <p style="font-size: 16px; color: var(--text-muted); max-width: 700px; margin: 0 auto 40px; line-height: 1.6;">Não queremos que se preocupe com burocracias no dia de levantar o seu carro. Asseguramos a ponte com as principais seguradoras (Fidelidade, Allianz, Tranquilidade) para garantir a melhor apólice ao melhor preço.</p>
-                
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; text-align: left;">
-                    <div style="border: 2px solid var(--border); padding: 30px; border-radius: 12px; background: var(--bg-page);">
-                        <h4 style="font-size: 20px; font-weight: 800; color: var(--black); margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px solid var(--border);">Seguro Contra Terceiros (Base)</h4>
-                        <ul class="check-list" style="display: block;">
-                            <li>Responsabilidade Civil Obrigatória</li>
-                            <li>Assistência em Viagem VIP 24h</li>
-                            <li>Proteção Jurídica</li>
-                            <li>Cobertura de Ocupantes</li>
-                        </ul>
-                    </div>
-                    <div style="border: 2px solid var(--red); padding: 30px; border-radius: 12px; background: white; box-shadow: var(--shadow-md); position: relative;">
-                        <div style="position: absolute; top: -12px; right: 20px; background: var(--red); color: white; padding: 4px 12px; font-size: 11px; font-weight: 800; border-radius: 20px; text-transform: uppercase;">RECOMENDADO</div>
-                        <h4 style="font-size: 20px; font-weight: 800; color: var(--red); margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px solid var(--border);">Seguro Danos Próprios (Total)</h4>
-                        <ul class="check-list" style="display: block;">
-                            <li>Todas as coberturas Base</li>
-                            <li>Choque, Colisão e Capotamento</li>
-                            <li>Furto ou Roubo Total</li>
-                            <li>Incêndio, Raio ou Explosão</li>
-                            <li>Viatura de Substituição</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-
-            <div class="cta-banner">
-                <h3>Quer comparar preços para o seu próximo carro?</h3>
-                <p>Envie-nos os dados da sua carta de condução e histórico e conseguimos a apólice mais barata do mercado para si.</p>
-                <button class="btn-main btn-whatsapp" style="width: auto; padding: 18px 40px; margin: 0 auto;" onclick="contactarWhatsAppServico('Seguros')">💬 PEDIR COTAÇÃO DE SEGURO</button>
-            </div>
-        </div>
-    </div>
-
-    <div id="page-garantia" class="page">
-        <div class="page-header">
-            <h1>Garantia JD Auto</h1>
-            <p>Conduza sem preocupações. Cobertura transparente e robusta para total paz de espírito.</p>
-        </div>
-        <div class="service-container container">
-            
-            <div style="background: var(--red); color: white; padding: 50px 30px; border-radius: 16px; text-align: center; box-shadow: var(--shadow-md); margin-bottom: 40px;">
-                <h2 style="font-size: 48px; font-weight: 900; margin-bottom: 10px; letter-spacing: -1px;">18 MESES</h2>
-                <h3 style="font-size: 24px; font-weight: 600; opacity: 0.9;">De Proteção Total e Assistência</h3>
-            </div>
-
-            <div class="service-card">
-                <h3 style="font-size: 24px; font-weight: 800; margin-bottom: 20px; text-align: center;">O que está coberto pela nossa garantia?</h3>
-                <p style="text-align: center; color: var(--text-muted); margin-bottom: 40px; line-height: 1.6; max-width: 700px; margin-left: auto; margin-right: auto;">Sem letras pequenas. Graças ao nosso rigoroso recondicionamento na oficina própria, conseguimos oferecer uma das coberturas mecânicas mais alargadas do mercado automóvel de usados.</p>
-                
-                <div class="info-grid" style="margin-top: 0;">
-                    <div class="info-block">
-                        <div class="feature-icon" style="font-size: 30px; margin-bottom: 10px;">⚙️</div>
-                        <h4>Motor e Mecânica</h4>
-                        <ul class="info-list">
-                            <li>Bloco do motor, colaça e juntas.</li>
-                            <li>Pistões, bielas, válvulas.</li>
-                            <li>Bomba de óleo e água principal.</li>
-                            <li>Sistema de distribuição integral.</li>
-                        </ul>
-                    </div>
-                    <div class="info-block">
-                        <div class="feature-icon" style="font-size: 30px; margin-bottom: 10px;">🕹️</div>
-                        <h4>Transmissão e Caixa</h4>
-                        <ul class="info-list">
-                            <li>Caixas manuais e automáticas.</li>
-                            <li>Conversor de binário.</li>
-                            <li>Diferenciais e eixos.</li>
-                            <li>Veios de transmissão.</li>
-                        </ul>
-                    </div>
-                    <div class="info-block">
-                        <div class="feature-icon" style="font-size: 30px; margin-bottom: 10px;">⚡</div>
-                        <h4>Eletrónica Vital</h4>
-                        <ul class="info-list">
-                            <li>Módulos de controlo (ECU).</li>
-                            <li>Alternador e motor de arranque.</li>
-                            <li>Turbocompressor.</li>
-                            <li>Sistema de injeção.</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="cta-banner">
-                <h3>Tem alguma dúvida sobre as coberturas?</h3>
-                <p>A nossa equipa técnica está sempre disponível para lhe explicar todos os detalhes sobre a garantia do seu novo carro.</p>
-                <button class="btn-main btn-whatsapp" style="width: auto; padding: 18px 40px; margin: 0 auto;" onclick="contactarWhatsAppServico('Garantia')">💬 FALAR COM EQUIPA TÉCNICA</button>
-            </div>
-        </div>
-    </div>
-
-    <div id="page-oficina" class="page">
-        <div class="page-header">
-            <h1>Oficina JD Auto</h1>
-            <p>Manutenção técnica avançada nas nossas instalações próprias. O garante da fiabilidade da sua viatura.</p>
-        </div>
-        <div class="service-container container">
-            <div class="service-card">
-                <h3 style="font-size: 24px; font-weight: 800; margin-bottom: 20px;">O Nosso Processo de Excelência</h3>
-                <p style="color: var(--text-muted); margin-bottom: 30px; line-height: 1.6;">Não dependemos de terceiros para garantir a qualidade das nossas viaturas. A JD Auto dispõe de um centro técnico próprio equipado com ferramentas de diagnóstico eletrónico de última geração.</p>
-                <div class="info-grid">
-                    <div class="info-block"><h4>1. Diagnóstico de Precisão</h4><p style="font-size: 15px; color: var(--text-main); line-height: 1.6;">Software atualizado para leitura de parâmetros.</p></div>
-                    <div class="info-block"><h4>2. Intervenção Transparente</h4><p style="font-size: 15px; color: var(--text-main); line-height: 1.6;">Orçamento claro e fechado antes de qualquer reparação.</p></div>
-                    <div class="info-block"><h4>3. Peças de Origem</h4><p style="font-size: 15px; color: var(--text-main); line-height: 1.6;">Utilização de componentes certificados.</p></div>
-                </div>
-                
-                <div style="margin-top: 50px; padding-top: 40px; border-top: 1px solid var(--border);">
-                    <h3 style="font-size: 22px; font-weight: 800; text-align: center; margin-bottom: 10px;">Marcação de Serviço</h3>
-                    <p style="text-align: center; color: var(--text-muted); margin-bottom: 30px;">Preencha os dados e a nossa equipa entrará em contacto consigo rapidamente.</p>
-                    
-                    <div style="max-width: 600px; margin: 0 auto; background: var(--bg-page); padding: 30px; border-radius: 12px; border: 1px solid var(--border);">
-                        <input type="text" id="oficina-nome" class="input-std" placeholder="O seu Nome Completo" style="background: white;">
-                        <input type="tel" id="oficina-tel" class="input-std" placeholder="Telemóvel (Ex: 910 000 000)" style="background: white;">
-                        <textarea id="oficina-msg" class="input-std" rows="4" placeholder="Viatura e Serviço Pretendido (Ex: Revisão BMW 116d)" style="background: white;"></textarea>
-                        <button class="btn-main" id="btn-oficina-enviar" onclick="enviarFormularioOficina()">SOLICITAR MARCAÇÃO</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    <div id="page-oficina" class="page"><div class="page-header"><h1>Oficina JD Auto</h1><p>Manutenção técnica avançada nas nossas instalações próprias. O garante da fiabilidade da sua viatura.</p></div><div class="service-container container"><div class="service-card"><h3 style="font-size: 24px; font-weight: 800; margin-bottom: 20px;">O Nosso Processo de Excelência</h3><p style="color: var(--text-muted); margin-bottom: 30px; line-height: 1.6;">Não dependemos de terceiros para garantir a qualidade das nossas viaturas. A JD Auto dispõe de um centro técnico próprio equipado com ferramentas de diagnóstico eletrónico de última geração.</p><div class="info-grid"><div class="info-block"><h4>1. Diagnóstico de Precisão</h4><p style="font-size: 15px; color: var(--text-main); line-height: 1.6;">Software atualizado para leitura de parâmetros.</p></div><div class="info-block"><h4>2. Intervenção Transparente</h4><p style="font-size: 15px; color: var(--text-main); line-height: 1.6;">Orçamento claro e fechado antes de qualquer reparação.</p></div><div class="info-block"><h4>3. Peças de Origem</h4><p style="font-size: 15px; color: var(--text-main); line-height: 1.6;">Utilização de componentes certificados.</p></div></div><div style="margin-top: 50px; padding-top: 40px; border-top: 1px solid var(--border);"><h3 style="font-size: 22px; font-weight: 800; text-align: center; margin-bottom: 10px;">Marcação de Serviço</h3><p style="text-align: center; color: var(--text-muted); margin-bottom: 30px;">Preencha os dados e a nossa equipa entrará em contacto consigo rapidamente.</p><div style="max-width: 600px; margin: 0 auto; background: var(--bg-page); padding: 30px; border-radius: 12px; border: 1px solid var(--border);"><input type="text" id="oficina-nome" class="input-std" placeholder="O seu Nome Completo" style="background: white;"><input type="tel" id="oficina-tel" class="input-std" placeholder="Telemóvel (Ex: 910 000 000)" style="background: white;"><textarea id="oficina-msg" class="input-std" rows="4" placeholder="Viatura e Serviço Pretendido (Ex: Revisão BMW 116d)" style="background: white;"></textarea><button class="btn-main" id="btn-oficina-enviar" onclick="enviarFormularioOficina()">SOLICITAR MARCAÇÃO</button></div></div></div></div></div>
 
     <div id="page-admin" class="page" style="background: #E5E7EB;">
         <div class="admin-dashboard container">
@@ -689,8 +447,8 @@
                     <input type="number" id="a-pre" class="input-std" placeholder="Preço Final (€)" style="background:white; text-align:left;">
                     
                     <div style="background: white; padding: 14px 16px; border: 1px solid var(--border); border-radius: 8px; margin-bottom: 16px;">
-                        <label style="font-size: 12px; font-weight: 700; color: var(--text-muted); display: block; margin-bottom: 8px; text-transform: uppercase;">Fotografia Principal</label>
-                        <input type="file" id="a-img-file" accept="image/*" class="file-input" style="width:100%; border:none; padding:0; background:transparent;">
+                        <label style="font-size: 12px; font-weight: 700; color: var(--text-muted); display: block; margin-bottom: 8px; text-transform: uppercase;">Fotografias (Pode selecionar várias)</label>
+                        <input type="file" id="a-img-file" accept="image/*" multiple class="file-input" style="width:100%; border:none; padding:0; background:transparent;">
                     </div>
 
                     <textarea id="a-des" class="input-std" rows="5" placeholder="Detalhes (Ex: Ano: 2020 | Automática | Extras...)" style="background:white; text-align:left;"></textarea>
@@ -807,7 +565,7 @@
                 <div class="car-img-wrap">
                     ${c.reservado ? '<div class="badge badge-reserva">RESERVADO</div>' : ''}
                     <div class="badge badge-garantia">18 Meses Garantia</div>
-                    <img src="${c.imagem_url}" onerror="this.src='https://via.placeholder.com/600x400?text=JD+AUTO'">
+                    <img src="${(c.imagem_url || '').split(',')[0]}" onerror="this.src='https://via.placeholder.com/600x400?text=JD+AUTO'">
                 </div>
                 <div class="car-info">
                     <div class="car-title">${c.titulo}</div>
@@ -850,7 +608,7 @@
                 <div class="car-img-wrap">
                     ${c.reservado ? '<div class="badge badge-reserva">RESERVADO</div>' : ''}
                     <div class="badge badge-garantia">18 Meses Garantia</div>
-                    <img src="${c.imagem_url}" onerror="this.src='https://via.placeholder.com/600x400?text=JD+AUTO'">
+                    <img src="${(c.imagem_url || '').split(',')[0]}" onerror="this.src='https://via.placeholder.com/600x400?text=JD+AUTO'">
                 </div>
                 <div class="car-info">
                     <div class="car-title">${c.titulo}</div>
@@ -860,12 +618,25 @@
         `).join('');
     }
 
+    // A MAGIA DA GALERIA ACONTECE AQUI
     window.verDetalhes = function(id) {
         try {
             carroAtual = allCars.find(x => String(x.id) === String(id));
             if(!carroAtual) return alert("Erro a carregar a viatura.");
 
-            document.getElementById('cd-img').src = carroAtual.imagem_url;
+            const urls = (carroAtual.imagem_url || 'https://via.placeholder.com/600x400?text=JD+AUTO').split(',');
+            
+            document.getElementById('cd-img').src = urls[0];
+
+            const galleryBox = document.getElementById('cd-gallery');
+            if(urls.length > 1) {
+                galleryBox.innerHTML = urls.map((url, i) => `
+                    <img src="${url}" class="cd-thumb ${i===0 ? 'active' : ''}" onclick="mudarImagemPrincipal(this, '${url}')">
+                `).join('');
+            } else {
+                galleryBox.innerHTML = '';
+            }
+
             document.getElementById('cd-tit').innerText = carroAtual.titulo;
             document.getElementById('cd-pre').innerText = Number(carroAtual.preco).toLocaleString() + ' €';
             document.getElementById('cd-des').innerText = carroAtual.descricao || 'Contacte-nos para mais informações e detalhe de extras.';
@@ -877,6 +648,12 @@
             
             showPage('carro-detalhe');
         } catch (erro) { console.error(erro); }
+    }
+
+    window.mudarImagemPrincipal = function(elemento, url) {
+        document.getElementById('cd-img').src = url;
+        document.querySelectorAll('.cd-thumb').forEach(t => t.classList.remove('active'));
+        elemento.classList.add('active');
     }
 
     window.contactarWhatsAppDetalhe = function() {
@@ -945,29 +722,99 @@
         const validCars = allCars.filter(c => c.imagem_url !== 'PROMO_CONFIG');
         document.getElementById('admin-count').innerText = `${validCars.length} viaturas registadas`;
         list.innerHTML = validCars.map(c => `
-            <div class="admin-car-row" style="${c.vendido ? 'opacity:0.4; filter: grayscale(100%);' : ''}"><div class="admin-car-info"><img src="${c.imagem_url}"><div><strong style="display:block; font-size:14px; margin-bottom: 4px;">${c.titulo}</strong><span style="font-size:13px; color:var(--red); font-weight:700;">${Number(c.preco).toLocaleString()} €</span></div></div><div class="admin-actions"><button class="btn-action btn-action-reserva" onclick="mudarEstado('${c.id}', 'reservado', ${!c.reservado})">${c.reservado ? 'Desreservar' : 'Reservar'}</button><button class="btn-action btn-action-vendido" onclick="mudarEstado('${c.id}', 'vendido', ${!c.vendido})">${c.vendido ? 'Repor Venda' : 'Vendido'}</button><button class="btn-action btn-action-apagar" onclick="apagarCarro('${c.id}')">Apagar</button></div></div>
+            <div class="admin-car-row" style="${c.vendido ? 'opacity:0.4; filter: grayscale(100%);' : ''}"><div class="admin-car-info"><img src="${(c.imagem_url||'').split(',')[0]}"><div><strong style="display:block; font-size:14px; margin-bottom: 4px;">${c.titulo}</strong><span style="font-size:13px; color:var(--red); font-weight:700;">${Number(c.preco).toLocaleString()} €</span></div></div><div class="admin-actions"><button class="btn-action btn-action-reserva" onclick="mudarEstado('${c.id}', 'reservado', ${!c.reservado})">${c.reservado ? 'Desreservar' : 'Reservar'}</button><button class="btn-action btn-action-vendido" onclick="mudarEstado('${c.id}', 'vendido', ${!c.vendido})">${c.vendido ? 'Repor Venda' : 'Vendido'}</button><button class="btn-action btn-action-apagar" onclick="apagarCarro('${c.id}')">Apagar</button></div></div>
         `).join('');
     }
 
     window.inserirViatura = async function() {
-        const titulo = document.getElementById('a-tit').value, preco = document.getElementById('a-pre').value, desc = document.getElementById('a-des').value, file = document.getElementById('a-img-file'), btn = document.getElementById('btn-publicar');
+        const titulo = document.getElementById('a-tit').value;
+        const preco = document.getElementById('a-pre').value;
+        const desc = document.getElementById('a-des').value;
+        const fileInput = document.getElementById('a-img-file');
+        const btn = document.getElementById('btn-publicar');
+        
         if(!titulo || !preco) return alert("Preencha título e preço.");
-        btn.innerText = "A CARREGAR IMAGEM..."; btn.disabled = true; let imgUrl = 'https://via.placeholder.com/600x400?text=JD+AUTO';
-        if (file.files.length > 0) {
-            const f = file.files[0], n = `${Date.now()}_${Math.random().toString(36).substring(7)}.${f.name.split('.').pop()}`;
-            const { error: err } = await supa.storage.from('carros').upload(n, f);
-            if (err) { alert("Erro de foto. Bucket Public?"); btn.innerText = "PUBLICAR NO STAND"; btn.disabled = false; return; }
-            imgUrl = supa.storage.from('carros').getPublicUrl(n).data.publicUrl;
+        
+        btn.innerText = "A CARREGAR IMAGENS..."; 
+        btn.disabled = true; 
+        
+        let imgUrls = [];
+
+        if (fileInput.files.length > 0) {
+            for(let i=0; i < fileInput.files.length; i++) {
+                const file = fileInput.files[i];
+                const fileExt = file.name.split('.').pop();
+                const fileName = `${Date.now()}_${Math.random().toString(36).substring(7)}.${fileExt}`;
+                
+                const { error: err } = await supa.storage.from('carros').upload(fileName, file);
+                
+                if (err) { 
+                    alert("Erro a enviar uma das fotos. O Storage está Public?"); 
+                } else {
+                    const { data } = supa.storage.from('carros').getPublicUrl(fileName);
+                    imgUrls.push(data.publicUrl);
+                }
+            }
         }
+        
+        let finalUrl = imgUrls.length > 0 ? imgUrls.join(',') : 'https://via.placeholder.com/600x400?text=JD+AUTO';
+
         btn.innerText = "A GRAVAR...";
-        const { error } = await supa.from('carros').insert([{ titulo: titulo, preco: preco, imagem_url: imgUrl, descricao: desc, vendido: false, reservado: false }]);
-        if(error) alert("Erro de segurança no Supabase."); else { document.getElementById('a-tit').value=''; document.getElementById('a-pre').value=''; document.getElementById('a-des').value=''; file.value=''; App.toast("Viatura adicionada!"); await refreshData(); }
-        btn.innerText = "PUBLICAR NO STAND"; btn.disabled = false;
+        
+        const { error } = await supa.from('carros').insert([{ titulo: titulo, preco: preco, imagem_url: finalUrl, descricao: desc, vendido: false, reservado: false }]);
+        
+        if(error) {
+            alert("Erro de segurança no Supabase."); 
+        } else { 
+            document.getElementById('a-tit').value=''; 
+            document.getElementById('a-pre').value=''; 
+            document.getElementById('a-des').value=''; 
+            fileInput.value=''; 
+            App.toast("Viatura adicionada com sucesso!"); 
+            await refreshData(); 
+        }
+        
+        btn.innerText = "PUBLICAR NO STAND"; 
+        btn.disabled = false;
     }
 
     window.mudarEstado = async function(id, c, v) { await supa.from('carros').update({ [c]: v }).eq('id', id); await refreshData(); App.toast("Estado atualizado."); }
     window.apagarCarro = async function(id) { if(confirm("Deseja eliminar esta viatura?")) { await supa.from('carros').delete().eq('id', id); await refreshData(); App.toast("Viatura removida."); } }
     window.setPromo = async function(txt) { await supa.from('carros').delete().eq('imagem_url', 'PROMO_CONFIG'); if(txt !== '') await supa.from('carros').insert([{ titulo: 'PROMO', preco: 0, imagem_url: 'PROMO_CONFIG', descricao: txt, vendido: false, reservado: false }]); App.toast("Campanhas atualizadas!"); await refreshData(); }
+
+    // CARROS DE TESTE AGORA COM 4 FOTOS DE ÂNGULOS DIFERENTES
+    window.seedDemoCars = async function() {
+        const demoCars = [
+            { 
+                titulo: 'BMW 420d Gran Coupé M Sport', 
+                preco: 34500, 
+                imagem_url: 'https://images.unsplash.com/photo-1555215695-3004980ad54e?q=80&w=800,https://images.unsplash.com/photo-1556189250-72ba954cfc2b?q=80&w=800,https://images.unsplash.com/photo-1580274455191-1c62238fa333?q=80&w=800,https://images.unsplash.com/photo-1617531653332-bd46c24f2068?q=80&w=800', 
+                descricao: 'Ano: 2020 | Gasóleo | Automática | 85.000 km\nViatura nacional. Pack M completo, jantes 19".', 
+                vendido: false, 
+                reservado: false 
+            },
+            { 
+                titulo: 'Mercedes-Benz A 180 d AMG Line', 
+                preco: 31900, 
+                imagem_url: 'https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?q=80&w=800,https://images.unsplash.com/photo-1618843479619-f3fa5761a293?q=80&w=800,https://images.unsplash.com/photo-1605559424843-9e4c228bf1c2?q=80&w=800,https://images.unsplash.com/photo-1593958812614-2db24bd4c803?q=80&w=800', 
+                descricao: 'Ano: 2021 | Gasóleo | Automática | 60.000 km\nPacote AMG interior e exterior. Teto panorâmico duplo.', 
+                vendido: false, 
+                reservado: false 
+            },
+            { 
+                titulo: 'Porsche 911 Carrera S', 
+                preco: 125000, 
+                imagem_url: 'https://images.unsplash.com/photo-1503376780353-7e6692767b70?q=80&w=800,https://images.unsplash.com/photo-1503377211545-200788d75e2a?q=80&w=800,https://images.unsplash.com/photo-1580273916550-e323be2ae537?q=80&w=800,https://images.unsplash.com/photo-1611821064430-0d40221e95fb?q=80&w=800', 
+                descricao: 'Ano: 2019 | Gasolina | Automática | 45.000 km\nSport Chrono Pack, suspensão PASM e jantes RS Spyder 20/21".', 
+                vendido: false, 
+                reservado: false 
+            }
+        ];
+        
+        App.toast("A processar viaturas de demonstração (Com Galeria Multi-Fotos)...");
+        const { error } = await supa.from('carros').insert(demoCars);
+        if(error) alert("Erro a carregar os carros de teste."); else await refreshData();
+    }
 
     window.onload = init;
 </script>
